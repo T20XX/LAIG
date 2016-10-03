@@ -1,0 +1,239 @@
+<!-- TP4G03 dsx file -->
+
+    
+<dsx>
+    
+    <scene></scene>
+	
+    <views default="default_view" >
+    
+        <perspective id="default_perspective" near="ff" far="ff" angle="ff">
+            <from x="ff" y="ff" z="ff" />
+            <to x="ff" y="ff" z="ff" />
+        </perspective>
+        
+    </views>
+    
+
+    <illumination doublesided="1" local="1" >
+    
+        <ambient r="0.2" g="0.4" b="0.8" a="1.0" />
+        <background r="0" g="0.5" b="0" a="1" />
+        
+    </illumination>
+
+    <lights>
+    
+        <omni id="omni_light_1" enabled="1" >
+            <location x="2" y="3" z="3" w="1" />
+            <ambient r="0.7" g="0.7" b="0.7" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="0.2" g="0.2" b="0.2" a="1.0" />
+        </omni>
+        
+        <spot id="spot_light_1" enabled="1" angle="ff" exponent="ff">
+            <!-- atencao, "target" e' diferente de "direction" -->
+            <target x="0" y="0" z="0" />
+            <location x="1" y="1" z="1" />
+            <ambient r="0" g="0" b="0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="0.5" g="0.6" b="0.5" a="1.0" />
+        </spot>
+    </lights>
+    
+	 <textures>
+    
+        <!-- Deve existir um ou mais blocos "texture" -->
+        <!-- Os identificadores "id" nao podem ser repetidos -->
+        <!-- length_s e length_t sao fatores de escala de textura:-->
+        <!-- Exemplo length_s=3.0: uma ocorrencia da textura, em -->
+        <!-- comprimento, deve cobrir um comprimento igual -->
+        <!-- a 3 unidades;  -->
+        <!-- Exemplo length_t=0.4, uma ocorrencia da textura, em -->
+        <!-- largura, deve cobrir uma largura igual a 0.4 unidades.  -->
+        <!-- Transf. Geometr. do tipo escalamento sobre os -->
+        <!-- objetos respetivos podem a violar esta regra.         -->
+        <!-- Nao necessario aplicar fatores de escala em  -->
+        <!-- quadricas (esfera, ciclindro...) -->
+        <texture id="brickWall" file="/res/brickWall" length_s="3" length_t="3" />  
+        
+    </textures>
+
+    
+    <materials>
+    
+        <!-- Deve existir um ou mais blocos "material" -->
+        <!-- Os identificadores "id" nao podem ser repetidos -->
+        <material id="default_mat" >
+            <emission r="0.2" g="0.4" b="0.8" a="1" />
+            <ambient r="0.2" g="0.4" b="0.8" a="1" />
+            <diffuse r="0.2" g="0.4" b="0.8" a="1" />
+            <specular r="0.2" g="0.4" b="0.8" a="1" />
+            <shininess value="10" />
+        </material>
+        
+    </materials>
+    
+    
+    <transformations>
+    
+        <!-- Deve existir um ou mais blocos "transformation" -->
+        <!-- Os identificadores "id" nao podem ser repetidos -->
+        <transformation id="test_trans">
+           <!-- instrucoes a usar sem limite nem ordem -->
+           <!-- deve existir pelo menos uma transformacao -->
+           <translate x="2" y="0" z="0" />
+           <rotate axis="x" angle="0" />
+           <scale x="2" y="0" z="0" />
+        </transformation>
+        
+    </transformations>
+	
+	<primitives>
+	
+        <primitive id="unit_rectangle">
+            <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" /> 
+        </primitive>
+        
+    </primitives>
+	
+    <components>
+        
+        <component id="cube">
+         
+            <transformation></transformation>
+
+            <materials>
+                <material id="default_mat" />
+            </materials>
+
+            <texture id="brickWall" />
+			
+            <children>
+                <componentref id="rectUp" />
+				<componentref id="rectDown" />
+				<componentref id="rectLeft" />
+				<componentref id="rectRight" />
+				<componentref id="rectFront" />
+				<componentref id="rectBack" />
+            </children>
+            
+        </component>
+        
+		<component id="rectUp">
+         
+            <transformation>
+				<rotate axis=x angle = 45 />
+				<translate x="0" y="0.5" z="0" />
+			</transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="inherit" />
+			
+            <children>
+                <primitiveref id="unit_rectangle" />
+            </children>
+            
+        </component>
+		
+		<component id="rectDown">
+         
+            <transformation>
+				<rotate axis=x angle = -45 />
+				<translate x="0" y="-0.5" z="0" />
+			</transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="inherit" />
+			
+            <children>
+                <primitiveref id="unit_rectangle" />
+            </children>
+            
+        </component>
+		     
+		<component id="rectRight">
+         
+            <transformation>
+				<translate x="0" y="0" z="-0.5" />
+			</transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="inherit" />
+			
+            <children>
+                <primitiveref id="unit_rectangle" />
+            </children>
+            
+        </component>
+		
+		<component id="rectLeft">
+         
+            <transformation>
+				<translate x="0" y="0" z="0.5" />
+			</transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="inherit" />
+			
+            <children>
+                <primitiveref id="unit_rectangle" />
+            </children>
+            
+        </component>
+		        
+		<component id="rectFront">
+         
+            <transformation>
+				<rotate axis=y angle= 45 />
+				<translate x="0.5" y="0" z="0" />
+			</transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="inherit" />
+			
+            <children>
+                <primitiveref id="unit_rectangle" />
+            </children>
+            
+        </component>
+		
+		<component id="rectBack">
+         
+            <transformation>
+				<rotate axis=y angle= -45 />
+				<translate x="-0.5" y="0" z="0" />
+			</transformation>
+
+            <materials>
+                <material id="inherit" />
+            </materials>
+
+            <texture id="inherit" />
+			
+            <children>
+                <primitiveref id="unit_rectangle" />
+            </children>
+            
+        </component>
+    </components>
+	
+	
+  
+
+</dsx>
