@@ -137,7 +137,7 @@
 		<component id="rectUp">
          
             <transformation>
-				<rotate axis=x angle = 45 />
+				<rotate axis="x" angle ="45" />
 				<translate x="0" y="0.5" z="0" />
 			</transformation>
 
@@ -156,7 +156,7 @@
 		<component id="rectDown">
          
             <transformation>
-				<rotate axis=x angle = -45 />
+				<rotate axis="x" angle ="-45" />
 				<translate x="0" y="-0.5" z="0" />
 			</transformation>
 
@@ -211,7 +211,7 @@
 		<component id="rectFront">
          
             <transformation>
-				<rotate axis=y angle= 45 />
+				<rotate axis="y" angle= "45" />
 				<translate x="0.5" y="0" z="0" />
 			</transformation>
 
@@ -230,7 +230,7 @@
 		<component id="rectBack">
          
             <transformation>
-				<rotate axis=y angle= -45 />
+				<rotate axis="y" angle= "-45" />
 				<translate x="-0.5" y="0" z="0" />
 			</transformation>
 
@@ -308,7 +308,7 @@
 		<component id="tableLeg1">
 			
 			<transformation> 
-				<translate x="-1.5" y=0 z="-0.75">
+				<translate x="-1.5" y="0" z="-0.75">
 			</transformation>
 			
 			<materials>
@@ -326,7 +326,7 @@
 		<component id="tableLeg2">
 			
 			<transformation> 
-				<translate x="-1.5" y=0 z="0.75">
+				<translate x="-1.5" y="0" z="0.75">
 			</transformation>
 			
 			<materials>
@@ -362,7 +362,7 @@
 		<component id="tableLeg4">
 			
 			<transformation> 
-				<translate x="1.5" y=0 z="-0.75">
+				<translate x="1.5" y="0" z="-0.75">
 			</transformation>
 			
 			<materials>
@@ -377,10 +377,213 @@
 		
 		</component>
 		
-						
-    </components>
-	
-	
+		<!-- JANELA -->
+		
+		<component id="window">
+			<transformation>
+				<rotate axis="y" angle="-45"> 
+				<translate x="5" y="5" z="5">
+			</transformation>
+			
+			<materials>
+				<material id="default_mat">
+			</materials>
+			
+			<texture id="textura" />
+			
+			<children>
+				<componentref id="windowCross">
+				<componentref id="windowGlass">
+				<componentref id="windowCross1">
+				<componentref id="windowCross2">
+				<componentref id="windowGlass1">
+				<componentref id="windowGlass2">
+				<componentref id="windowGlass3">
+				<componentref id="windowGlass4">
+			</children>
+		</component
+		
+		
+		<component id="windowCross">
+			<transformation>
+				<scale x="0.25" y="1" z="0.25">	
+			</transformation>
+			
+			<materials>
+				<material id="default_mat">
+			</materials>
+			
+			<texture id=""/>
+			
+			<children>
+				<componentref id="cube">			 <!-- DA ORIGEM -->
+			</children>
+		</component>
+		
+		<component id="windowCross1">
+			<transformation>
+			</transformation>
+			
+			<materials>
+				<material id="default_mat">
+			</materials>
+			
+			<texture id="textura" />
+			
+			<children>
+				<componentref id="windowCross">			
+			</children>
+		</component>
+		
+		<component id="windowCross2">
+			<transformation>
+				<!-- ROTATE, TENHO Q FAZER TRANSL PRIMEIRO >ROTAT> TRANSL -1 --> 
+			</transformation>
+		
+			<materials>
+				<material id="default_mat">
+			</materials>
+		
+			<texture id="texture"/>
+		
+			<children>
+				<componentref id="windowCross">			<!-- OU primitiveref id="windowCross2" ->  <!-- DA ORIGEM -->
+			</children>
+		</component>
+		
+		<component id="windowGlass">
+		<transformation>
+			<scale x="0.5" y="0.5" z="1">
+		</transformation>
+		
+		<materials>
+			<material id="default_mat">
+		</materials>
+		
+		<texture id="texture" />
+		
+		<children>
+			<componentref id="cube">   <!-- ORIGEM -->
+		</children>
+		</component>
+		
+		<component id="windowGlass1">
+			<transformation>
+			</transformation>
+			
+			<materials>
+				<material id="default_mat">
+			</materials>
+			
+			<texture id="texture"/>
+			
+			<children>
+				<componentref id="windowGlass">
+			</children>
+		</component>
+		
+		<component id="windowGlass2">
+			<transformation>
+				<translate x="-0.5" y="0" z="0">
+			</transformation>
+			
+			<materials>
+				<material id="default_mat">
+			</materials>
+			
+			<texture id="texture"/>
+			
+			<children>
+				<componentref id="windowGlass">
+			</children>
+		</component>
+		
+		<component id="windowGlass3">
+			<transformation>
+				<translate x="-0.5" y="-0.5" z="0">
+			</transformation>
+			
+			<materials>
+				<material id="default_mat">
+			</materials>
+			
+			<texture id="texture"/>
+			
+			<children>
+				<componentref id="windowGlass">
+			</children>
+		</component>
+		
+		<component id="windowGlass4">
+			<transformation>
+				<translate x="0" y="-0.5" z="0">
+			</transformation>
+			
+			<materials>
+				<material id="default_mat">
+			</materials>
+			
+			<texture id="texture"/>
+			
+			<children>
+				<componentref id="windowGlass">
+			</children>
+		</component>
+		
+		<!-- BAKE A CAKE KKKKKK -->
+		<component id="cake">
+			<transformation>
+				<translate x="0" y="0" z="0">
+			</transformation>
+			
+			<materials>
+				<material id="default_mat">
+			</materials>
+			
+			<texture id="texture"/>
+			
+			<children>
+				<componentref id="upperSlice">
+				<componentref id="lowerSlice">
+			</children>
+		
+		</component>
+		
+		<component id="upperSlice">
+			<tranformation>
+				<scale x="1" y="1" z="1">
+				<translate x="7.5" y="7.5" z="7.5">
+			</transformation>
+			
+			<materials>
+				<material id="default_mat">
+			</materials>
+			
+			<texture id="texture">
+			
+			<children>
+				<primitiveref id="cylinder">
+			</children>
+		</component>
+    
+		<component id="lowerSlice">
+			<tranformation>
+				<scale x="2" y="1" z="1">
+				<translate x="7.5" y="6.5" z="7.5">
+			</transformation>
+			
+			<materials>
+				<material id="default_mat">
+			</materials>
+			
+			<texture id="texture">
+			
+			<children>
+				<primitiveref id="cylinder">
+			</children>
+		</component>
+		
+	</components>
   
 
 </dsx>
