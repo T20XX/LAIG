@@ -3,6 +3,8 @@ function MySceneGraph(filename, scene) {
 	this.loadedOk = null;
 	
 	this.textures = [];
+	this.materials = [];
+	this.primitives = [];
 	
 	// Establish bidirectional references between scene and graph
 	this.scene = scene;
@@ -31,6 +33,8 @@ MySceneGraph.prototype.onXMLReady=function()
 	// Here should go the calls for different functions to parse the various blocks
 	var error = this.parseGlobalsExample(rootElement);
 	var error = this.parseTextures(rootElement);
+	var error = this.parsePrimitives(rootElement);
+
 
 	if (error != null) {
 		this.onXMLError(error);
@@ -89,30 +93,7 @@ MySceneGraph.prototype.parseGlobalsExample= function(rootElement) {
 };
 
 MySceneGraph.prototype.parseTextures= function(rootElement) {
-var elems =  rootElement.getElementsByTagName('textures');
-	/*if (elems == null) {
-		return "textures element is missing.";
-	}
-
-	if (elems.length != 1) {
-		return "either zero or more than one 'textures' element found.";
-	}
-
-	// various examples of different types of access
-	var textures = elems;
-	for (var i = 0; i < textures.length; i++) // For each texture
-		{
-			var id = this.reader.getString(textures[i], 'id');
-			var file = this.reader.getString(textures[i], 'file');
-			var s = this.reader.getFloat(textures[i], 'length_s');
-			var t = this.reader.getFloat(textures[i], 'length_t');
-			
-			this.textures[i] = new Texture(id, file, s, t);
-		
-		console.log("Textures read from file: {id=" + id + ", file=" + file + ", s=" + s + ", t=" + t + "}");
-
-		}*/
-		
+	
 	var tempList=rootElement.getElementsByTagName('textures');
 
 	if (tempList == null  || tempList.length==0) {
@@ -133,6 +114,84 @@ var elems =  rootElement.getElementsByTagName('textures');
 		// process each element and store its information
 		this.textures[e.id]=texture;
 		console.log("Read textures item id "+ e.id +" from file "+ file +" with length s: "+ s +" and length t: " + t);
+	};
+
+}
+
+MySceneGraph.prototype.parseMaterials= function(rootElement) {
+	
+	var tempList=rootElement.getElementsByTagName('textures');
+
+	if (tempList == null  || tempList.length==0) {
+		return "textures element is missing.";
+	}
+	
+	this.textures=[];
+	// iterate over every element
+	var nnodes=tempList[0].children.length;
+	for (var i=0; i< nnodes; i++)
+	{
+		var e=tempList[0].children[i];
+
+		console.log("Read primitive item id "+ e.id );
+	};
+
+}
+
+MySceneGraph.prototype.parsePrimitives= function(rootElement) {
+	
+	var tempList=rootElement.getElementsByTagName('primitives');
+
+	if (tempList == null  || tempList.length==0) {
+		return "textures element is missing.";
+	}
+	
+	this.primitives=[];
+	// iterate over every element
+	var nnodes=tempList[0].children.length;
+	for (var i=0; i< nnodes; i++)
+	{
+		var e = tempList[0].children[i];
+		var prim = e.children[0];
+		switch (prim.nodeName){
+			case "rectangle":
+				var x1 = prim.attributes.getNamedItem("x1").value;
+				var y1 = prim.attributes.getNamedItem("y1").value;
+				var x2 = prim.attributes.getNamedItem("x2").value;
+				var y2 = prim.attributes.getNamedItem("y2").value;
+				this.primitives[e.id] = new Rectangle(this.scene, x1, y1, x2, y2);
+				break;
+			case "triangle":
+				var x1 = prim.attributes.getNamedItem("x1").value;
+				var y1 = prim.attributes.getNamedItem("y1").value;
+				var z1 = prim.attributes.getNamedItem("z1").value;
+				var x2 = prim.attributes.getNamedItem("x2").value;
+				var y2 = prim.attributes.getNamedItem("y2").value;
+				var z2 = prim.attributes.getNamedItem("z2").value;
+				var x3 = prim.attributes.getNamedItem("x3").value;
+				var y3 = prim.attributes.getNamedItem("y3").value;
+				var z3 = prim.attributes.getNamedItem("z3").value;
+				this.primitives[e.id] = new Triangle(this.scene, x1, y1, z1, x2, y2, z2, x3, y3, z3);
+				break;
+			case "cylinder":
+				var base = prim.attributes.getNamedItem("base").value;
+				var top = prim.attributes.getNamedItem("top").value;
+				var height = prim.attributes.getNamedItem("height").value;
+				var slices = prim.attributes.getNamedItem("slices").value;
+				var stacks = prim.attributes.getNamedItem("stacks").value;
+				this.primitives[e.id] = new Cylinder(this.scene, slices, stacks);
+				break;
+			case "sphere":
+				var radius = prim.attributes.getNamedItem("radius").value;
+				var slices = prim.attributes.getNamedItem("slices").value;
+				var stacks = prim.attributes.getNamedItem("stacks").value;
+				this.primitives[e.id] = new Sphere(this.scene, slices, stacks);
+				break;
+				
+		}
+		
+		
+		console.log("Read primitives item id "+ e.id + prim.nodeName);
 	};
 
 }
