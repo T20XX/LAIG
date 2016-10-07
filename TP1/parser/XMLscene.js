@@ -19,6 +19,8 @@ XMLscene.prototype.init = function (application) {
     this.gl.enable(this.gl.DEPTH_TEST);
 	this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
+	
+	this.sphere = new Cylinder(this, 8, 1);
 
 	this.axis=new CGFaxis(this);
 };
@@ -70,6 +72,8 @@ XMLscene.prototype.display = function () {
 	this.setDefaultAppearance();
 	
 	// ---- END Background, camera and axis setup
+	
+	this.sphere.display();
 
 	// it is important that things depending on the proper loading of the graph
 	// only get executed after the graph has loaded correctly.
