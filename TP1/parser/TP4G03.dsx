@@ -7,9 +7,9 @@
 	
     <views default="default_view" >
     
-        <perspective id="default_perspective" near="ff" far="ff" angle="ff">
-            <from x="ff" y="ff" z="ff" />
-            <to x="ff" y="ff" z="ff" />
+        <perspective id="default_perspective" near="0.4" far="0.1" angle="500">
+            <from x="15" y="15" z="15" />
+            <to x="0" y="0" z="0" />
         </perspective>
         
     </views>
