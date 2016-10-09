@@ -47,7 +47,53 @@ MySceneGraph.prototype.onXMLReady=function()
 	this.scene.onGraphLoaded();
 };
 
+MySceneGraph.prototype.toRGBA(element){
+	
+	var tmpData = {
+		r : 0,
+		g : 0,
+		b : 0,
+		a : 1
+	}
+	tmpData.r = this.reader.getFloat(element, "r");
+	tmpData.g = this.reader.getFloat(element, "g");
+	tmpData.b = this.reader.getFloat(element, "b");
+	tmpData.a = this.reader.getFloat(element, "a");
 
+	return tmpData;
+}
+
+MySceneGraph.prototype.to4Vector(element){
+	
+	var point4v = {
+		x : 0,
+		y : 0,
+		z : 0,
+		w : 1.0
+	};
+		
+	point4v.x = this.reader.getFloat(element, "x");
+	point4v.y = this.reader.getFloat(element, "y");
+	point4v.z = this.reader.getFloat(element, "z");
+	point4v.w = this.reader.getFloat(element, "w");
+
+	return point;
+}
+
+MySceneGraph.prototype.to3Vector(element){
+	
+	var point3v = {
+		x : 0,
+		y : 0,
+		z : 0,
+	};
+		
+	point3v.x = this.reader.getFloat(element, "x");
+	point3v.y = this.reader.getFloat(element, "y");
+	point3v.z = this.reader.getFloat(element, "z");
+
+	return point;
+}
 
 /*
  * Example of method that parses elements of one block and stores information in a specific data structure
@@ -138,6 +184,82 @@ MySceneGraph.prototype.parseMaterials= function(rootElement) {
 
 }
 
+
+MySceneGraph.prototype.parseLights= function(rootElement) {
+	var tempList = rootElement.getElementsByTagName('lights');
+
+	if (tempList == null  || tempList.length==0) {
+		return "textures element is missing.";
+	}
+	
+	var lights = tempList[0];
+	
+	var nnodes=lights.children.length;
+	
+	for(var i=0; i<nnodes;i++){
+		var e = lights.children[i];
+		if(light.tagName == "omni"){
+			var id = this.reader.getString(omni, "id");
+			var enable = this.reader.getBoolean(omni, "enabled");
+			
+			var location = this.to4Vector(element.getElementsByTagName("location")[0]);
+			var ambient =  this.toRGBA(element.getElementsByTagName("ambient")[0]);
+			var diffuse = this.toRGBA(element.getElementsByTagName("diffuse")[0]);
+			var specular = this.toRGBA(element.getElementsByTagName("specular")[0]);
+	
+			
+		}
+		else if(light.tagName == "spot"){
+			var id = this.reader.getString(omni, "id");
+			var enable = this.reader.getBoolean(omni, "enabled");
+			var angle = this.reader.getFloat(element,"angle");
+			var exponent = this.reader.getFloat(element,"exponent");
+			
+			var location = this.to3Vector(element.getElementsByTagName("location")[0]);
+			var target = this.to3Vector(element.getElementsByTagName("target")[0]);
+			var ambient =  this.toRGBA(element.getElementsByTagName("ambient")[0]);
+			var diffuse = this.toRGBA(element.getElementsByTagName("diffuse")[0]);
+			var specular = this.toRGBA(element.getElementsByTagName("specular")[0]);
+		}
+	}
+}
+
+
+MySceneGraph.prototype.parseTransformations= function(rootElement) {
+	var tempList = rootElement.getElementsByTagName('transformations');
+
+	if (tempList == null  || tempList.length==0) {
+		return "textures element is missing.";
+	}
+	
+	var transformations = tempList[0];
+	
+	var nnodes=transformations.children.length;
+	
+	
+	for (var i=0; i< nnodes; i++)
+	{
+		var e = transformations.children[i].children;
+		for(var j = 0; j<e.length; j++)
+		{
+			var transf = e[j];
+			switch(transf.tagName){
+				case 'translate':
+				var translating = this.reader.to3Vector(transf);
+				break;
+				case 'rotate':
+				var rotate_axis = this.reader.getString(child,'axis');
+				var rotate_angle = this.reader.getFloat(child,'angle') * Math.PI/180;
+				break;
+				case 'scale':
+				var scaling = this.to3Vector(transf);
+				break;
+			}
+		}
+		
+	};
+}
+
 MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 	
 	var tempList=rootElement.getElementsByTagName('primitives');
@@ -195,8 +317,57 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 	};
 
 }
+
+MySceneGraph.prototype.parseComponents= function(rootElement) {
+	var tempList=rootElement.getElementsByTagName('components');
+
+	if (tempList == null  || tempList.length==0) {
+		return "textures components is missing.";
+	}
 	
-/*
+	this.components=[];
+	
+	var nnodes=tempList[0].children.length;
+	
+	for (var i=0; i< nnodes; i++){
+		var e = tempList[0].children[i];
+		var comp= e.children;
+		
+		for(var j=0;j< comp.length;j++){
+			
+			if(comp[j].tagName == "transformation"){
+			
+				var childTrans = comp[j].children;
+			
+				for(var k =0;k< childTrans.length; k++){
+					if(childTrans[k].tagName == "translate"){
+						
+					}
+					else if(childTrans[k].tagName == "rotate"){
+						
+					}
+					else if(childTrans[k].tagName == "scale"){
+						
+					}
+				}
+			}
+			
+			if(comp[j].tagName == "materials"){
+				
+			}
+			
+			if(comp[j].tagName == "texture"){
+				
+			}
+			
+			if(comp[j].tagName == "children"){
+				
+			}
+		}
+	}
+}
+	
+-
  * Callback to be executed on any read error
  */
  
