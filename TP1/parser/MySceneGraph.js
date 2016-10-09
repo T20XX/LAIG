@@ -245,7 +245,7 @@ MySceneGraph.prototype.parseTransformations= function(rootElement) {
 			var transf = e[j];
 			switch(transf.tagName){
 				case 'translate':
-				var translating = this.reader.to3Vector(transf);
+				var translating = this.to3Vector(transf);
 				break;
 				case 'rotate':
 				var rotate_axis = this.reader.getString(child,'axis');
