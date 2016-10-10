@@ -1,10 +1,12 @@
 /**
  * @constructor
  */
-function Material(file, s, t) {
-	this.file = file;
-	this.s = s;
-	this.t = t;
+function Material(emission, ambient, diffuse, specular, shininess) {
+	this.emission = emission;
+	this.ambient = ambient;
+	this.diffuse = diffuse;
+	this.specular = specular;
+	this.shininess = shininess;
 }
 
 Material.prototype.constructor = Material;
