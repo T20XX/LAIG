@@ -47,7 +47,7 @@ MySceneGraph.prototype.onXMLReady=function() {
 	
 	// As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
 	this.scene.onGraphLoaded();
-};
+}
 
 MySceneGraph.prototype.toRGBA = function(element){
 	
@@ -177,18 +177,18 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
 	
 	var nnodes=tempList[0].children.length;
 	
-	for (var i=0; i< nnodes; i++)
+	for (var i=0; i < nnodes; i++)
 	{
 		var e = tempList[0].children[i];
-		var emission = e.attributes.getNamedItem("emission").value;
-		var ambient = e.attributes.getNamedItem("ambient").value;
-		var diffuse = e.attributes.getNamedItem("diffuse").value;
-		var specular = e.atributes.getNamedItem("specular").value;
-		var shininess = e.atributes.getNamedItem("shininess").value;
+		var emission = this.toRGBA(e.getNamedItem("emission").value);
+		var ambient = this.toRGBA(e.getNamedItem("ambient").value);
+		var diffuse = this.toRGBA(e.getNamedItem("diffuse").value);
+		var specular = this.toRGBA(e.getNamedItem("specular").value);
+		var shininess = e.getNamedItem("shininess").value;
 		var material = new Material(emission, ambient, diffuse, specular, shininess);		
 		
-		materials[e.id] = material;
-		
+		//materials[e.id] = material;
+	}
 		console.log("Read material item id "+ e.id );
 }
 
@@ -213,7 +213,7 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
 			var ambient =  this.toRGBA(e.getElementsByTagName("ambient")[0]);
 			var diffuse = this.toRGBA(e.getElementsByTagName("diffuse")[0]);
 			var specular = this.toRGBA(e.getElementsByTagName("specular")[0]);	
-			omniLights[e.id] = omniLight();
+			//omniLights[e.id] = omniLight();
 		}
 		else if(e.tagName == "spot"){
 			var id = this.reader.getString(spot, "id");
@@ -227,7 +227,7 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
 			var diffuse = this.toRGBA(e.getElementsByTagName("diffuse")[0]);
 			var specular = this.toRGBA(e.getElementsByTagName("specular")[0]);
 			
-			spotLights[e.id] = spotLight();
+			//spotLights[e.id] = spotLight();
 		}
 		console.log("Read LIGHT item id "+ e.id );
 	}
@@ -380,6 +380,4 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
 MySceneGraph.prototype.onXMLError = function (message) {
 	console.error("XML Loading Error: "+message);	
 	this.loadedOk=false;
-};
-
-
+}
