@@ -5,6 +5,9 @@ function MySceneGraph(filename, scene) {
 	this.textures = [];
 	this.materials = [];
 	this.primitives = [];
+	this.components = [];
+	this.omniLights = [];
+	this.spotLights = [];
 	
 	// Establish bidirectional references between scene and graph
 	this.scene = scene;
@@ -164,22 +167,29 @@ MySceneGraph.prototype.parseTextures = function(rootElement) {
 
 MySceneGraph.prototype.parseMaterials = function(rootElement) {
 	
-	var tempList=rootElement.getElementsByTagName('textures');
+	var tempList=rootElement.getElementsByTagName('materials');
 
-	if (tempList == null  || tempList.length==0) {
-		return "textures element is missing.";
+	if (tempList == null  || tempList.length!=1) {
+		return "materials element is missing or is more than one";
 	}
 	
-	this.textures=[];
-	// iterate over every element
+	// iterate over every element	
+	
 	var nnodes=tempList[0].children.length;
+	
 	for (var i=0; i< nnodes; i++)
 	{
-		var e=tempList[0].children[i];
-
-		console.log("Read primitive item id "+ e.id );
-	}
-
+		var e = tempList[0].children[i];
+		var emission = e.attributes.getNamedItem("emission").value;
+		var ambient = e.attributes.getNamedItem("ambient").value;
+		var diffuse = e.attributes.getNamedItem("diffuse").value;
+		var specular = e.atributes.getNamedItem("specular").value;
+		var shininess = e.atributes.getNamedItem("shininess").value;
+		var material = new Material(emission, ambient, diffuse, specular, shininess);		
+		
+		materials[e.id] = material;
+		
+		console.log("Read material item id "+ e.id );
 }
 
 
@@ -196,29 +206,30 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
 	
 	for(var i=0; i<nnodes;i++){
 		var e = lights.children[i];
-		if(light.tagName == "omni"){
+		if(e.tagName == "omni"){
 			var id = this.reader.getString(omni, "id");
 			var enable = this.reader.getBoolean(omni, "enabled");
-			
-			var location = this.to4Vector(element.getElementsByTagName("location")[0]);
-			var ambient =  this.toRGBA(element.getElementsByTagName("ambient")[0]);
-			var diffuse = this.toRGBA(element.getElementsByTagName("diffuse")[0]);
-			var specular = this.toRGBA(element.getElementsByTagName("specular")[0]);
-	
-			
+			var location = this.to4Vector(e.getElementsByTagName("location")[0]);
+			var ambient =  this.toRGBA(e.getElementsByTagName("ambient")[0]);
+			var diffuse = this.toRGBA(e.getElementsByTagName("diffuse")[0]);
+			var specular = this.toRGBA(e.getElementsByTagName("specular")[0]);	
+			omniLights[e.id] = omniLight();
 		}
-		else if(light.tagName == "spot"){
-			var id = this.reader.getString(omni, "id");
-			var enable = this.reader.getBoolean(omni, "enabled");
-			var angle = this.reader.getFloat(element,"angle");
-			var exponent = this.reader.getFloat(element,"exponent");
+		else if(e.tagName == "spot"){
+			var id = this.reader.getString(spot, "id");
+			var enable = this.reader.getBoolean(spot, "enabled");
+			var angle = this.reader.getFloat(spot,"angle");
+			var exponent = this.reader.getFloat(spot,"exponent");
 			
-			var location = this.to3Vector(element.getElementsByTagName("location")[0]);
-			var target = this.to3Vector(element.getElementsByTagName("target")[0]);
-			var ambient =  this.toRGBA(element.getElementsByTagName("ambient")[0]);
-			var diffuse = this.toRGBA(element.getElementsByTagName("diffuse")[0]);
-			var specular = this.toRGBA(element.getElementsByTagName("specular")[0]);
+			var location = this.to3Vector(e.getElementsByTagName("location")[0]);
+			var target = this.to3Vector(e.getElementsByTagName("target")[0]);
+			var ambient =  this.toRGBA(e.getElementsByTagName("ambient")[0]);
+			var diffuse = this.toRGBA(e.getElementsByTagName("diffuse")[0]);
+			var specular = this.toRGBA(e.getElementsByTagName("specular")[0]);
+			
+			spotLights[e.id] = spotLight();
 		}
+		console.log("Read LIGHT item id "+ e.id );
 	}
 }
 
@@ -254,7 +265,6 @@ MySceneGraph.prototype.parseTransformations = function(rootElement) {
 				break;
 			}
 		}
-		
 	}
 }
 
@@ -322,8 +332,6 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
 	if (tempList == null  || tempList.length==0) {
 		return "textures components is missing.";
 	}
-	
-	this.components=[];
 	
 	var nnodes=tempList[0].children.length;
 	
