@@ -36,7 +36,9 @@ MySceneGraph.prototype.onXMLReady=function() {
 	var error = this.parseGlobalsExample(rootElement);
 	var error = this.parseTextures(rootElement);
 	var error = this.parsePrimitives(rootElement);
-
+	var error = this.parseMaterials(rootElement);
+	var error = this.parseLights(rootElement);
+	
 
 	if (error != null) {
 		this.onXMLError(error);
@@ -57,11 +59,11 @@ MySceneGraph.prototype.toRGBA = function(element){
 		b : 0,
 		a : 1
 	};
-	tmpData.r = this.reader.getFloat(element, "r");
-	tmpData.g = this.reader.getFloat(element, "g");
-	tmpData.b = this.reader.getFloat(element, "b");
-	tmpData.a = this.reader.getFloat(element, "a");
-
+	tmpData.r = this.reader.getFloat(element, 'r');
+	tmpData.g = this.reader.getFloat(element, 'g');
+	tmpData.b = this.reader.getFloat(element, 'b');
+	tmpData.a = this.reader.getFloat(element, 'a');
+	console.log(tmpData.r + " " + tmpData.g + " " + tmpData.b + " " + tmpData.a)
 	return tmpData;
 }
 
@@ -79,7 +81,7 @@ MySceneGraph.prototype.to4Vector = function(element){
 	point4v.z = this.reader.getFloat(element, "z");
 	point4v.w = this.reader.getFloat(element, "w");
 
-	return point;
+	return point4v;
 }
 
 MySceneGraph.prototype.to3Vector = function(element){
@@ -94,7 +96,7 @@ MySceneGraph.prototype.to3Vector = function(element){
 	point3v.y = this.reader.getFloat(element, "y");
 	point3v.z = this.reader.getFloat(element, "z");
 
-	return point;
+	return point3v;
 }
 
 /*
@@ -169,7 +171,7 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
 	
 	var tempList=rootElement.getElementsByTagName('materials');
 
-	if (tempList == null  || tempList.length!=1) {
+	if (tempList == null  || tempList.length == 0) {
 		return "materials element is missing or is more than one";
 	}
 	
@@ -180,11 +182,11 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
 	for (var i=0; i < nnodes; i++)
 	{
 		var e = tempList[0].children[i];
-		var emission = this.toRGBA(e.getNamedItem("emission").value);
-		var ambient = this.toRGBA(e.getNamedItem("ambient").value);
-		var diffuse = this.toRGBA(e.getNamedItem("diffuse").value);
-		var specular = this.toRGBA(e.getNamedItem("specular").value);
-		var shininess = e.getNamedItem("shininess").value;
+		var emission = this.toRGBA(e.getElementsByTagName("emission")[0]);
+		var ambient = this.toRGBA(e.getElementsByTagName("ambient")[0]);
+		var diffuse = this.toRGBA(e.getElementsByTagName("diffuse")[0]);
+		var specular = this.toRGBA(e.getElementsByTagName("specular")[0]);
+		var shininess = this.reader.getFloat(e.getElementsByTagName("shininess")[0], 'value');
 		var material = new Material(emission, ambient, diffuse, specular, shininess);		
 		
 		//materials[e.id] = material;
@@ -207,8 +209,8 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
 	for(var i=0; i<nnodes;i++){
 		var e = lights.children[i];
 		if(e.tagName == "omni"){
-			var id = this.reader.getString(omni, "id");
-			var enable = this.reader.getBoolean(omni, "enabled");
+			var id = this.reader.getString(e, "id");
+			var enable = this.reader.getBoolean(e, "enabled");
 			var location = this.to4Vector(e.getElementsByTagName("location")[0]);
 			var ambient =  this.toRGBA(e.getElementsByTagName("ambient")[0]);
 			var diffuse = this.toRGBA(e.getElementsByTagName("diffuse")[0]);
@@ -216,10 +218,10 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
 			//omniLights[e.id] = omniLight();
 		}
 		else if(e.tagName == "spot"){
-			var id = this.reader.getString(spot, "id");
-			var enable = this.reader.getBoolean(spot, "enabled");
-			var angle = this.reader.getFloat(spot,"angle");
-			var exponent = this.reader.getFloat(spot,"exponent");
+			var id = this.reader.getString(e, "id");
+			var enable = this.reader.getBoolean(e, "enabled");
+			var angle = this.reader.getFloat(e,"angle");
+			var exponent = this.reader.getFloat(e,"exponent");
 			
 			var location = this.to3Vector(e.getElementsByTagName("location")[0]);
 			var target = this.to3Vector(e.getElementsByTagName("target")[0]);

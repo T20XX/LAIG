@@ -102,9 +102,9 @@ XMLscene.prototype.processGraph = function(nodeName){
 		for (i= 0; i < node.Children.length; i++){
 			this.pushMatrix();
 			this.applyMaterial(material);
-			this.processGraph(node.Children[i]);
-			this.popMatrix();
-		}
+				this.processGraph(node.Children[i]);
+				this.popMatrix();
+			}
 		}
 }
 
