@@ -25,8 +25,7 @@ function MySceneGraph(filename, scene) {
 /*
  * Callback to be executed after successful reading
  */
-MySceneGraph.prototype.onXMLReady=function() 
-{
+MySceneGraph.prototype.onXMLReady=function() {
 	console.log("XML Loading finished.");
 	var rootElement = this.reader.xmlDoc.documentElement;
 	
@@ -47,14 +46,14 @@ MySceneGraph.prototype.onXMLReady=function()
 	this.scene.onGraphLoaded();
 };
 
-MySceneGraph.prototype.toRGBA(element){
+MySceneGraph.prototype.toRGBA = function(element){
 	
 	var tmpData = {
 		r : 0,
 		g : 0,
 		b : 0,
 		a : 1
-	}
+	};
 	tmpData.r = this.reader.getFloat(element, "r");
 	tmpData.g = this.reader.getFloat(element, "g");
 	tmpData.b = this.reader.getFloat(element, "b");
@@ -63,7 +62,7 @@ MySceneGraph.prototype.toRGBA(element){
 	return tmpData;
 }
 
-MySceneGraph.prototype.to4Vector(element){
+MySceneGraph.prototype.to4Vector = function(element){
 	
 	var point4v = {
 		x : 0,
@@ -80,7 +79,7 @@ MySceneGraph.prototype.to4Vector(element){
 	return point;
 }
 
-MySceneGraph.prototype.to3Vector(element){
+MySceneGraph.prototype.to3Vector = function(element){
 	
 	var point3v = {
 		x : 0,
@@ -98,7 +97,7 @@ MySceneGraph.prototype.to3Vector(element){
 /*
  * Example of method that parses elements of one block and stores information in a specific data structure
  */
-MySceneGraph.prototype.parseGlobalsExample= function(rootElement) {
+MySceneGraph.prototype.parseGlobalsExample = function(rootElement) {
 	
 	var elems =  rootElement.getElementsByTagName('globals');
 	if (elems == null) {
@@ -134,11 +133,10 @@ MySceneGraph.prototype.parseGlobalsExample= function(rootElement) {
 		// process each element and store its information
 		this.list[e.id]=e.attributes.getNamedItem("coords").value;
 		console.log("Read list item id "+ e.id+" with value "+this.list[e.id]);
-	};
-
+	}
 };
 
-MySceneGraph.prototype.parseTextures= function(rootElement) {
+MySceneGraph.prototype.parseTextures = function(rootElement) {
 	
 	var tempList=rootElement.getElementsByTagName('textures');
 
@@ -160,11 +158,11 @@ MySceneGraph.prototype.parseTextures= function(rootElement) {
 		// process each element and store its information
 		this.textures[e.id]=texture;
 		console.log("Read textures item id "+ e.id +" from file "+ file +" with length s: "+ s +" and length t: " + t);
-	};
+	}
 
 }
 
-MySceneGraph.prototype.parseMaterials= function(rootElement) {
+MySceneGraph.prototype.parseMaterials = function(rootElement) {
 	
 	var tempList=rootElement.getElementsByTagName('textures');
 
@@ -180,12 +178,12 @@ MySceneGraph.prototype.parseMaterials= function(rootElement) {
 		var e=tempList[0].children[i];
 
 		console.log("Read primitive item id "+ e.id );
-	};
+	}
 
 }
 
 
-MySceneGraph.prototype.parseLights= function(rootElement) {
+MySceneGraph.prototype.parseLights = function(rootElement) {
 	var tempList = rootElement.getElementsByTagName('lights');
 
 	if (tempList == null  || tempList.length==0) {
@@ -225,7 +223,7 @@ MySceneGraph.prototype.parseLights= function(rootElement) {
 }
 
 
-MySceneGraph.prototype.parseTransformations= function(rootElement) {
+MySceneGraph.prototype.parseTransformations = function(rootElement) {
 	var tempList = rootElement.getElementsByTagName('transformations');
 
 	if (tempList == null  || tempList.length==0) {
@@ -257,10 +255,10 @@ MySceneGraph.prototype.parseTransformations= function(rootElement) {
 			}
 		}
 		
-	};
+	}
 }
 
-MySceneGraph.prototype.parsePrimitives= function(rootElement) {
+MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 	
 	var tempList=rootElement.getElementsByTagName('primitives');
 
@@ -318,7 +316,7 @@ MySceneGraph.prototype.parsePrimitives= function(rootElement) {
 
 }
 
-MySceneGraph.prototype.parseComponents= function(rootElement) {
+MySceneGraph.prototype.parseComponents = function(rootElement) {
 	var tempList=rootElement.getElementsByTagName('components');
 
 	if (tempList == null  || tempList.length==0) {
@@ -367,11 +365,11 @@ MySceneGraph.prototype.parseComponents= function(rootElement) {
 	}
 }
 	
--
+/*
  * Callback to be executed on any read error
  */
  
-MySceneGraph.prototype.onXMLError=function (message) {
+MySceneGraph.prototype.onXMLError = function (message) {
 	console.error("XML Loading Error: "+message);	
 	this.loadedOk=false;
 };
