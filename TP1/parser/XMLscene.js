@@ -45,7 +45,8 @@ XMLscene.prototype.setDefaultAppearance = function () {
 // As loading is asynchronous, this may be called already after the application has started the run loop
 XMLscene.prototype.onGraphLoaded = function () 
 {
-	this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);
+	//this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);
+	this.gl.clearColor(0.7,0,1,1);
 	this.lights[0].setVisible(true);
     this.lights[0].enable();
 };
@@ -70,7 +71,10 @@ XMLscene.prototype.display = function () {
 	this.setDefaultAppearance();
 	
 	// ---- END Background, camera and axis setup
+	
+	this.graph.primitives["triangle"].display();
 
+	
 	// it is important that things depending on the proper loading of the graph
 	// only get executed after the graph has loaded correctly.
 	// This is one possible way to do it
@@ -79,4 +83,28 @@ XMLscene.prototype.display = function () {
 		this.lights[0].update();
 	};	
 };
+
+XMLscene.prototype.processGraph = function(nodeName){
+	var material = null;
+
+	if (nodeName != null){
+		var node = this.graph[nodeName];
+		if(node.material != null){
+			material = node.material;
+		}
+		if (material != null){
+		this.applyMaterial(material);
+		}
+		this.mulMatrix(node.m);
+		if (node.primitive != null){
+			//DESENHA PRIMITIVA
+		}
+		for (i= 0; i < node.Children.length; i++){
+			this.pushMatrix();
+			this.applyMaterial(material);
+				this.processGraph(node.Children[i]);
+				this.popMatrix();
+			}
+		}
+}
 
