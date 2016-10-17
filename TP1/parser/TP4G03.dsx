@@ -49,7 +49,8 @@
 	 <textures>
 		<texture id="stairsWoodText" file="./scenes/textures/stairsWood.jpg" length_s="1" length_t="1" />
 		<texture id="tableWoodText" file="./scenes/textures/stairsWood.jpg" length_s="1" length_t="1" />
-		<texture id="cakeText" file="./scenes/textures/stairsWood.jpg" length_s="1" length_t="1" />
+		<texture id="cakeText" file="./scenes/textures/cake.jpg" length_s="1" length_t="1" />
+		<texture id="sofaText" file="./scenes/textures/sofa.jpg" length_s="1" length_t="1" />
 		<texture id="wallWindowText" file="./scenes/textures/wallWindow.jpg" length_s="0.5" length_t="1" />
 		<texture id="stripesText" file="./scenes/textures/stripes.png" length_s="0.25" length_t="1" />
     </textures>
@@ -121,7 +122,7 @@
 				<componentref id="backWall" />
 				<componentref id="rightWall" />
 				<componentref id="frontWall" />
-                <componentref id="chair" />
+                <componentref id="chairs" />
             </children>
         </component>
 		
@@ -334,9 +335,9 @@
 			</children>
 		</component>
 
-      <!--  <component id="chairs">
+        <component id="chairs">
             <transformation>
-				<translate x="0" y="0" z="0" />
+				<translate x="3" y="0" z="3.75" />
 			</transformation>
 
             <materials>
@@ -351,10 +352,11 @@
 				<componentref id="chair3"/>
 				<componentref id="chair4"/>
 	          </children>
-        </component> -->
+        </component>
+
       <component id="chair">
             <transformation>
-				<translate x="3" y="3" z="3" />
+				<translate x="0" y="0" z="0" />
 			</transformation>
 
             <materials>
@@ -373,6 +375,77 @@
 	         </children>
             
        </component>
+
+       <component id="chair1">
+            <transformation>
+				<translate x="0" y="0" z="0" />
+			</transformation>
+
+            <materials>
+                <material id="default_mat" />
+            </materials>
+                         
+            <texture id="stairsWoodText" />
+            
+            <children>
+                <componentref id="chair" />
+	         </children>
+            
+       </component>
+
+       <component id="chair2">
+            <transformation>
+				<translate x="2" y="0" z="0" />
+			</transformation>
+
+            <materials>
+                <material id="default_mat" />
+            </materials>
+                         
+            <texture id="stairsWoodText" />
+            
+            <children>
+                <componentref id="chair" />
+	         </children>
+            
+       </component>
+
+       <component id="chair3">
+            <transformation>
+				<translate x="0" y="0" z="2" />
+				<scale x="1" y="1" z="-1" />
+			</transformation>
+
+            <materials>
+                <material id="default_mat" />
+            </materials>
+                         
+            <texture id="stairsWoodText" />
+            
+            <children>
+                <componentref id="chair" />
+	         </children>
+            
+       </component>
+
+        <component id="chair4">
+            <transformation>
+				<translate x="2" y="0" z="2" />
+				<scale x="1" y="1" z="-1" />
+			</transformation>
+
+            <materials>
+                <material id="default_mat" />
+            </materials>
+                         
+            <texture id="stairsWoodText" />
+            
+            <children>
+                <componentref id="chair" />
+	         </children>
+            
+       </component>
+
 
 		 <component id="triangle3D">
             <transformation>
@@ -448,7 +521,7 @@
                 <material id="default_mat" />
             </materials>
                          
-            <texture id="stairsWoodText" />
+            <texture id="sofaText" />
             
             <children>
                 <componentref id="sofaBase" />
@@ -713,7 +786,7 @@
 		<component id="chairLeg1">
 			<transformation>
 				<translate x="0" y="0" z="0" />
-				<scale x="0.025" y="0.25" z="0.025"/>
+				<scale x="0.1" y="1.5" z="0.1"/>
 			</transformation>
 			<materials>
 				<material id="inherit" />
@@ -726,8 +799,8 @@
 
 		<component id="chairLeg2">
 			<transformation>
-				<translate x="0.2" y="0" z="0" />
-				<scale x="0.025" y="0.25" z="0.025"/>
+				<translate x="0.5" y="0" z="0" />
+				<scale x="0.1" y="1.5" z="0.1"/>
 			</transformation>
 			<materials>
 				<material id="inherit" />
@@ -740,8 +813,8 @@
 
 		<component id="chairLeg3">
 			<transformation>
-				<translate x="0.2" y="0" z="0.2" />
-				<scale x="0.025" y="0.125" z="0.025"/>
+				<translate x="0.5" y="0" z="0.5" />
+				<scale x="0.1" y="0.5" z="0.1"/>
 			</transformation>
 			<materials>
 				<material id="inherit" />
@@ -754,8 +827,8 @@
 
 		<component id="chairLeg4">
 			<transformation>
-				<translate x="0" y="0" z="0.2" />
-				<scale x="0.025" y="0.125" z="0.025"/>
+				<translate x="0" y="0" z="0.5" />
+				<scale x="0.1" y="0.5" z="0.1"/>
 			</transformation>
 			<materials>
 				<material id="inherit" />
@@ -768,8 +841,8 @@
 
 		<component id="chairSeat">
 			<transformation>
-				<translate x="0" y="0.125" z="0" />
-				<scale x="0.225" y="0.025" z="0.225"/>
+				<translate x="0" y="0.5" z="0" />
+				<scale x="0.6" y="0.1" z="0.6"/>
 			</transformation>
 			<materials>
 				<material id="inherit" />
@@ -782,8 +855,8 @@
 
 		<component id="chairBack">
 			<transformation>
-				<translate x="0" y="0.2" z="0" />
-				<scale x="0.225" y="0.05" z="0.0125" />
+				<translate x="0" y="1" z="0.1" />
+				<scale x="0.6" y="0.5" z="0.1" />
 				<rotate axis="x" angle="-90" />
 			</transformation>
 			<materials>
