@@ -204,6 +204,38 @@ MySceneGraph.prototype.parseIllumination = function(rootElement) {
 	console.log("Illumination read from file: {doublesided=" + doublesided + ", local=" + local + "}");
 }
 
+MySceneGraph.prototype.parseLights = function(rootElement) {
+	var elems = rootElement.getElementsByTagName('lights');
+
+	if (elems == null  || elems.length==0) {
+		return "textures element is missing.";
+	}
+	
+	var lights = elems[0];
+	
+	var nnodes=lights.children.length;
+	
+	for(var i=0; i<nnodes;i++){
+		var e = lights.children[i];
+			var id = this.reader.getString(e, 'id');
+			var enabled = this.reader.getBoolean(e, 'enabled');
+			var ambient =  this.toRGBA(e.getElementsByTagName('ambient')[0]);
+			var diffuse = this.toRGBA(e.getElementsByTagName('diffuse')[0]);
+			var specular = this.toRGBA(e.getElementsByTagName('specular')[0]);	
+		if(e.tagName == "spot"){
+			var location = this.to3Vector(e.getElementsByTagName('location')[0]);
+			var target = this.to3Vector(e.getElementsByTagName('target')[0]);	
+			var angle = this.reader.getFloat(e,'angle');
+			var exponent = this.reader.getFloat(e,'exponent');
+			this.lights[id] = new Light(false,enabled, location, ambient, diffuse, specular, target, angle, exponent);
+		} else {
+			var location = this.to4Vector(e.getElementsByTagName('location')[0]);
+			this.lights[id] = new Light(true,enabled, location, ambient, diffuse, specular);
+		}
+		console.log("Light read from file: {id=" + id + ", enabled=" + enabled + ", location=" + location + ", ambient=" + ambient + ", diffuse=" + diffuse + ", specular=" + specular + ", angle=" + angle + ", exponent=" + exponent + "}");
+	}
+}
+
 MySceneGraph.prototype.parseTextures = function(rootElement) {
 	
 	var tempList=rootElement.getElementsByTagName('textures');
@@ -232,19 +264,19 @@ MySceneGraph.prototype.parseTextures = function(rootElement) {
 
 MySceneGraph.prototype.parseMaterials = function(rootElement) {
 	
-	var tempList=rootElement.getElementsByTagName('materials');
+	var elems=rootElement.getElementsByTagName('materials');
 
-	if (tempList == null  || tempList.length == 0) {
+	if (elems == null  || elems.length == 0) {
 		return "materials element is missing or is more than one";
 	}
 	
 	// iterate over every element	
 	
-	var nnodes=tempList[0].children.length;
+	var nnodes=elems[0].children.length;
 	
 	for (var i=0; i < nnodes; i++)
 	{
-		var e = tempList[0].children[i];
+		var e = elems[0].children[i];
 		var emission = this.toRGBA(e.getElementsByTagName("emission")[0]);
 		var ambient = this.toRGBA(e.getElementsByTagName("ambient")[0]);
 		var diffuse = this.toRGBA(e.getElementsByTagName("diffuse")[0]);
@@ -255,47 +287,6 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
 		//materials[e.id] = material;
 	}
 		console.log("Read material item id "+ e.id );
-}
-
-
-MySceneGraph.prototype.parseLights = function(rootElement) {
-	var tempList = rootElement.getElementsByTagName('lights');
-
-	if (tempList == null  || tempList.length==0) {
-		return "textures element is missing.";
-	}
-	
-	var lights = tempList[0];
-	
-	var nnodes=lights.children.length;
-	
-	for(var i=0; i<nnodes;i++){
-		var e = lights.children[i];
-		if(e.tagName == "omni"){
-			var id = this.reader.getString(e, "id");
-			var enable = this.reader.getBoolean(e, "enabled");
-			var location = this.to4Vector(e.getElementsByTagName("location")[0]);
-			var ambient =  this.toRGBA(e.getElementsByTagName("ambient")[0]);
-			var diffuse = this.toRGBA(e.getElementsByTagName("diffuse")[0]);
-			var specular = this.toRGBA(e.getElementsByTagName("specular")[0]);	
-			//omniLights[e.id] = omniLight();
-		}
-		else if(e.tagName == "spot"){
-			var id = this.reader.getString(e, "id");
-			var enable = this.reader.getBoolean(e, "enabled");
-			var angle = this.reader.getFloat(e,"angle");
-			var exponent = this.reader.getFloat(e,"exponent");
-			
-			var location = this.to3Vector(e.getElementsByTagName("location")[0]);
-			var target = this.to3Vector(e.getElementsByTagName("target")[0]);
-			var ambient =  this.toRGBA(e.getElementsByTagName("ambient")[0]);
-			var diffuse = this.toRGBA(e.getElementsByTagName("diffuse")[0]);
-			var specular = this.toRGBA(e.getElementsByTagName("specular")[0]);
-			
-			//spotLights[e.id] = spotLight();
-		}
-		console.log("Read LIGHT item id "+ e.id );
-	}
 }
 
 
