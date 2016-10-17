@@ -21,6 +21,8 @@ XMLscene.prototype.init = function (application) {
     this.gl.depthFunc(this.gl.LEQUAL);
 
 	this.axis=new CGFaxis(this);
+	
+	this.curCameraIdx = 0;
 };
 
 XMLscene.prototype.initLights = function () {
@@ -49,6 +51,46 @@ XMLscene.prototype.onGraphLoaded = function ()
 	this.gl.clearColor(0.7,0,1,1);
 	this.lights[0].setVisible(true);
     this.lights[0].enable();
+	
+	//this.axis=new CGFaxis(this, this.graph.axisLength);
+	var background = this.graph.illumination.getBackground();
+	var ambient = this.graph.illumination.getAmbient();
+	this.gl.clearColor(background.r,background.g,background.b,background.a);
+	this.setGlobalAmbientLight(ambient.r, ambient.g, ambient.b, ambient.a);
+	
+	//Initialize the cameras in function of the views element
+	this.cameras = [];
+	var views = this.graph.views;
+	var defaultView = this.graph.defaultView;
+
+	var i = 0;
+	var defaultIdx;
+
+	for(id in views)
+	{
+		var tempView = views[id];
+
+		var angle = tempView.getAngle();
+		var near = tempView.getNear();
+		var far = tempView.getFar();
+		
+		var fromVec = tempView.getFromVec();
+		var toVec = tempView.getToVec();
+
+		var cam = new CGFcamera(angle, near, far, vec3.fromValues(fromVec.x, fromVec.y, fromVec.z), vec3.fromValues(toVec.x, toVec.y, toVec.z));
+		this.cameras.push(cam);
+
+		if(defaultView == id)
+		{
+			defaultIdx = i;
+		}
+
+		i++;
+	}
+
+	this.curCameraIdx = defaultIdx;
+	this.camera = this.cameras[defaultIdx];
+	this.interface.setActiveCamera(this.camera);
 };
 
 XMLscene.prototype.display = function () {

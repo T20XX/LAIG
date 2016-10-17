@@ -23,6 +23,10 @@ View.prototype.getAngle = function(){
 	return this.angle;
 }
 
+View.prototype.getFromVec = function(){
+	return this.fromVec;
+}
+
 View.prototype.getToVec = function(){
 	return this.toVec;
 }

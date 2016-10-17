@@ -39,6 +39,7 @@ MySceneGraph.prototype.onXMLReady=function() {
 	
 	// Here should go the calls for different functions to parse the various blocks
 	//var error = this.parseGlobalsExample(rootElement);
+	var error = this.parseViews(rootElement);
 	var error = this.parseIllumination(rootElement);
 	var error = this.parseTextures(rootElement);
 	var error = this.parsePrimitives(rootElement);
@@ -146,6 +147,38 @@ MySceneGraph.prototype.parseGlobalsExample = function(rootElement) {
 		console.log("Read list item id "+ e.id+" with value "+this.list[e.id]);
 	}
 };
+MySceneGraph.prototype.parseViews = function(rootElement) {
+	
+	var elems=rootElement.getElementsByTagName('views');
+
+	if (elems == null  || elems.length == 0) {
+		return "materials element is missing or is more than one";
+	}
+	
+	var views = elems[0];
+	this.defaultView = this.reader.getString(views, 'default');
+	
+	console.log("Default view: "+ this.defaultView);
+	
+	// iterate over every element	
+	var nnodes=elems[0].children.length;
+	
+	for (var i=0; i < nnodes; i++)
+	{
+		var e = elems[0].children[i];
+		var id = this.reader.getString(e, 'id');
+		var near = this.reader.getFloat(e, 'near');
+		var far = this.reader.getFloat(e, 'far');
+		var angle = this.reader.getFloat(e, 'angle');
+		var fromVector = this.to3Vector(e.getElementsByTagName('from')[0]);
+		var toVector = this.to3Vector(e.getElementsByTagName('to')[0]);
+		
+		this.views[id] = new View(near, far, angle, fromVector, toVector);
+		
+		console.log("View read from file: {id=" + id + ", near=" + near + ", far=" + far + ", angle=" + angle + "}");
+	}
+
+}
 
 MySceneGraph.prototype.parseIllumination = function(rootElement) {
 	

@@ -14,6 +14,7 @@ function getUrlVars() {
 serialInclude(['../lib/CGF.js',
 				'XMLscene.js',
 				'MySceneGraph.js',
+				'Interface.js',
 				'./graphData/Illumination.js',
 				'./graphData/View.js',
 				'./graphData/Light.js',
@@ -32,7 +33,7 @@ main=function()
 	// Standard application, scene and interface setup
     var app = new CGFapplication(document.body);
     var myScene = new XMLscene();
-    var myInterface = new CGFinterface();
+    var myInterface = new Interface();
 
     app.init();
 
