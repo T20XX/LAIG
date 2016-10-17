@@ -42,9 +42,11 @@ MySceneGraph.prototype.onXMLReady=function() {
 	var error = this.parseViews(rootElement);
 	var error = this.parseIllumination(rootElement);
 	var error = this.parseTextures(rootElement);
-	var error = this.parsePrimitives(rootElement);
 	var error = this.parseMaterials(rootElement);
 	var error = this.parseLights(rootElement);
+	var error = this.parseTransformations(rootElement);
+	var error = this.parsePrimitives(rootElement);
+	var error = this.parseComponents(rootElement);
 	
 
 	if (error != null) {
@@ -310,26 +312,33 @@ MySceneGraph.prototype.parseTransformations = function(rootElement) {
 	
 	var nnodes=transformations.children.length;
 	
-	
-	for (var i=0; i< nnodes; i++)
+	for (var i=0; i < nnodes; i++)
 	{
-		var e = transformations.children[i].children;
-		for(var j = 0; j<e.length; j++)
+		var e = transformations.children[i]; 
+		this.transformations[e.id] = new Transformation();
+		for(var j = 0; j<e.children.length; j++)
 		{
-			var transf = e[j];
+			var transf = e.children[j];
 			switch(transf.tagName){
 				case 'translate':
 				var translating = this.to3Vector(transf);
+				this.transformations[e.id].applyTranslation(translating);
+				console.log("Read translate item id "+ e.id +"x: " + translating.x+ "y: " + translating.y+"z: " + translating.z);
 				break;
 				case 'rotate':
-				var rotate_axis = this.reader.getString(child,'axis');
-				var rotate_angle = this.reader.getFloat(child,'angle') * Math.PI/180;
+				var rotate_axis = this.reader.getString(transf,'axis');
+				var rotate_angle = this.reader.getFloat(transf,'angle') * Math.PI/180;
+				this.transformations[e.id].applyRotation(rotate_axis, rotate_angle);
+				console.log("Read rotation item id "+ e.id +"axis: " + rotate_axis+ "angle: " + rotate_angle);
 				break;
 				case 'scale':
 				var scaling = this.to3Vector(transf);
+				this.transformations[e.id].applyScaling(scaling);
+				console.log("Read scale item id "+ e.id + "x: " + scaling.x + "y: " + scaling.y+"z: " + scaling.z);
 				break;
 			}
 		}
+		console.log(e.id + "ASDSDSDSADSADSA");
 	}
 }
 
@@ -395,10 +404,10 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
 	var tempList=rootElement.getElementsByTagName('components');
 
 	if (tempList == null  || tempList.length==0) {
-		return "textures components is missing.";
+		return "components missing.";
 	}
 	
-	var nnodes=tempList[0].children.length;
+	var nnodes=tempList[0].children[0].length;
 	
 	for (var i=0; i< nnodes; i++){
 		var e = tempList[0].children[i];
@@ -409,17 +418,26 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
 			if(comp[j].tagName == "transformation"){
 			
 				var childTrans = comp[j].children;
-			
-				for(var k =0;k< childTrans.length; k++){
-					if(childTrans[k].tagName == "translate"){
-						
-					}
-					else if(childTrans[k].tagName == "rotate"){
-						
-					}
-					else if(childTrans[k].tagName == "scale"){
-						
-					}
+				for(var k =0;k< childTrans.children.length; k++){
+					switch(childTrans.children[k].tagName){
+				case 'translate':
+				var translating = this.to3Vector(transf);
+				this.transformations[e.id].applyTranslation(translating);
+				console.log("Read translate item id "+ e.id +"x: " + translating.x+ "y: " + translating.y+"z: " + translating.z);
+				break;
+				case 'rotate':
+				var rotate_axis = this.reader.getString(child,'axis');
+				var rotate_angle = this.reader.getFloat(child,'angle') * Math.PI/180;
+				this.transformations[e.id].applyRotation(rotate_axis, rotate_angle);
+				console.log("Read rotation item id "+ e.id +"axis: " + rotate_axis+ "angle: " + rotate_angle);
+				break;
+				case 'scale':
+				var scaling = this.to3Vector(transf);
+				this.transformations[e.id].applyScaling(scaling);
+				console.log("Read scale item id "+ e.id +"x: " + scaling.x+ "y: " + scaling.y+"z: " + scaling.z);
+				break;
+					}	
+	
 				}
 			}
 			
