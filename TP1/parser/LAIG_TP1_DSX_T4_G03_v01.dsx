@@ -97,7 +97,6 @@
     <transformations>
         <transformation id="tableLegTrans">
 			<scale x="0.15" y="0.75" z="0.15" />
-			<rotate axis="x" angle="90">
         </transformation>
         
     </transformations>

@@ -39,6 +39,7 @@ MySceneGraph.prototype.onXMLReady=function() {
 	
 	// Here should go the calls for different functions to parse the various blocks
 	//var error = this.parseGlobalsExample(rootElement);
+	var error = this.parseGlobals(rootElement);
 	var error = this.parseViews(rootElement);
 	var error = this.parseIllumination(rootElement);
 	var error = this.parseTextures(rootElement);
@@ -149,6 +150,27 @@ MySceneGraph.prototype.parseGlobalsExample = function(rootElement) {
 		console.log("Read list item id "+ e.id+" with value "+this.list[e.id]);
 	}
 };
+
+MySceneGraph.prototype.parseGlobals = function(rootElement) {
+	
+	var elems =  rootElement.getElementsByTagName('scene');
+	if (elems == null) {
+		return "globals element is missing.";
+	}
+
+	if (elems.length != 1) {
+		return "either zero or more than one 'globals' element found.";
+	}
+
+	// various examples of different types of access
+	var globals = elems[0];
+	this.root = this.reader.getString(globals, 'root');
+	this.axisLength = this.reader.getFloat(globals, 'axis_length');
+
+	console.log("Globals read from file: {root=" + this.root + ", axis_length=" + this.axisLength + "}");
+
+};
+
 MySceneGraph.prototype.parseViews = function(rootElement) {
 	
 	var elems=rootElement.getElementsByTagName('views');
@@ -234,7 +256,7 @@ MySceneGraph.prototype.parseLights = function(rootElement) {
 			var location = this.to4Vector(e.getElementsByTagName('location')[0]);
 			this.lights[id] = new Light(true,enabled, location, ambient, diffuse, specular);
 		}
-		console.log("Light read from file: {id=" + id + ", enabled=" + enabled + ", location=" + location + ", ambient=" + ambient + ", diffuse=" + diffuse + ", specular=" + specular + ", angle=" + angle + ", exponent=" + exponent + "}");
+		console.log("Light read from file: {id=" + this.lights[id].getLocation().x + ", enabled=" + enabled + ", location=" + location + ", ambient=" + ambient + ", diffuse=" + diffuse + ", specular=" + specular + ", angle=" + angle + ", exponent=" + exponent + "}");
 	}
 }
 
@@ -331,14 +353,14 @@ MySceneGraph.prototype.parseTransformations = function(rootElement) {
 		}
 		console.log(e.id + "ASDSDSDSADSADSA");
 	}
-}
+};
 
 MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 	
 	var tempList=rootElement.getElementsByTagName('primitives');
 
 	if (tempList == null  || tempList.length==0) {
-		return "textures element is missing.";
+		return "primitives element is missing.";
 	}
 	
 	this.primitives=[];
@@ -387,65 +409,34 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 		
 		
 		console.log("Read primitives item id "+ e.id + prim.nodeName);
-	};
+	}
 
-}
+};
 
 MySceneGraph.prototype.parseComponents = function(rootElement) {
-	var tempList=rootElement.getElementsByTagName('components');
+	
+	var elems=rootElement.getElementsByTagName('components');
 
-	if (tempList == null  || tempList.length==0) {
-		return "components missing.";
+	if (elems == null  || elems.length==0) {
+		return "components element is missing.";
 	}
 	
-	var nnodes=tempList[0].children[0].length;
-	
-	for (var i=0; i< nnodes; i++){
-		var e = tempList[0].children[i];
-		var comp= e.children;
-		
-		for(var j=0;j< comp.length;j++){
-			
-			if(comp[j].tagName == "transformation"){
-			
-				var childTrans = comp[j].children;
-				for(var k =0;k< childTrans.children.length; k++){
-					switch(childTrans.children[k].tagName){
-				case 'translate':
-				var translating = this.to3Vector(transf);
-				this.transformations[e.id].applyTranslation(translating);
-				console.log("Read translate item id "+ e.id +"x: " + translating.x+ "y: " + translating.y+"z: " + translating.z);
-				break;
-				case 'rotate':
-				var rotate_axis = this.reader.getString(child,'axis');
-				var rotate_angle = this.reader.getFloat(child,'angle') * Math.PI/180;
-				this.transformations[e.id].applyRotation(rotate_axis, rotate_angle);
-				console.log("Read rotation item id "+ e.id +"axis: " + rotate_axis+ "angle: " + rotate_angle);
-				break;
-				case 'scale':
-				var scaling = this.to3Vector(transf);
-				this.transformations[e.id].applyScaling(scaling);
-				console.log("Read scale item id "+ e.id +"x: " + scaling.x+ "y: " + scaling.y+"z: " + scaling.z);
-				break;
-					}	
-	
-				}
-			}
-			
-			if(comp[j].tagName == "materials"){
+	this.components=[];
+	// iterate over every element
+	var nnodes=elems[0].children.length;
+	for (var i=0; i< nnodes; i++)
+	{
+		var e = elems[0].children[i];
+		var comp = e.children[0];
+		switch (comp.nodeName){
 				
-			}
-			
-			if(comp[j].tagName == "texture"){
-				
-			}
-			
-			if(comp[j].tagName == "children"){
-				
-			}
 		}
+		
+		
+		console.log("Read components item id "+ e.id + comp.nodeName);
 	}
-}
+
+};
 	
 /*
  * Callback to be executed on any read error

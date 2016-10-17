@@ -43,10 +43,10 @@ XMLscene.prototype.graphLights = function () {
 	
 	for(id in lights)
 	{
-		this.lights[i].setPosition(lights[id].getLocation.x, lights[id].getLocation.y, lights[id].getLocation.z, 1.0);
-		this.lights[i].setAmbient(lights[id].getAmbient.r, lights[id].getAmbient.g, lights[id].getAmbient.b, lights[id].getAmbient.a);
-		this.lights[i].setDiffuse(lights[id].getDiffuse.r, lights[id].getDiffuse.g, lights[id].getDiffuse.b, lights[id].getDiffuse.a);
-		this.lights[i].setSpecular(lights[id].getSpecular.r, lights[id].getSpecular.g, lights[id].getSpecular.b, lights[id].getSpecular.a);
+		this.lights[i].setPosition(lights[id].getLocation().x, lights[id].getLocation().y, lights[id].getLocation().z, lights[id].getLocation().w);
+		this.lights[i].setAmbient(lights[id].getAmbient().r, lights[id].getAmbient().g, lights[id].getAmbient().b, lights[id].getAmbient().a);
+		this.lights[i].setDiffuse(lights[id].getDiffuse().r, lights[id].getDiffuse().g, lights[id].getDiffuse().b, lights[id].getDiffuse().a);
+		this.lights[i].setSpecular(lights[id].getSpecular().r, lights[id].getSpecular().g, lights[id].getSpecular().b, lights[id].getSpecular().a);
 		
 		if (lights[id].isEnabled()){
 			this.lights[i].enable();
@@ -54,10 +54,8 @@ XMLscene.prototype.graphLights = function () {
 			this.lights[i].disable();
 		}
 			this.lights[i].setVisible(true);
-			this.lights[i].enable();
 
-
-		this.lights[i].update();
+		//this.lights[i].update();
 		i++;
 	}
 };
@@ -99,7 +97,8 @@ XMLscene.prototype.graphCameras = function () {
 
 	this.curCamera = defaultIdx;
 	this.camera = this.cameras[defaultIdx];
-	this.interface.setActiveCamera(this.camera);};
+	this.interface.setActiveCamera(this.camera);
+	};
 
 XMLscene.prototype.setDefaultAppearance = function () {
     this.setAmbient(0.2, 0.4, 0.8, 1.0);
@@ -117,7 +116,7 @@ XMLscene.prototype.onGraphLoaded = function ()
 	//this.lights[0].setVisible(true);
     //this.lights[0].enable();
 	
-	//this.axis=new CGFaxis(this, this.graph.axisLength);
+	this.axis=new CGFaxis(this, this.graph.axisLength);
 	var background = this.graph.illumination.getBackground();
 	var ambient = this.graph.illumination.getAmbient();
 	this.gl.clearColor(background.r,background.g,background.b,background.a);
@@ -157,7 +156,6 @@ XMLscene.prototype.display = function () {
 	if (this.graph.loadedOk)
 	{	
 		for(i in this.lights){
-			console.log(i);
 			this.lights[i].update();
 		}
 	};	
