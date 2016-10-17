@@ -66,7 +66,6 @@
 		<texture id="glass" file="./scenes/textures/glass.jpg" length_s="3" length_t="3" />
 		<texture id="crossWindow" file="./scenes/textures/crossWindow.jpg" length_s="3" length_t="3" />
 		<texture id="wallWindowText" file="./scenes/textures/wallWindow.jpg" length_s="0.5" length_t="1" />
-		<texture id="wallText" file="./scenes/textures/wall.jpg" length_s="1" length_t="1" />
 		<texture id="stripesText" file="./scenes/textures/stripes.png" length_s="0.25" length_t="1" />
     </textures>
 
