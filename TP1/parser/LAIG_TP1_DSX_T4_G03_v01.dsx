@@ -53,16 +53,18 @@
     </lights>
     
 	 <textures>
-		<texture id="stairsText" file="./scenes/textures/stairsWood.jpg" length_s="1" length_t="1" />
-		<texture id="tableText" file="./scenes/textures/table.png" length_s="1" length_t="1" />
-		<texture id="chairText" file="./scenes/textures/chair.jpg" length_s="1" length_t="1" />
-		<texture id="cakeText" file="./scenes/textures/cake.jpg" length_s="1" length_t="1" />
-		<texture id="sofaText" file="./scenes/textures/sofa.jpg" length_s="1" length_t="1" />
-		<texture id="wallWindowText" file="./scenes/textures/wallWindow.jpg" length_s="0.5" length_t="1" />
-		<texture id="stripesText" file="./scenes/textures/stripes.png" length_s="0.25" length_t="1" />
-		<texture id="floorText" file="./scenes/textures/floor.jpg" length_s="0.166" length_t="0.133" />
-		<texture id="screenText" file="./scenes/textures/screen.jpg" length_s="1" length_t="1" />
-		<texture id="doorText" file="./scenes/textures/door.png" length_s="1" length_t="1" />
+		<texture id="stairsText" file="./textures/stairsWood.jpg" length_s="1" length_t="1" />
+		<texture id="tableText" file="./textures/table.png" length_s="1" length_t="1" />
+		<texture id="chairText" file="./textures/chair.jpg" length_s="1" length_t="1" />
+		<texture id="cakeText" file="./textures/cake.jpg" length_s="1" length_t="1" />
+		<texture id="sofaText" file="./textures/sofa.jpg" length_s="1" length_t="1" />
+		<texture id="wallWindowText" file="./textures/wallWindow.jpg" length_s="0.5" length_t="1" />
+		<texture id="stripesText" file="./textures/stripes.png" length_s="0.25" length_t="1" />
+		<texture id="floorText" file="./textures/floor.jpg" length_s="0.166" length_t="0.133" />
+		<texture id="screenText" file="./textures/screen.jpg" length_s="1" length_t="1" />
+		<texture id="doorText" file="./textures/door.png" length_s="1" length_t="1" />
+		<texture id="ballText" file="./textures/ball.png" length_s="1" length_t="1" />
+		<texture id="basketballText" file="./textures/basketball.jpg" length_s="1" length_t="1" />
     </textures>
 
     
@@ -113,7 +115,7 @@
 			<cylinder base="1" top="1" height="1" slices="15" stacks="2" />
 		</primitive>
 		<primitive id="sphere">
-			<sphere radius="1" slices="10" stacks="10" />
+			<sphere radius="1" slices="20" stacks="20" />
 		</primitive>
 		<primitive id = "torus">
 			<torus inner="1" outer="2" slices="20" loops="20" />
@@ -143,6 +145,9 @@
 				<componentref id="floor" />
                 <componentref id="chairs" />
                 <componentref id="tv" />
+				<componentref id="door" />
+				<componentref id="ball" />
+				<componentref id="basketball" />
             </children>
         </component>
 		
@@ -240,6 +245,33 @@
             <texture id="doorText" />
             <children>
                 <primitiveref id="originRectangle" />
+	          </children>
+        </component>
+		
+		<component id="ball">
+            <transformation>
+				<translate x="0.5" y="0.15" z="0.3" />
+				<scale x="0.15" y="0.15" z="0.15" />
+			</transformation>
+            <materials>
+                <material id="default_mat" />
+            </materials>
+            <texture id="ballText" />
+            <children>
+                <primitiveref id="sphere" />
+	          </children>
+        </component>
+		<component id="basketball">
+            <transformation>
+				<translate x="1" y="0.2" z="0.2" />
+				<scale x="0.2" y="0.2" z="0.2" />
+			</transformation>
+            <materials>
+                <material id="default_mat" />
+            </materials>
+            <texture id="basketballText" />
+            <children>
+                <primitiveref id="sphere" />
 	          </children>
         </component>
 		
