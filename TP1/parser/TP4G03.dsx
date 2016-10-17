@@ -62,6 +62,7 @@
 		<texture id="stripesText" file="./scenes/textures/stripes.png" length_s="0.25" length_t="1" />
 		<texture id="floorText" file="./scenes/textures/floor.jpg" length_s="0.166" length_t="0.133" />
 		<texture id="screenText" file="./scenes/textures/screen.jpg" length_s="1" length_t="1" />
+		<texture id="doorText" file="./scenes/textures/door.png" length_s="1" length_t="1" />
     </textures>
 
     
@@ -226,6 +227,20 @@
             <children>
                 <primitiveref id="originRectangle" />
             </children>
+        </component>
+		
+		<component id="door">
+            <transformation>
+				<translate x="5" y="0" z="0.1" />
+				<scale x="1" y="2" z="1" />
+			</transformation>
+            <materials>
+                <material id="default_mat" />
+            </materials>
+            <texture id="doorText" />
+            <children>
+                <primitiveref id="originRectangle" />
+	          </children>
         </component>
 		
         <component id="stairs">
