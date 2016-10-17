@@ -72,7 +72,7 @@ XMLscene.prototype.display = function () {
 	
 	// ---- END Background, camera and axis setup
 	
-	this.graph.primitives["triangle"].display();
+	//this.graph.primitives["triangle"].display();
 
 	
 	// it is important that things depending on the proper loading of the graph
@@ -85,7 +85,7 @@ XMLscene.prototype.display = function () {
 };
 
 XMLscene.prototype.processGraph = function(nodeName){
-	var material = null;
+	/* var material = null;
 
 	if (nodeName != null){
 		var node = this.graph[nodeName];
@@ -105,6 +105,6 @@ XMLscene.prototype.processGraph = function(nodeName){
 				this.processGraph(node.Children[i]);
 				this.popMatrix();
 			}
-		}
+		}*/
 }
 

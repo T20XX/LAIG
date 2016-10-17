@@ -2,12 +2,18 @@
 function MySceneGraph(filename, scene) {
 	this.loadedOk = null;
 	
-	this.textures = [];
-	this.materials = [];
-	this.primitives = [];
-	this.components = [];
-	this.omniLights = [];
-	this.spotLights = [];
+	// Data structure needed to store all dsx file information
+	this.root = null;			// Root component id
+	this.axisLength = null;		// Axis length
+	this.defaultView = null;	// Default view id
+	this.views = [];			// Views/cameras
+	this.illumination = null;	// Illumination
+	this.lights = [];			// Omni and spot lights
+	this.textures = [];			// Textures
+	this.materials = [];		// Materials
+	this.transformations = [];	// Transformations
+	this.primitives = [];		// Primitives
+	this.components = [];		// Components
 	
 	// Establish bidirectional references between scene and graph
 	this.scene = scene;
@@ -21,7 +27,6 @@ function MySceneGraph(filename, scene) {
 	 * After the file is read, the reader calls onXMLReady on this object.
 	 * If any error occurs, the reader calls onXMLError on this object, with an error message
 	 */
-	 
 	this.reader.open(filename, this);  
 }
 
@@ -33,7 +38,8 @@ MySceneGraph.prototype.onXMLReady=function() {
 	var rootElement = this.reader.xmlDoc.documentElement;
 	
 	// Here should go the calls for different functions to parse the various blocks
-	var error = this.parseGlobalsExample(rootElement);
+	//var error = this.parseGlobalsExample(rootElement);
+	var error = this.parseIllumination(rootElement);
 	var error = this.parseTextures(rootElement);
 	var error = this.parsePrimitives(rootElement);
 	var error = this.parseMaterials(rootElement);
@@ -140,6 +146,30 @@ MySceneGraph.prototype.parseGlobalsExample = function(rootElement) {
 		console.log("Read list item id "+ e.id+" with value "+this.list[e.id]);
 	}
 };
+
+MySceneGraph.prototype.parseIllumination = function(rootElement) {
+	
+	var elems=rootElement.getElementsByTagName('illumination');
+
+	if (elems == null) {
+		return "illumination element is missing.";
+	}
+
+	if (elems.length != 1) {
+		return "either zero or more than one 'illumination' element found.";
+	}
+	
+	// various examples of different types of access
+	var illumination = elems[0];
+	var doublesided = this.reader.getBoolean(illumination, 'doublesided');
+	var local = this.reader.getBoolean(illumination, 'local');
+	var ambient = this.toRGBA(illumination.children[0]);
+	var background = this.toRGBA(illumination.children[1]);
+	
+	this.illumination = new Illumination(doublesided, local, ambient, background);
+
+	console.log("Illumination read from file: {doublesided=" + doublesided + ", local=" + local + "}");
+}
 
 MySceneGraph.prototype.parseTextures = function(rootElement) {
 	
@@ -378,7 +408,6 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
 /*
  * Callback to be executed on any read error
  */
- 
 MySceneGraph.prototype.onXMLError = function (message) {
 	console.error("XML Loading Error: "+message);	
 	this.loadedOk=false;
