@@ -22,8 +22,12 @@ XMLscene.prototype.init = function (application) {
 
 	this.axis=new CGFaxis(this);
 	
-	this.curCameraIdx = 0;
+	this.curCamera = 0;
 };
+
+XMLscene.prototype.setInterface = function (interface) {
+	this.interface = interface;
+}
 
 XMLscene.prototype.initLights = function () {
 
@@ -32,33 +36,38 @@ XMLscene.prototype.initLights = function () {
     this.lights[0].update();
 };
 
+XMLscene.prototype.graphLights = function () {
+	var lights = this.graph.lights;
+	
+	var i = 0;
+	
+	for(id in lights)
+	{
+		this.lights[i].setPosition(lights[id].getLocation.x, lights[id].getLocation.y, lights[id].getLocation.z, 1.0);
+		this.lights[i].setAmbient(lights[id].getAmbient.r, lights[id].getAmbient.g, lights[id].getAmbient.b, lights[id].getAmbient.a);
+		this.lights[i].setDiffuse(lights[id].getDiffuse.r, lights[id].getDiffuse.g, lights[id].getDiffuse.b, lights[id].getDiffuse.a);
+		this.lights[i].setSpecular(lights[id].getSpecular.r, lights[id].getSpecular.g, lights[id].getSpecular.b, lights[id].getSpecular.a);
+		
+		if (lights[id].isEnabled()){
+			this.lights[i].enable();
+		} else {
+			this.lights[i].disable();
+		}
+			this.lights[i].setVisible(true);
+			this.lights[i].enable();
+
+
+		this.lights[i].update();
+		i++;
+	}
+};
+
 XMLscene.prototype.initCameras = function () {
     this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
 };
 
-XMLscene.prototype.setDefaultAppearance = function () {
-    this.setAmbient(0.2, 0.4, 0.8, 1.0);
-    this.setDiffuse(0.2, 0.4, 0.8, 1.0);
-    this.setSpecular(0.2, 0.4, 0.8, 1.0);
-    this.setShininess(10.0);	
-};
-
-// Handler called when the graph is finally loaded. 
-// As loading is asynchronous, this may be called already after the application has started the run loop
-XMLscene.prototype.onGraphLoaded = function () 
-{
-	//this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);
-	this.gl.clearColor(0.7,0,1,1);
-	this.lights[0].setVisible(true);
-    this.lights[0].enable();
-	
-	//this.axis=new CGFaxis(this, this.graph.axisLength);
-	var background = this.graph.illumination.getBackground();
-	var ambient = this.graph.illumination.getAmbient();
-	this.gl.clearColor(background.r,background.g,background.b,background.a);
-	this.setGlobalAmbientLight(ambient.r, ambient.g, ambient.b, ambient.a);
-	
-	//Initialize the cameras in function of the views element
+XMLscene.prototype.graphCameras = function () {
+    //Initialize the cameras in function of the views element
 	this.cameras = [];
 	var views = this.graph.views;
 	var defaultView = this.graph.defaultView;
@@ -88,9 +97,34 @@ XMLscene.prototype.onGraphLoaded = function ()
 		i++;
 	}
 
-	this.curCameraIdx = defaultIdx;
+	this.curCamera = defaultIdx;
 	this.camera = this.cameras[defaultIdx];
-	this.interface.setActiveCamera(this.camera);
+	this.interface.setActiveCamera(this.camera);};
+
+XMLscene.prototype.setDefaultAppearance = function () {
+    this.setAmbient(0.2, 0.4, 0.8, 1.0);
+    this.setDiffuse(0.2, 0.4, 0.8, 1.0);
+    this.setSpecular(0.2, 0.4, 0.8, 1.0);
+    this.setShininess(10.0);	
+};
+
+// Handler called when the graph is finally loaded. 
+// As loading is asynchronous, this may be called already after the application has started the run loop
+XMLscene.prototype.onGraphLoaded = function () 
+{
+	//this.gl.clearColor(this.graph.background[0],this.graph.background[1],this.graph.background[2],this.graph.background[3]);
+	//this.gl.clearColor(0.7,0,1,1);
+	//this.lights[0].setVisible(true);
+    //this.lights[0].enable();
+	
+	//this.axis=new CGFaxis(this, this.graph.axisLength);
+	var background = this.graph.illumination.getBackground();
+	var ambient = this.graph.illumination.getAmbient();
+	this.gl.clearColor(background.r,background.g,background.b,background.a);
+	this.setGlobalAmbientLight(ambient.r, ambient.g, ambient.b, ambient.a);
+
+	this.graphCameras();
+	this.graphLights();
 };
 
 XMLscene.prototype.display = function () {
@@ -121,8 +155,11 @@ XMLscene.prototype.display = function () {
 	// only get executed after the graph has loaded correctly.
 	// This is one possible way to do it
 	if (this.graph.loadedOk)
-	{
-		this.lights[0].update();
+	{	
+		for(i in this.lights){
+			console.log(i);
+			this.lights[i].update();
+		}
 	};	
 };
 
@@ -148,5 +185,14 @@ XMLscene.prototype.processGraph = function(nodeName){
 				this.popMatrix();
 			}
 		}*/
+}
+
+/**
+ * Interface functions
+ */
+XMLscene.prototype.processVDown = function() {
+	this.curCamera = (this.curCamera + 1) % this.cameras.length;
+	this.camera = this.cameras[this.curCamera];
+	this.interface.setActiveCamera(this.camera);
 }
 
