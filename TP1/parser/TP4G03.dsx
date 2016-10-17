@@ -145,6 +145,7 @@
 				<componentref id="backWall" />
 				<componentref id="rightWall" />
 				<componentref id="frontWall" />
+                <componentref id="chair" />
             </children>
         </component>
 		
@@ -237,7 +238,6 @@
             
         </component>
 		
-		
         <component id="stairs">
             <transformation>
 				<translate x="0" y="0" z="0" />
@@ -286,6 +286,45 @@
             
         </component>
 
+      <!--  <component id="chairs">
+            <transformation>
+				<translate x="0" y="0" z="0" />
+			</transformation>
+
+            <materials>
+                <material id="default_mat" />
+            </materials>
+                         
+            <texture id="stairsWoodText" />
+            
+            <children>
+                <componentref id="chair1"/>
+				<componentref id="chair2"/>
+				<componentref id="chair3"/>
+				<componentref id="chair4"/>
+	          </children>
+        </component> -->
+      <component id="chair">
+            <transformation>
+				<translate x="3" y="3" z="3" />
+			</transformation>
+
+            <materials>
+                <material id="default_mat" />
+            </materials>
+                         
+            <texture id="stairsWoodText" />
+            
+            <children>
+                <componentref id="chairLeg1" />
+                <componentref id="chairLeg2"/>
+				<componentref id="chairLeg3"/>
+				<componentref id="chairLeg4"/>
+				<componentref id="chairBack"/>
+				<componentref id="chairSeat"/>
+	         </children>
+            
+       </component>
 
 		 <component id="triangle3D">
             <transformation>
@@ -698,6 +737,90 @@
 		</component>
 
 		
+		<component id="chairLeg1">
+			<transformation>
+				<translate x="0" y="0" z="0" />
+				<scale x="0.025" y="0.25" z="0.025"/>
+			</transformation>
+			<materials>
+				<material id="inherit" />
+			</materials>
+			<texture id="inherit" />
+			<children>
+				<componentref id="originCube" />
+			</children>
+		</component>
+
+		<component id="chairLeg2">
+			<transformation>
+				<translate x="0.2" y="0" z="0" />
+				<scale x="0.025" y="0.25" z="0.025"/>
+			</transformation>
+			<materials>
+				<material id="inherit" />
+			</materials>
+			<texture id="inherit" />
+			<children>
+				<componentref id="originCube" />
+			</children>
+		</component>
+
+		<component id="chairLeg3">
+			<transformation>
+				<translate x="0.2" y="0" z="0.2" />
+				<scale x="0.025" y="0.125" z="0.025"/>
+			</transformation>
+			<materials>
+				<material id="inherit" />
+			</materials>
+			<texture id="inherit" />
+			<children>
+				<componentref id="originCube" />
+			</children>
+		</component>
+
+		<component id="chairLeg4">
+			<transformation>
+				<translate x="0" y="0" z="0.2" />
+				<scale x="0.025" y="0.125" z="0.025"/>
+			</transformation>
+			<materials>
+				<material id="inherit" />
+			</materials>
+			<texture id="inherit" />
+			<children>
+				<componentref id="originCube" />
+			</children>
+		</component>
+
+		<component id="chairSeat">
+			<transformation>
+				<translate x="0" y="0.125" z="0" />
+				<scale x="0.225" y="0.025" z="0.225"/>
+			</transformation>
+			<materials>
+				<material id="inherit" />
+			</materials>
+			<texture id="inherit" />
+			<children>
+				<componentref id="originCube" />
+			</children>
+		</component>
+
+		<component id="chairBack">
+			<transformation>
+				<translate x="0" y="0.2" z="0" />
+				<scale x="0.225" y="0.05" z="0.0125" />
+				<rotate axis="x" angle="-90" />
+			</transformation>
+			<materials>
+				<material id="inherit" />
+			</materials>
+			<texture id="inherit" />
+			<children>
+				<componentref id="originCube" />
+			</children>
+		</component>
 		
 		<!-- CUBO CENTRO ORIGEM -->
 		
