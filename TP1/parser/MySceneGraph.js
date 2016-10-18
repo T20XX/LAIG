@@ -320,7 +320,7 @@ MySceneGraph.prototype.parseTransformations = function(rootElement) {
 	if (tempList == null  || tempList.length==0) {
 		return "textures element is missing.";
 	}
-	
+	this.transformations=[];
 	var transformations = tempList[0];
 	
 	var nnodes=transformations.children.length;
@@ -349,6 +349,8 @@ MySceneGraph.prototype.parseTransformations = function(rootElement) {
 				this.transformations[e.id].applyScaling(scaling);
 				console.log("Read scale item id "+ e.id + "x: " + scaling.x + "y: " + scaling.y+"z: " + scaling.z);
 				break;
+
+				transformations[e.id] = new Transformation();
 			}
 		}
 		console.log(e.id + "ASDSDSDSADSADSA");
@@ -427,16 +429,36 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
 	for (var i=0; i< nnodes; i++)
 	{
 		var e = elems[0].children[i];
-		var comp = e.children[0];
-		switch (comp.nodeName){
-				
+		var transf = e.children[0];
+		var temp_transf = new Transformation();
+		for(var j=0; j< transf.children.length; j++){
+			switch(transf.children[j].tagName){
+ 				case 'translate':
+ 				var translating = this.to3Vector(transf.children[j]);
+ 				temp_transf.applyTranslation(translating);
+ 				console.log("Read translate item id "+ e.id +"x: " + translating.x+ "y: " + translating.y+"z: " + translating.z);
+ 				break;
+ 				case 'rotate':
+ 				var rotate_axis = this.reader.getString(transf.children[j],'axis');
+ 				var rotate_angle = this.reader.getFloat(transf.children[j],'angle') * Math.PI/180;
+ 				temp_transf.applyRotation(rotate_axis, rotate_angle);
+ 				console.log("Read rotation item id "+ e.id +"axis: " + rotate_axis+ "angle: " + rotate_angle);
+ 				break;
+ 				case 'scale':
+ 				var scaling = this.to3Vector(transf.children[j]);
+ 				temp_transf.applyScaling(scaling);
+ 				console.log("Read scale item id "+ e.id +"x: " + scaling.x+ "y: " + scaling.y+"z: " + scaling.z);
+ 				break;
+ 				case 'transformationref':
+ 				temp_transf.multMatrix((this.transformations[this.reader.getString(transf.children[j], "id")]).getMatrix());
+ 				break;
+ 			}
 		}
-		
-		
-		console.log("Read components item id "+ e.id + comp.nodeName);
+ 			//console.log("Read components item id "+ e.id +  transf.nodeName + transf.children[j].nodeName);
 	}
-
+		//console.log("Read components item id "+ e.id + transf.nodeName);
 };
+
 	
 /*
  * Callback to be executed on any read error
