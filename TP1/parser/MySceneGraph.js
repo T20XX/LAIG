@@ -358,7 +358,6 @@ MySceneGraph.prototype.parseTransformations = function(rootElement) {
 };
 
 MySceneGraph.prototype.parsePrimitives = function(rootElement) {
-	
 	var tempList=rootElement.getElementsByTagName('primitives');
 
 	if (tempList == null  || tempList.length==0) {
@@ -405,6 +404,13 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 				var slices = prim.attributes.getNamedItem("slices").value;
 				var stacks = prim.attributes.getNamedItem("stacks").value;
 				this.primitives[e.id] = new Sphere(this.scene, slices, stacks);
+				break;
+			case "torus":
+				var inner = prim.attributes.getNamedItem("inner").value;
+				var outer = prim.attributes.getNamedItem("outer").value;
+				var slices = prim.attributes.getNamedItem("slices").value;
+				var loops = prim.attributes.getNamedItem("loops").value;
+				this.primitives[e.id] = new Torus(this.scene, inner, outer, slices, loops);
 				break;
 				
 		}
@@ -468,9 +474,9 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
 		var temp_child=[];
 		for(var j=0; j< childrenc.children.length; j++){
 			temp_child[j] = childrenc.children[j].id;
-			//console.log("CHILDREN COMPONENT ID :" +childrenc.children[j].id +" DO COMP" + e.id);
+			console.log("CHILDREN COMPONENT ID :" +childrenc.children[j].id +" DO COMP" + e.id);
 		}
-		this.components = new Component(temp_transf, temp_mat, temp_text, temp_child);
+		this.components[e.id] = new Component(temp_transf, temp_mat, temp_text, temp_child);
 
  			//console.log("Read components item id "+ e.id +  transf.nodeName + transf.children[j].nodeName);
 	}

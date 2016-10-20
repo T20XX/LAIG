@@ -124,6 +124,8 @@ XMLscene.prototype.onGraphLoaded = function ()
 
 	this.graphCameras();
 	this.graphLights();
+			this.processGraph('originCube');
+
 };
 
 XMLscene.prototype.display = function () {
@@ -158,31 +160,39 @@ XMLscene.prototype.display = function () {
 		for(i in this.lights){
 			this.lights[i].update();
 		}
-	};	
+	};
 };
 
 XMLscene.prototype.processGraph = function(nodeName){
-	/* var material = null;
+	var material = null;
 
-	if (nodeName != null){
-		var node = this.graph[nodeName];
-		if(node.material != null){
-			material = node.material;
+	if (nodeName != null && this.graph.components[nodeName] != null){
+		var node = this.graph.components[nodeName];
+		/*if(node.getMaterial() != null){
+			material = node.getMaterial();
 		}
 		if (material != null){
-		this.applyMaterial(material);
+			//this.applyMaterial(material);
 		}
-		this.mulMatrix(node.m);
-		if (node.primitive != null){
+		this.multMatrix(node.getTransformation().getMatrix());*/
+		/*if (node.primitive != null){
 			//DESENHA PRIMITIVA
-		}
-		for (i= 0; i < node.Children.length; i++){
-			this.pushMatrix();
-			this.applyMaterial(material);
-				this.processGraph(node.Children[i]);
-				this.popMatrix();
-			}
 		}*/
+		for (i= 0; i < node.getChildren().length; i++){
+			this.pushMatrix();
+				//this.applyMaterial(material);
+				var nextID = node.getChildren()[i];
+				console.log(nextID);
+
+				if (this.graph.primitives[nextID] == null){
+					this.processGraph(nextID);
+				}else{
+					console.log("primitive");
+					this.graph.primitives[nextID].display();
+				}
+			this.popMatrix();
+		}
+	}
 }
 
 /**

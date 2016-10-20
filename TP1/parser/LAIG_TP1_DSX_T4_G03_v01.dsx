@@ -1035,7 +1035,7 @@
             <children>
                 <componentref id="rectUp" />
 				<componentref id="rectDown" />
-				<componentref id="rectLeft" />
+				
 				<componentref id="rectRight" />
 				<componentref id="rectFront" />
 				<componentref id="rectBack" />
@@ -1080,19 +1080,7 @@
                 <primitiveref id="rectangle" />
             </children>
         </component>
-		<component id="rectLeft">
-            <transformation>
-				<translate x="-0.5" y="0" z="0" />
-				<rotate axis="y" angle ="-90" />
-			</transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit" />
-            <children>
-                <primitiveref id="rectangle" />
-            </children>
-        </component>
+		
 		<component id="rectFront">
             <transformation>
 				<translate x="0" y="0" z="0.5" />
