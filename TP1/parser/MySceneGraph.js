@@ -454,6 +454,24 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
  				break;
  			}
 		}
+		var mat = e.children[1];
+		var temp_mat=[];
+		for(var j=0; j< mat.children.length; j++){
+			temp_mat[j] = mat.children[j].id;
+			//console.log("MATERIAL COMPONENT ID :" +mat.children[j].id +" DO COMP" + e.id);
+		}
+		var text = e.children[2];
+		var temp_text = new Texture();
+			temp_text = text.children.id;
+			//console.log("TEXTURE COMPONENT ID :" +text.children.id +" DO COMP" + e.id);
+		var childrenc = e.children[3];
+		var temp_child=[];
+		for(var j=0; j< childrenc.children.length; j++){
+			temp_child[j] = childrenc.children[j].id;
+			//console.log("CHILDREN COMPONENT ID :" +childrenc.children[j].id +" DO COMP" + e.id);
+		}
+		this.components = new Component(temp_transf, temp_mat, temp_text, temp_child);
+
  			//console.log("Read components item id "+ e.id +  transf.nodeName + transf.children[j].nodeName);
 	}
 		//console.log("Read components item id "+ e.id + transf.nodeName);
