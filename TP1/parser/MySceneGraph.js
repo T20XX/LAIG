@@ -308,7 +308,7 @@ MySceneGraph.prototype.parseMaterials = function(rootElement) {
 		var shininess = this.reader.getFloat(e.getElementsByTagName("shininess")[0], 'value');
 		var material = new Material(emission, ambient, diffuse, specular, shininess);		
 		
-		//materials[e.id] = material;
+		this.materials[e.id] = material;
 	}
 		console.log("Read material item id "+ e.id );
 }

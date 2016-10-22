@@ -159,26 +159,36 @@ XMLscene.prototype.display = function () {
 		for(i in this.lights){
 			this.lights[i].update();
 		}
-		
 			this.processGraph(this.graph.root);
 	};
 };
 
 XMLscene.prototype.processGraph = function(nodeName){
 	var material = null;
+	var texture = null;
+	var appearance = new CGFappearance(this);
 
 	if (nodeName != null && this.graph.components[nodeName] != null){
 		var node = this.graph.components[nodeName];
-		/*if(node.getMaterial() != null){
-			material = node.getMaterial();
+		
+		if(this.graph.materials[node.getMaterial()[0]] != null){
+			material = this.graph.materials[node.getMaterial()[0]];
+			appearance.setAmbient(material.getAmbient().r, material.getAmbient().g, material.getAmbient().b, material.getAmbient().a);
+			appearance.setDiffuse(material.getDiffuse().r, material.getDiffuse().g, material.getDiffuse().b, material.getDiffuse().a);
+			appearance.setEmission(material.getEmission().r, material.getEmission().g, material.getEmission().b, material.getEmission().a);
+			appearance.setSpecular(material.getSpecular().r, material.getSpecular().g, material.getSpecular().b, material.getSpecular().a);
+			appearance.setShininess(material.getShininess());
 		}
-		if (material != null){
-			//this.applyMaterial(material);
+		
+		if(this.graph.textures[node.getTexture] != null){
+			appearance.loadTexture(this.graph.textures[node.getTexture].getFile());
 		}
-		this.multMatrix(node.getTransformation().getMatrix());*/
-		/*if (node.primitive != null){
-			//DESENHA PRIMITIVA
-		}*/
+		
+		if (appearance != null){
+			appearance.apply();
+		}
+		this.multMatrix(node.getTransformation().getMatrix());
+
 		for (let i= 0; i < node.getChildren().length; i++){
 			this.pushMatrix();
 				//this.applyMaterial(material);

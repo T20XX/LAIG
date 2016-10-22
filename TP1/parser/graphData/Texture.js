@@ -8,3 +8,15 @@ function Texture(file, s, t) {
 }
 
 Texture.prototype.constructor = Texture;
+
+Texture.prototype.getFile = function(){
+	return this.file;
+}
+
+Texture.prototype.getS = function(){
+	return this.s;
+}
+
+Texture.prototype.getT = function(){
+	return this.t;
+}
