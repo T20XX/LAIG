@@ -124,7 +124,6 @@ XMLscene.prototype.onGraphLoaded = function ()
 
 	this.graphCameras();
 	this.graphLights();
-			this.processGraph('originCube');
 
 };
 
@@ -160,6 +159,8 @@ XMLscene.prototype.display = function () {
 		for(i in this.lights){
 			this.lights[i].update();
 		}
+		
+			this.processGraph(this.graph.root);
 	};
 };
 
@@ -178,11 +179,11 @@ XMLscene.prototype.processGraph = function(nodeName){
 		/*if (node.primitive != null){
 			//DESENHA PRIMITIVA
 		}*/
-		for (i= 0; i < node.getChildren().length; i++){
+		for (let i= 0; i < node.getChildren().length; i++){
 			this.pushMatrix();
 				//this.applyMaterial(material);
 				var nextID = node.getChildren()[i];
-				console.log(nextID);
+				console.log(nextID + "   i:" + i);
 
 				if (this.graph.primitives[nextID] == null){
 					this.processGraph(nextID);
