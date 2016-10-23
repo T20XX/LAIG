@@ -2,12 +2,12 @@
  * Sphere
  * @constructor
  */
- function Sphere(scene, slices, stacks) {
+ function Sphere(scene,radius,  slices, stacks) {
  	CGFobject.call(this,scene);
 	
-	this.slices = slices || 10;
-	this.stacks = stacks || 10;
-
+	this.radius = parseFloat(radius);
+    this.slices = parseInt(slices);
+    this.stacks = parseInt(stacks);
 	//this.appearance = appearance ||  new CGFappearance(this.scene);
 
  	this.initBuffers();
@@ -20,53 +20,30 @@
 	this.vertices = [];
 	this.indices = [];
 	this.normals = [];
-	//this.texCoords = [];
+	this.texCoords = [];
 
 	var alfa = (2 * Math.PI) / this.slices;
 	//angulo em Z
-	var beta = (Math.PI/2) / this.stacks;
+	var beta = (Math.PI) / this.stacks;
 
-
-    var temp1;
-    var temp2;
-	for (var i = 0; i < this.stacks; i++){
-	    temp1 = (this.stacks - i)/(this.stacks);
-	    temp2 = (this.stacks - (i + 1))/(this.stacks);
-	    for (var j = 0; j < this.slices; j++){
-		  this.vertices.push(Math.cos(alfa*j)*Math.cos(beta*(i+1)), Math.sin(alfa*j)*Math.cos(beta*(i+1)), Math.sin(beta*(i+1)));
-		  this.vertices.push(Math.cos(alfa*j)*Math.cos(beta*i), Math.sin(alfa*j)*Math.cos(beta*i), Math.sin(beta*i));
-
-		  this.normals.push(Math.cos(alfa*j)*Math.cos(beta*(i+1)), Math.sin(alfa*j)*Math.cos(beta*(i+1)), Math.sin(beta*(i+1)));
-		  this.normals.push(Math.cos(alfa*j)*Math.cos(beta*i), Math.sin(alfa*j)*Math.cos(beta*i), Math.sin(beta*i));
-
-			//this.texCoords.push(j/this.slices, 1 - (i+1)/this.stacks);
-			//this.texCoords.push(j/this.slices, 1 -i/this.stacks);
+	for (var i = 0; i <= this.stacks; i++){
+	    for (var j = 0; j <= this.slices; j++){
+            this.vertices.push(this.radius * Math.cos(j*alfa) * Math.sin(i*beta),this.radius *Math.cos(beta*i),this.radius *Math.sin(j*alfa)*Math.sin(i*beta));
+	    	this.normals.push(this.radius * Math.cos(j*alfa) * Math.sin(i*beta),this.radius *Math.cos(beta*i),this.radius *Math.sin(j*alfa)*Math.sin(i*beta));
+	    	var s = 1 - (i / this.stacks);
+            var t = 1 - (j / this.slices);
+            this.texCoords.push(s, t);
 	    }
-
- this.vertices.push(Math.cos(alfa*0)*Math.cos(beta*(i+1)), Math.sin(alfa*0)*Math.cos(beta*(i+1)), Math.sin(beta*(i+1)));
-		  this.vertices.push(Math.cos(alfa*0)*Math.cos(beta*i), Math.sin(alfa*0)*Math.cos(beta*i), Math.sin(beta*i));
-
-		  this.normals.push(Math.cos(alfa*0)*Math.cos(beta*(i+1)), Math.sin(alfa*0)*Math.cos(beta*(i+1)), Math.sin(beta*(i+1)));
-		  this.normals.push(Math.cos(alfa*0)*Math.cos(beta*i), Math.sin(alfa*0)*Math.cos(beta*i), Math.sin(beta*i));
-
-	//this.texCoords.push(1, 1 -(i+1)/this.stacks);
-	//this.texCoords.push(1, 1 -	i/this.stacks);
-
 	}
-    for (var i = 1; i <= this.stacks; i++){
-	   for (var j = 0; j < this.slices+this.stacks -1; j++){
-		  this.indices.push((j*2)+(this.slices)*2*(i-1),(j*2)+(this.slices)*2*(i-1)+1,(j*2)+(this.slices)*2*(i-1)+3);
-		  this.indices.push((j*2)+(this.slices)*2*(i-1),(j*2)+(this.slices)*2*(i-1)+3,(j*2)+(this.slices)*2*(i-1)+2);
-	   }
-	   //Para não repetir os vértices e usar os 2 primeiros para a última face
-	//this.indices.push((this.slices)*2*(i-1)+(this.slices-1)*2,(this.slices)*2*(i-1)+(this.slices-1)*2+1,(this.slices)*2*(i-1)+1);
-	//this.indices.push((this.slices)*2*(i-1)+(this.slices-1)*2,(this.slices)*2*(i-1)+1,(this.slices)*2*(i-1));
-	}
-	
+    for (var i = 0; i < this.stacks; i++) {
+        for (var j = 0; j < this.slices; j++) {
+           var first = (i * (this.slices + 1)) + j;
+            var second = first + this.slices + 1;
 
-	console.log(this.vertices.length);
-	console.log(this.indices.length);
-	console.log(this.normals.length);
+            this.indices.push(first, second + 1, second);
+            this.indices.push(first, first + 1, second + 1);
+        }
+    }
 
  	this.primitiveType = this.scene.gl.TRIANGLES;
  	this.initGLBuffers();
