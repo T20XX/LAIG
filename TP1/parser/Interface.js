@@ -49,19 +49,15 @@ Interface.prototype.processKeyDown = function(event) {
 	switch (event.keyCode)
 	{
 		case (118):
-   			console.log("Key 'v' pressed");
    			this.scene.processVDown();
    			break;
   		case (86):
-   			console.log("Key 'V' pressed");
    			this.scene.processVDown();
    			break;
 		case (109):
-			console.log("Key 'm' pressed");
 			this.scene.processMDown();
 			break;
 		case (77):
-			console.log("Key 'M' pressed");
 			this.scene.processMDown();
 			break;
 	};

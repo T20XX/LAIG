@@ -37,6 +37,7 @@ XMLscene.prototype.init = function (application) {
 	this.textures = [];
 	
 	this.curCamera = 0;
+	this.curMaterial = 0;
 };
 
 XMLscene.prototype.setInterface = function (interface) {
@@ -188,7 +189,7 @@ XMLscene.prototype.display = function () {
 	
 	// ---- END Background, camera and axis setup
 	
-	//this.graph.primitives["triangle"].display();
+	this.graph.primitives["torus"].display();
 
 	
 	// it is important that things depending on the proper loading of the graph
@@ -208,12 +209,13 @@ XMLscene.prototype.processGraph = function(nodeName, parentAppearance){
 
 	if (nodeName != null && this.graph.components[nodeName] != null){
 		var node = this.graph.components[nodeName];
+		var selectedMaterial = this.curMaterial % node.getMaterial().length;
 		
 		
-		if(node.getMaterial()[0] == "inherit"){
+		if(node.getMaterial()[selectedMaterial] == "inherit"){
 			appearance = parentAppearance;
 		} else {
-			appearance = this.materials[node.getMaterial()[0]];
+			appearance = this.materials[node.getMaterial()[selectedMaterial]];
 		}
 		
 		if(node.getTexture() == "none"){
@@ -250,5 +252,9 @@ XMLscene.prototype.processVDown = function() {
 	this.curCamera = (this.curCamera + 1) % this.cameras.length;
 	this.camera = this.cameras[this.curCamera];
 	this.interface.setActiveCamera(this.camera);
+}
+
+XMLscene.prototype.processMDown = function() {
+	this.curMaterial++;
 }
 

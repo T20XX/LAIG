@@ -41,7 +41,7 @@
 			
 			this.normals.push(d*r*Math.cos(alfaSlices*j)*Math.cos(alfaLoops*i),d*r*Math.sin(alfaSlices*j)*Math.cos(alfaLoops*i),d*r*Math.sin(alfaLoops*i));
 			
-			this.texCoords.push(j/(this.slices), 1 -i/this.loops);
+			this.texCoords.push(j/(this.loops), 1 -i/this.slices);
 			
 		}	
 	}

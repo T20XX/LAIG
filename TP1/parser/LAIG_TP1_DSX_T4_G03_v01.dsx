@@ -173,6 +173,8 @@
 			</transformation>
             <materials>
                 <material id="wallMat" />
+                <material id="default_mat" />
+                <material id="blackMat" />
             </materials>
             <texture id="none" />
             <children>
