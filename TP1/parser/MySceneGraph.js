@@ -456,7 +456,10 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
  				console.log("Read scale item id "+ e.id +"x: " + scaling.x+ "y: " + scaling.y+"z: " + scaling.z);
  				break;
  				case 'transformationref':
+				console.log(temp_transf.getMatrix());
+				console.log("READ tranformation item id "+ (this.transformations[this.reader.getString(transf.children[j], "id")]).getMatrix());
  				temp_transf.multMatrix((this.transformations[this.reader.getString(transf.children[j], "id")]).getMatrix());
+				console.log(temp_transf.getMatrix());
  				break;
  			}
 		}

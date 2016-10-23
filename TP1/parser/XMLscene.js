@@ -15,12 +15,26 @@ XMLscene.prototype.init = function (application) {
 
     this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
+	
+		this.gl.frontFace(this.gl.CCW);
+
     this.gl.clearDepth(100.0);
     this.gl.enable(this.gl.DEPTH_TEST);
-	this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
 
+	this.gl.enable(this.gl.CULL_FACE);
+	this.gl.cullFace(this.gl.BACK);
+
+	this.enableTextures(true);
+    /*this.gl.clearDepth(100.0);
+    this.gl.enable(this.gl.DEPTH_TEST);
+	this.gl.enable(this.gl.CULL_FACE);
+    this.gl.depthFunc(this.gl.LEQUAL);*/
+
 	this.axis=new CGFaxis(this);
+	
+	this.materials = [];
+	this.textures = [];
 	
 	this.curCamera = 0;
 };
@@ -98,7 +112,32 @@ XMLscene.prototype.graphCameras = function () {
 	this.curCamera = defaultIdx;
 	this.camera = this.cameras[defaultIdx];
 	this.interface.setActiveCamera(this.camera);
-	};
+};
+
+XMLscene.prototype.graphMaterials = function () {
+	for(id in this.graph.materials)
+	{
+			console.log(id);
+			var tempMat = this.graph.materials[id];
+			var tempAppearance = new CGFappearance(this);
+			tempAppearance.setAmbient(tempMat.getAmbient().r, tempMat.getAmbient().g, tempMat.getAmbient().b, tempMat.getAmbient().a);
+			tempAppearance.setDiffuse(tempMat.getDiffuse().r, tempMat.getDiffuse().g, tempMat.getDiffuse().b, tempMat.getDiffuse().a);
+			tempAppearance.setEmission(tempMat.getEmission().r, tempMat.getEmission().g, tempMat.getEmission().b, tempMat.getEmission().a);
+			tempAppearance.setSpecular(tempMat.getSpecular().r, tempMat.getSpecular().g, tempMat.getSpecular().b, tempMat.getSpecular().a);
+			tempAppearance.setShininess(tempMat.getShininess());
+			
+			this.materials[id] = tempAppearance;
+	}
+};
+	
+XMLscene.prototype.graphTextures = function () {
+	for(id in this.graph.textures)
+	{
+			var tempText = this.graph.textures[id];
+
+			this.textures[id] = new CGFtexture(this, tempText.getFile()); 
+	}
+};
 
 XMLscene.prototype.setDefaultAppearance = function () {
     this.setAmbient(0.2, 0.4, 0.8, 1.0);
@@ -124,7 +163,8 @@ XMLscene.prototype.onGraphLoaded = function ()
 
 	this.graphCameras();
 	this.graphLights();
-
+	this.graphMaterials();
+	this.graphTextures();
 };
 
 XMLscene.prototype.display = function () {
@@ -159,31 +199,29 @@ XMLscene.prototype.display = function () {
 		for(i in this.lights){
 			this.lights[i].update();
 		}
-			this.processGraph(this.graph.root);
+		this.processGraph(this.graph.root, new CGFappearance());
 	};
 };
 
-XMLscene.prototype.processGraph = function(nodeName){
-	var material = null;
-	var texture = null;
-	var appearance = new CGFappearance(this);
+XMLscene.prototype.processGraph = function(nodeName, parentAppearance){
+	var appearance = null;
 
 	if (nodeName != null && this.graph.components[nodeName] != null){
 		var node = this.graph.components[nodeName];
 		
-		if(this.graph.materials[node.getMaterial()[0]] != null){
-			material = this.graph.materials[node.getMaterial()[0]];
-			appearance.setAmbient(material.getAmbient().r, material.getAmbient().g, material.getAmbient().b, material.getAmbient().a);
-			appearance.setDiffuse(material.getDiffuse().r, material.getDiffuse().g, material.getDiffuse().b, material.getDiffuse().a);
-			appearance.setEmission(material.getEmission().r, material.getEmission().g, material.getEmission().b, material.getEmission().a);
-			appearance.setSpecular(material.getSpecular().r, material.getSpecular().g, material.getSpecular().b, material.getSpecular().a);
-			appearance.setShininess(material.getShininess());
+		
+		if(node.getMaterial()[0] == "inherit"){
+			appearance = parentAppearance;
+		} else {
+			appearance = this.materials[node.getMaterial()[0]];
 		}
 		
-		
-			console.log(this.graph.textures[node.getTexture()]);
-		if(this.graph.textures[node.getTexture()] != null){
-			appearance.loadTexture(this.graph.textures[node.getTexture()].getFile());
+		if(node.getTexture() == "none"){
+			appearance.setTexture(null);
+		} else if(node.getTexture() == "inherit"){
+			
+		}else{
+			appearance.setTexture(this.textures[node.getTexture()]);
 		}
 		
 		if (appearance != null){
@@ -193,14 +231,11 @@ XMLscene.prototype.processGraph = function(nodeName){
 
 		for (let i= 0; i < node.getChildren().length; i++){
 			this.pushMatrix();
-				//this.applyMaterial(material);
 				var nextID = node.getChildren()[i];
-				//console.log(nextID + "   i:" + i);
 
 				if (this.graph.primitives[nextID] == null){
-					this.processGraph(nextID);
+					this.processGraph(nextID, appearance);
 				}else{
-					//console.log("primitive");
 					this.graph.primitives[nextID].display();
 				}
 			this.popMatrix();
