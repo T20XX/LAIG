@@ -180,8 +180,10 @@ XMLscene.prototype.processGraph = function(nodeName){
 			appearance.setShininess(material.getShininess());
 		}
 		
-		if(this.graph.textures[node.getTexture] != null){
-			appearance.loadTexture(this.graph.textures[node.getTexture].getFile());
+		
+			console.log(this.graph.textures[node.getTexture()]);
+		if(this.graph.textures[node.getTexture()] != null){
+			appearance.loadTexture(this.graph.textures[node.getTexture()].getFile());
 		}
 		
 		if (appearance != null){
@@ -193,12 +195,12 @@ XMLscene.prototype.processGraph = function(nodeName){
 			this.pushMatrix();
 				//this.applyMaterial(material);
 				var nextID = node.getChildren()[i];
-				console.log(nextID + "   i:" + i);
+				//console.log(nextID + "   i:" + i);
 
 				if (this.graph.primitives[nextID] == null){
 					this.processGraph(nextID);
 				}else{
-					console.log("primitive");
+					//console.log("primitive");
 					this.graph.primitives[nextID].display();
 				}
 			this.popMatrix();

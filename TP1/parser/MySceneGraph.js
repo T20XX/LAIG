@@ -403,7 +403,7 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 				var radius = prim.attributes.getNamedItem("radius").value;
 				var slices = prim.attributes.getNamedItem("slices").value;
 				var stacks = prim.attributes.getNamedItem("stacks").value;
-				this.primitives[e.id] = new Sphere(this.scene, slices, stacks);
+				this.primitives[e.id] = new Sphere(this.scene, radius, slices, stacks);
 				break;
 			case "torus":
 				var inner = prim.attributes.getNamedItem("inner").value;
@@ -466,10 +466,9 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
 			temp_mat[j] = mat.children[j].id;
 			//console.log("MATERIAL COMPONENT ID :" +mat.children[j].id +" DO COMP" + e.id);
 		}
-		var text = e.children[2];
-		var temp_text = new Texture();
-			temp_text = text.children.id;
-			//console.log("TEXTURE COMPONENT ID :" +text.children.id +" DO COMP" + e.id);
+		var textu = e.children[2];
+		var temp_text =  textu.id;
+			console.log("TEXTURE COMPONENT ID :" +textu.id +" DO COMP" + e.id);
 		var childrenc = e.children[3];
 		var temp_child=[];
 		for(var j=0; j< childrenc.children.length; j++){

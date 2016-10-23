@@ -2,7 +2,7 @@
  * Sphere
  * @constructor
  */
- function Sphere(scene,radius,  slices, stacks) {
+ function Sphere(scene, radius,  slices, stacks) {
  	CGFobject.call(this,scene);
 	
 	this.radius = parseFloat(radius);
