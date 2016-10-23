@@ -42,8 +42,20 @@ Triangle.prototype.initBuffers = function () {
 		nx, ny, nz,
 		nx, ny, nz,
 		nx, ny, nz 
-	];
-	
+	]
+
+	var a = Math.sqrt(Math.pow(this.x1-this.x3, 2) + Math.pow(this.y1-this.y3, 2) + Math.pow(this.z1-this.z3, 2));
+	var b = Math.sqrt(Math.pow(this.x2-this.x1, 2) + Math.pow(this.y2-this.y1, 2) + Math.pow(this.z2-this.z1, 2));
+    var c = Math.sqrt(Math.pow(this.x2-this.x3, 2) + Math.pow(this.y2-this.y3, 2) + Math.pow(this.z2-this.z3, 2));
+    var ang = Math.acos((Math.pow(a, 2) - Math.pow(b, 2) + Math.pow(c, 2) )/(2*a*c));
+    
+    this.texCoords = [
+   		c-a*Math.cos(ang), 1-a*Math.sin(ang),
+		0, 1,
+		c, 1
+    ];
+
+
 	this.primitiveType=this.scene.gl.TRIANGLES;
 	this.initGLBuffers();
 };
