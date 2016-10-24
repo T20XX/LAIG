@@ -310,6 +310,7 @@ MySceneGraph.prototype.parseTransformations = function(rootElement) {
 
 				transformations[e.id] = new Transformation();
 			}
+		}
 	
 	}
 };
