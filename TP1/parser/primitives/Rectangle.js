@@ -11,6 +11,8 @@ function Rectangle(scene, x1, y1, x2, y2) {
 	this.y1 = y1 || 0;
 	this.x2 = x2 || 0;
 	this.y2 = y2 || 0;
+	this.s = 1;
+	this.t = 1;
 
 
 	this.initBuffers();
@@ -32,12 +34,6 @@ Rectangle.prototype.initBuffers = function () {
 			3, 2, 1
         ];
 
-    this.texCoords = [
-			0, 1,
-			1, 1,
-			0, 0,
-			1, 0
-    ];
 		
 	this.primitiveType=this.scene.gl.TRIANGLES;
 	this.normals = [
@@ -45,6 +41,29 @@ Rectangle.prototype.initBuffers = function () {
 		0, 0, 1,
 		0, 0, 1,
 		0, 0, 1
-	]
+	];
+
+	this.setTextureCoords(s,t);
 	this.initGLBuffers();
 };
+
+MyRectangle.prototype.setTextureCoords = function (s, t) {
+	this.s = s;
+	this.t = t;
+
+	var dx = this.x2 - this.x1; //rectangle width
+	var dy = this.y2 - this.y1; //rectangle height
+
+	var tx = dx/this.s;
+	var ty = dy/this.t;
+
+	//Set the texture coords
+	this.texCoords = [
+			0,  1,	  
+			tx, 1,	  
+			tx, 1 - ty,
+			0,  1 - ty,	    
+	];
+
+	this.updateTexCoordsGLBuffers();
+}
