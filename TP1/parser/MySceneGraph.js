@@ -310,8 +310,7 @@ MySceneGraph.prototype.parseTransformations = function(rootElement) {
 
 				transformations[e.id] = new Transformation();
 			}
-		}
-		console.log(e.id + "ASDSDSDSADSADSA");
+	
 	}
 };
 
@@ -423,7 +422,7 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
 		var temp_mat=[];
 		for(var j=0; j< mat.children.length; j++){
 			temp_mat[j] = mat.children[j].id;
-			//console.log("MATERIAL COMPONENT ID :" +mat.children[j].id +" DO COMP" + e.id);
+			console.log("MATERIAL COMPONENT ID :" +mat.children[j].id +" DO COMP" + e.id);
 		}
 		var textu = e.children[2];
 		var temp_text =  textu.id;
