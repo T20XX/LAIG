@@ -43,11 +43,11 @@ Rectangle.prototype.initBuffers = function () {
 		0, 0, 1
 	];
 
-	this.setTextureCoords(s,t);
+ 	this.setTextureCoords(this.s,this.t);
 	this.initGLBuffers();
 };
 
-MyRectangle.prototype.setTextureCoords = function (s, t) {
+Rectangle.prototype.setTextureCoords = function (s, t) {
 	this.s = s;
 	this.t = t;
 
@@ -61,8 +61,8 @@ MyRectangle.prototype.setTextureCoords = function (s, t) {
 	this.texCoords = [
 			0,  1,	  
 			tx, 1,	  
-			tx, 1 - ty,
-			0,  1 - ty,	    
+			0, 1 - ty,
+			tx,  1 - ty,	    
 	];
 
 	this.updateTexCoordsGLBuffers();
