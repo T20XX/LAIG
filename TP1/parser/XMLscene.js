@@ -59,18 +59,31 @@ XMLscene.prototype.graphLights = function () {
 	
 	for(id in lights)
 	{
-		this.lights[i].setPosition(lights[id].getLocation().x, lights[id].getLocation().y, lights[id].getLocation().z, lights[id].getLocation().w);
 		this.lights[i].setAmbient(lights[id].getAmbient().r, lights[id].getAmbient().g, lights[id].getAmbient().b, lights[id].getAmbient().a);
 		this.lights[i].setDiffuse(lights[id].getDiffuse().r, lights[id].getDiffuse().g, lights[id].getDiffuse().b, lights[id].getDiffuse().a);
 		this.lights[i].setSpecular(lights[id].getSpecular().r, lights[id].getSpecular().g, lights[id].getSpecular().b, lights[id].getSpecular().a);
 		
+		if(!lights[id].isOmni()){
+			this.lights[i].setPosition(lights[id].getLocation().x, lights[id].getLocation().y, lights[id].getLocation().z, 1);
+			this.lights[i].setSpotCutOff(lights[id].getAngle());
+
+			var locationX = lights[id].getLocation().x;
+			var locationY = lights[id].getLocation().y;
+			var locationZ = lights[id].getLocation().z;
+			var targetX = lights[id].getTarget().x;
+			var targetY = lights[id].getTarget().y;
+			var targetZ = lights[id].getTarget().z;
+			this.lights[i].setSpotDirection(targetX-locationX,targetY-locationY,targetZ-locationZ);
+			
+			this.lights[i].setSpotExponent(lights[id].getExponent());
+		}
+		else this.lights[i].setPosition(lights[id].getLocation().x, lights[id].getLocation().y, lights[id].getLocation().z, lights[id].getLocation().w);
 		if (lights[id].isEnabled()){
 			this.lights[i].enable();
 		} else {
 			this.lights[i].disable();
 		}
 			this.lights[i].setVisible(true);
-		//this.lights[i].update();
 		i++;
 	}
 	this.interface.addLights(lights);
