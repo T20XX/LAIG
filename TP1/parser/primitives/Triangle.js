@@ -15,6 +15,8 @@ function Triangle(scene, x1, y1, z1, x2, y2, z2, x3, y3, z3) {
 	this.x3 = x3 || 0;
 	this.y3 = y3 || 0;
 	this.z3 = z3 || 0;
+	this.s = 1;
+	this.t = 1;
 
 
 	this.initBuffers();
@@ -44,18 +46,24 @@ Triangle.prototype.initBuffers = function () {
 		nx, ny, nz 
 	]
 
+
+	this.primitiveType=this.scene.gl.TRIANGLES;
+	this.initGLBuffers();
+};
+
+Triangle.prototype.setTextureCoords = function (s, t) {
+	
 	var a = Math.sqrt(Math.pow(this.x1-this.x3, 2) + Math.pow(this.y1-this.y3, 2) + Math.pow(this.z1-this.z3, 2));
 	var b = Math.sqrt(Math.pow(this.x2-this.x1, 2) + Math.pow(this.y2-this.y1, 2) + Math.pow(this.z2-this.z1, 2));
     var c = Math.sqrt(Math.pow(this.x2-this.x3, 2) + Math.pow(this.y2-this.y3, 2) + Math.pow(this.z2-this.z3, 2));
     var ang = Math.acos((Math.pow(a, 2) - Math.pow(b, 2) + Math.pow(c, 2) )/(2*a*c));
     
     this.texCoords = [
-   		c-a*Math.cos(ang), 1-a*Math.sin(ang),
+   		(c-a*Math.cos(ang))/s, 1-a*Math.sin(ang)/t,
 		0, 1,
-		c, 1
+		c/s, 1
     ];
 
+this.updateTexCoordsGLBuffers();
 
-	this.primitiveType=this.scene.gl.TRIANGLES;
-	this.initGLBuffers();
-};
+}
