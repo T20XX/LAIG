@@ -27,7 +27,7 @@ function MySceneGraph(filename, scene) {
 	 * After the file is read, the reader calls onXMLReady on this object.
 	 * If any error occurs, the reader calls onXMLError on this object, with an error message
 	 */
-	this.reader.open(filename, this);  
+	this.reader.open('scenes/'+filename, this);  
 }
 
 /*
@@ -350,22 +350,22 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 				this.primitives[e.id] = new Triangle(this.scene, x1, y1, z1, x2, y2, z2, x3, y3, z3);
 				break;
 			case "cylinder":
-				var base = this.reader.getInteger(prim,'base');
-				var top = this.reader.getInteger(prim,'top');
-				var height = this.reader.getInteger(prim,'height');
+				var base = this.reader.getFloat(prim,'base');
+				var top = this.reader.getFloat(prim,'top');
+				var height = this.reader.getFloat(prim,'height');
 				var slices = this.reader.getInteger(prim,'slices');
 				var stacks = this.reader.getInteger(prim,'stacks');
 				this.primitives[e.id] = new Cylinder(this.scene, base, top, height, slices, stacks);
 				break;
 			case "sphere":
-				var radius = this.reader.getInteger(prim,'radius');
+				var radius = this.reader.getFloat(prim,'radius');
 				var slices = this.reader.getInteger(prim,'slices');
 				var stacks = this.reader.getInteger(prim,'stacks');
 				this.primitives[e.id] = new Sphere(this.scene, radius, slices, stacks);
 				break;
 			case "torus":
-				var inner = this.reader.getInteger(prim,'inner');
-				var outer =  this.reader.getInteger(prim,'outer');
+				var inner = this.reader.getFloat(prim,'inner');
+				var outer =  this.reader.getFloat(prim,'outer');
 				var slices = this.reader.getInteger(prim,'slices');
 				var loops =  this.reader.getInteger(prim,'loops');
 				this.primitives[e.id] = new Torus(this.scene, inner, outer, slices, loops);

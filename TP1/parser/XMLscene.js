@@ -65,7 +65,7 @@ XMLscene.prototype.graphLights = function () {
 		
 		if(!lights[id].isOmni()){
 			this.lights[i].setPosition(lights[id].getLocation().x, lights[id].getLocation().y, lights[id].getLocation().z, 1);
-			this.lights[i].setSpotCutOff(lights[id].getAngle());
+			this.lights[i].setSpotCutOff(lights[id].getAngle() *(Math.PI/180.0));
 
 			var locationX = lights[id].getLocation().x;
 			var locationY = lights[id].getLocation().y;
@@ -100,13 +100,13 @@ XMLscene.prototype.graphCameras = function () {
 	var defaultView = this.graph.defaultView;
 
 	var i = 0;
-	var defaultIdx;
+	var defaultId;
 
 	for(id in views)
 	{
 		var tempView = views[id];
 
-		var angle = tempView.getAngle();
+		var angle = tempView.getAngle()*(Math.PI/180.0);
 		var near = tempView.getNear();
 		var far = tempView.getFar();
 		
@@ -118,14 +118,14 @@ XMLscene.prototype.graphCameras = function () {
 
 		if(defaultView == id)
 		{
-			defaultIdx = i;
+			defaultId = i;
 		}
 
 		i++;
 	}
 
-	this.curCamera = defaultIdx;
-	this.camera = this.cameras[defaultIdx];
+	this.curCamera = defaultId;
+	this.camera = this.cameras[defaultId];
 	this.interface.setActiveCamera(this.camera);
 };
 
@@ -246,6 +246,7 @@ XMLscene.prototype.processGraph = function(nodeName, parentAppearance){
 			this.graph.primitives[id].setTextureCoords(this.graph.textures[node.getTexture()].getS(),this.graph.textures[node.getTexture()].getT());
 			}
 			appearance.setTexture(this.textures[node.getTexture()]);
+			appearance.setTextureWrap('REPEAT','REPEAT');
 		}
 		
 		if (appearance != null){
