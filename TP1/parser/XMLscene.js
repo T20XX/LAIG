@@ -241,6 +241,10 @@ XMLscene.prototype.processGraph = function(nodeName, parentAppearance){
 		} else if(node.getTexture() == "inherit"){
 			
 		}else{
+			for(id in this.graph.primitives){
+				  if(this.graph.primitives[id] instanceof Rectangle||this.graph.primitives[id]  instanceof Triangle)
+			this.graph.primitives[id].setTextureCoords(this.graph.textures[node.getTexture()].getS(),this.graph.textures[node.getTexture()].getT());
+			}
 			appearance.setTexture(this.textures[node.getTexture()]);
 		}
 		
