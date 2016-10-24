@@ -54,13 +54,13 @@
     
 	 <textures>
 		<texture id="stairsText" file="./textures/stairsWood.jpg" length_s="1" length_t="1" />
-		<texture id="tableText" file="./textures/table.png" length_s="1" length_t="1" />
+		<texture id="tableText" file="./textures/table.png" length_s="2" length_t="2" />
 		<texture id="chairText" file="./textures/chair.jpg" length_s="1" length_t="1" />
 		<texture id="cakeText" file="./textures/cake.jpg" length_s="1" length_t="1" />
 		<texture id="sofaText" file="./textures/sofa.jpg" length_s="1" length_t="1" />
 		<texture id="wallWindowText" file="./textures/wallWindow.jpg" length_s="0.5" length_t="1" />
 		<texture id="stripesText" file="./textures/stripes.png" length_s="0.25" length_t="1" />
-		<texture id="floorText" file="./textures/floor.jpg" length_s="0.166" length_t="0.133" />
+		<texture id="floorText" file="./textures/floor.jpg" length_s="1" length_t="1" />
 		<texture id="screenText" file="./textures/screen.jpg" length_s="1" length_t="1" />
 		<texture id="doorText" file="./textures/door.png" length_s="1" length_t="1" />
 		<texture id="ballText" file="./textures/ball.png" length_s="1" length_t="1" />
@@ -335,7 +335,7 @@
 			<materials>
 				<material id="inherit" />
 			</materials>
-			<texture id="inherit" />
+			<texture id="floorText" />
 			<children>
 				<componentref id="originCube" />
 			</children>
@@ -371,7 +371,7 @@
 			<materials>
 				<material id="inherit" />
 			</materials>
-			<texture id="tableText" />
+			<texture id="inherit" />
 			<children>
 				<componentref id="tableLeg" />
 			</children>
@@ -523,7 +523,7 @@
                 <material id="default_mat" />
             </materials>
                          
-            <texture id="inherit" />
+            <texture id="floorText" />
             
             <children>
                 <componentref id="cat1" />

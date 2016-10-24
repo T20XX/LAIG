@@ -222,7 +222,7 @@ XMLscene.prototype.display = function () {
 	};
 };
 
-XMLscene.prototype.processGraph = function(nodeName, parentAppearance){
+XMLscene.prototype.processGraph = function(nodeName, parentAppearance, parentTexture){
 	var appearance = null;
 
 	if (nodeName != null && this.graph.components[nodeName] != null){
@@ -239,11 +239,11 @@ XMLscene.prototype.processGraph = function(nodeName, parentAppearance){
 		if(node.getTexture() == "none"){
 			appearance.setTexture(null);
 		} else if(node.getTexture() == "inherit"){
-			
+			appearance.setTexture(parentTexture);
 		}else{
 			for(id in this.graph.primitives){
-				  if(this.graph.primitives[id] instanceof Rectangle||this.graph.primitives[id]  instanceof Triangle)
-			this.graph.primitives[id].setTextureCoords(this.graph.textures[node.getTexture()].getS(),this.graph.textures[node.getTexture()].getT());
+					if(this.graph.primitives[id] instanceof Rectangle||this.graph.primitives[id]  instanceof Triangle)
+						this.graph.primitives[id].setTextureCoords(this.graph.textures[node.getTexture()].getS(),this.graph.textures[node.getTexture()].getT());
 			}
 			appearance.setTexture(this.textures[node.getTexture()]);
 			appearance.setTextureWrap('REPEAT','REPEAT');
@@ -259,7 +259,11 @@ XMLscene.prototype.processGraph = function(nodeName, parentAppearance){
 				var nextID = node.getChildren()[i];
 
 				if (this.graph.primitives[nextID] == null){
-					this.processGraph(nextID, appearance);
+					if (node.getTexture() != "inherit"){
+						this.processGraph(nextID, appearance, this.textures[node.getTexture()]);
+					} else {
+						this.processGraph(nextID, appearance, parentTexture);
+					}
 				}else{
 					this.graph.primitives[nextID].display();
 				}
