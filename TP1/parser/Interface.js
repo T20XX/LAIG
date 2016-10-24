@@ -34,8 +34,15 @@ Interface.prototype.init = function(application) {
 	return true;
 };
 
-Interface.prototype.addLight = function(lightId) {
-		this.luzes.add(this.scene, lightId);
+Interface.prototype.addLights = function(lights) {
+	this.scene.lightStates = [];
+	var i = 0;
+    for(id in lights)
+    {
+        this.scene.lightStates[i] = lights[id].isEnabled();
+        this.luzes.add(this.scene.lightStates, i);
+		i++;
+    }
 }
 
 Interface.prototype.processKeyDown = function(event) {

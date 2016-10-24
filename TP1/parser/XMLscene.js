@@ -33,6 +33,7 @@ XMLscene.prototype.init = function (application) {
 
 	this.axis=new CGFaxis(this);
 	
+	this.lightStates= [];
 	this.materials = [];
 	this.textures = [];
 	
@@ -69,10 +70,10 @@ XMLscene.prototype.graphLights = function () {
 			this.lights[i].disable();
 		}
 			this.lights[i].setVisible(true);
-
 		//this.lights[i].update();
 		i++;
 	}
+	this.interface.addLights(lights);
 };
 
 XMLscene.prototype.initCameras = function () {
@@ -189,7 +190,9 @@ XMLscene.prototype.display = function () {
 	
 	// ---- END Background, camera and axis setup
 	
-	this.graph.primitives["torus"].display();
+	this.graph.primitives["torusmet"].display();
+	var toruus = new Torus(this, 1, 2, 10, 10);
+	toruus.display();
 
 	
 	// it is important that things depending on the proper loading of the graph
@@ -198,6 +201,12 @@ XMLscene.prototype.display = function () {
 	if (this.graph.loadedOk)
 	{	
 		for(i in this.lights){
+			if (this.lightStates[i]){
+				this.lights[i].enable();
+			} else {
+				this.lights[i].disable();
+			}
+			
 			this.lights[i].update();
 		}
 		this.processGraph(this.graph.root, new CGFappearance());

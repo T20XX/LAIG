@@ -412,11 +412,10 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 				var loops = prim.attributes.getNamedItem("loops").value;
 				this.primitives[e.id] = new Torus(this.scene, inner, outer, slices, loops);
 				break;
-				
 		}
 		
 		
-		console.log("Read primitives item id "+ e.id + prim.nodeName);
+		console.log("Read primitives item id "+ e.id + prim.nodeName + this.primitives[e.id]);
 	}
 
 };
