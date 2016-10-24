@@ -8,7 +8,6 @@
 	this.radius = parseFloat(radius);
     this.slices = parseInt(slices);
     this.stacks = parseInt(stacks);
-	//this.appearance = appearance ||  new CGFappearance(this.scene);
 
  	this.initBuffers();
  };
@@ -53,7 +52,6 @@ Sphere.prototype.display = function() {
 	this.scene.pushMatrix();
 		this.drawElements(this.primitiveType);
 		this.scene.rotate(-Math.PI,1,0,0);
-		//this.appearance.apply();
 		this.drawElements(this.primitiveType);
 	this.scene.popMatrix();
 }
