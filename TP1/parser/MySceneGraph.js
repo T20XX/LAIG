@@ -109,48 +109,6 @@ MySceneGraph.prototype.to3Vector = function(element){
 	return point3v;
 }
 
-/*
- * Example of method that parses elements of one block and stores information in a specific data structure
- */
-MySceneGraph.prototype.parseGlobalsExample = function(rootElement) {
-	
-	var elems =  rootElement.getElementsByTagName('globals');
-	if (elems == null) {
-		return "globals element is missing.";
-	}
-
-	if (elems.length != 1) {
-		return "either zero or more than one 'globals' element found.";
-	}
-
-	// various examples of different types of access
-	var globals = elems[0];
-	this.background = this.reader.getRGBA(globals, 'background');
-	this.drawmode = this.reader.getItem(globals, 'drawmode', ["fill","line","point"]);
-	this.cullface = this.reader.getItem(globals, 'cullface', ["back","front","none", "frontandback"]);
-	this.cullorder = this.reader.getItem(globals, 'cullorder', ["ccw","cw"]);
-
-	console.log("Globals read from file: {background=" + this.background + ", drawmode=" + this.drawmode + ", cullface=" + this.cullface + ", cullorder=" + this.cullorder + "}");
-
-	var tempList=rootElement.getElementsByTagName('list');
-
-	if (tempList == null  || tempList.length==0) {
-		return "list element is missing.";
-	}
-	
-	this.list=[];
-	// iterate over every element
-	var nnodes=tempList[0].children.length;
-	for (var i=0; i< nnodes; i++)
-	{
-		var e=tempList[0].children[i];
-
-		// process each element and store its information
-		this.list[e.id]=e.attributes.getNamedItem("coords").value;
-		console.log("Read list item id "+ e.id+" with value "+this.list[e.id]);
-	}
-};
-
 MySceneGraph.prototype.parseGlobals = function(rootElement) {
 	
 	var elems =  rootElement.getElementsByTagName('scene');
@@ -373,50 +331,44 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 		var prim = e.children[0];
 		switch (prim.nodeName){
 			case "rectangle":
-				var x1 = prim.attributes.getNamedItem("x1").value;
-				var y1 = prim.attributes.getNamedItem("y1").value;
-				var x2 = prim.attributes.getNamedItem("x2").value;
-				var y2 = prim.attributes.getNamedItem("y2").value;
+				var x1 = this.reader.getFloat(prim,'x1');
+				var y1 = this.reader.getFloat(prim,'y1');
+				var x2 = this.reader.getFloat(prim,'x2');
+				var y2 = this.reader.getFloat(prim,'y2');
 				this.primitives[e.id] = new Rectangle(this.scene, x1, y1, x2, y2);
 				break;
 			case "triangle":
-				var x1 = prim.attributes.getNamedItem("x1").value;
-				var y1 = prim.attributes.getNamedItem("y1").value;
-				var z1 = prim.attributes.getNamedItem("z1").value;
-				var x2 = prim.attributes.getNamedItem("x2").value;
-				var y2 = prim.attributes.getNamedItem("y2").value;
-				var z2 = prim.attributes.getNamedItem("z2").value;
-				var x3 = prim.attributes.getNamedItem("x3").value;
-				var y3 = prim.attributes.getNamedItem("y3").value;
-				var z3 = prim.attributes.getNamedItem("z3").value;
+				var x1 = this.reader.getFloat(prim,'x1');
+				var y1 = this.reader.getFloat(prim,'y1');
+				var z1 = this.reader.getFloat(prim,'z1');
+				var x2 = this.reader.getFloat(prim,'x2');
+				var y2 = this.reader.getFloat(prim,'y2');
+				var z2 = this.reader.getFloat(prim,'z2');
+				var x3 = this.reader.getFloat(prim,'x3');
+				var y3 = this.reader.getFloat(prim,'y3');
+				var z3 = this.reader.getFloat(prim,'z3');
 				this.primitives[e.id] = new Triangle(this.scene, x1, y1, z1, x2, y2, z2, x3, y3, z3);
 				break;
 			case "cylinder":
-				var base = prim.attributes.getNamedItem("base").value;
-				var top = prim.attributes.getNamedItem("top").value;
-				var height = prim.attributes.getNamedItem("height").value;
-				var slices = prim.attributes.getNamedItem("slices").value;
-				var stacks = prim.attributes.getNamedItem("stacks").value;
-				this.primitives[e.id] = new Cylinder(this.scene, slices, stacks);
+				var base = this.reader.getInteger(prim,'base');
+				var top = this.reader.getInteger(prim,'top');
+				var height = this.reader.getInteger(prim,'height');
+				var slices = this.reader.getInteger(prim,'slices');
+				var stacks = this.reader.getInteger(prim,'stacks');
+				this.primitives[e.id] = new Cylinder(this.scene, base, top, height, slices, stacks);
 				break;
 			case "sphere":
-				var radius = prim.attributes.getNamedItem("radius").value;
-				var slices = prim.attributes.getNamedItem("slices").value;
-				var stacks = prim.attributes.getNamedItem("stacks").value;
+				var radius = this.reader.getInteger(prim,'radius');
+				var slices = this.reader.getInteger(prim,'slices');
+				var stacks = this.reader.getInteger(prim,'stacks');
 				this.primitives[e.id] = new Sphere(this.scene, radius, slices, stacks);
 				break;
 			case "torus":
 				var inner = this.reader.getInteger(prim,'inner');
-				var outer =  prim.attributes.getNamedItem("outer").value;
-				var slices = prim.attributes.getNamedItem("slices").value;
-				var loops =  prim.attributes.getNamedItem("loops").value;
-				
-				var inner = this.reader.getString(prim,'inner');
-				
-				console.log("TORUS INNER: " + inner + "OUTER: " + outer + "SLICES: " + slices + "LOOPS: " + loops);
-				this.primitives[e.id] = new Torus(this.scene, 1, outer, slices, 20);
-				console.log("TORUS INNER: " + inner + "OUTER: " + outer + "SLICES: " + slices + "LOOPS: " + loops);
-				//break;
+				var outer =  this.reader.getInteger(prim,'outer');
+				var slices = this.reader.getInteger(prim,'slices');
+				var loops =  this.reader.getInteger(prim,'loops');
+				this.primitives[e.id] = new Torus(this.scene, inner, outer, slices, loops);
 		}
 		
 		
