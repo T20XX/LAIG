@@ -190,9 +190,9 @@ XMLscene.prototype.display = function () {
 	
 	// ---- END Background, camera and axis setup
 	
-	this.graph.primitives["torusmet"].display();
-	var toruus = new Torus(this, 1, 2, 10, 10);
-	toruus.display();
+	this.graph.primitives["torus"].display();
+	//var toruus = new Torus(this, 1, 2, 20, 20);
+	//toruus.display();
 
 	
 	// it is important that things depending on the proper loading of the graph

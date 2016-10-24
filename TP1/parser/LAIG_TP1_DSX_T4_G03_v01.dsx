@@ -117,7 +117,7 @@
 		<primitive id="sphere">
 			<sphere radius="1" slices="20" stacks="20" />
 		</primitive>
-		<primitive id = "torusmet">
+		<primitive id = "torus">
 			<torus inner="1" outer="2" slices="20" loops="20" />
 		</primitive>
         

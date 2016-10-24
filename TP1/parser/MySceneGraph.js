@@ -406,12 +406,17 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
 				this.primitives[e.id] = new Sphere(this.scene, radius, slices, stacks);
 				break;
 			case "torus":
-				var inner = prim.attributes.getNamedItem("inner").value;
-				var outer = prim.attributes.getNamedItem("outer").value;
+				var inner = this.reader.getInteger(prim,'inner');
+				var outer =  prim.attributes.getNamedItem("outer").value;
 				var slices = prim.attributes.getNamedItem("slices").value;
-				var loops = prim.attributes.getNamedItem("loops").value;
-				this.primitives[e.id] = new Torus(this.scene, inner, outer, slices, loops);
-				break;
+				var loops =  prim.attributes.getNamedItem("loops").value;
+				
+				var inner = this.reader.getString(prim,'inner');
+				
+				console.log("TORUS INNER: " + inner + "OUTER: " + outer + "SLICES: " + slices + "LOOPS: " + loops);
+				this.primitives[e.id] = new Torus(this.scene, 1, outer, slices, 20);
+				console.log("TORUS INNER: " + inner + "OUTER: " + outer + "SLICES: " + slices + "LOOPS: " + loops);
+				//break;
 		}
 		
 		
