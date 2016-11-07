@@ -14,6 +14,7 @@ function MySceneGraph(filename, scene) {
 	this.transformations = [];	// Transformations
 	this.primitives = [];		// Primitives
 	this.components = [];		// Components
+	this.animations = [];		// Animations
 	
 	// Establish bidirectional references between scene and graph
 	this.scene = scene;
@@ -46,6 +47,7 @@ MySceneGraph.prototype.onXMLReady=function() {
 	var error = this.parseMaterials(rootElement);
 	var error = this.parseLights(rootElement);
 	var error = this.parseTransformations(rootElement);
+	var error = this.parseAnimations(rootElement);
 	var error = this.parsePrimitives(rootElement);
 	var error = this.parseComponents(rootElement);
 	
@@ -313,6 +315,70 @@ MySceneGraph.prototype.parseTransformations = function(rootElement) {
 		}
 	
 	}
+};
+
+MySceneGraph.prototype.parseAnimations = function(rootElement) {
+	
+	var elems=rootElement.getElementsByTagName('animations');
+
+	if (elems == null  || elems.length==0) {
+		return "animations element is missing.";
+	}
+	
+	this.animations=[];
+	// iterate over every element
+	var nnodes=elems[0].children.length;
+	for (var i=0; i< nnodes; i++)
+	{
+		var e = elems[0].children[i];
+		var transf = e.children[0];
+		var temp_transf = new Transformation();
+		for(var j=0; j< transf.children.length; j++){
+			switch(transf.children[j].tagName){
+ 				case 'translate':
+ 				var translating = this.to3Vector(transf.children[j]);
+ 				temp_transf.applyTranslation(translating);
+ 				console.log("Read translate item id "+ e.id +"x: " + translating.x+ "y: " + translating.y+"z: " + translating.z);
+ 				break;
+ 				case 'rotate':
+ 				var rotate_axis = this.reader.getString(transf.children[j],'axis');
+ 				var rotate_angle = this.reader.getFloat(transf.children[j],'angle') * Math.PI/180;
+ 				temp_transf.applyRotation(rotate_axis, rotate_angle);
+ 				console.log("Read rotation item id "+ e.id +"axis: " + rotate_axis+ "angle: " + rotate_angle);
+ 				break;
+ 				case 'scale':
+ 				var scaling = this.to3Vector(transf.children[j]);
+ 				temp_transf.applyScaling(scaling);
+ 				console.log("Read scale item id "+ e.id +"x: " + scaling.x+ "y: " + scaling.y+"z: " + scaling.z);
+ 				break;
+ 				case 'transformationref':
+				console.log(temp_transf.getMatrix());
+				console.log("READ tranformation item id "+ (this.transformations[this.reader.getString(transf.children[j], "id")]).getMatrix());
+ 				temp_transf.multMatrix((this.transformations[this.reader.getString(transf.children[j], "id")]).getMatrix());
+				console.log(temp_transf.getMatrix());
+ 				break;
+ 			}
+		}
+		var mat = e.children[1];
+		var temp_mat=[];
+		for(var j=0; j< mat.children.length; j++){
+			temp_mat[j] = mat.children[j].id;
+			console.log("MATERIAL COMPONENT ID :" +mat.children[j].id +" DO COMP" + e.id);
+		}
+		var textu = e.children[2];
+		var temp_text =  textu.id;
+			console.log("TEXTURE COMPONENT ID :" +textu.id +" DO COMP" + e.id);
+		var childrenc = e.children[3];
+		var temp_child=[];
+		for(var j=0; j< childrenc.children.length; j++){
+			temp_child[j] = childrenc.children[j].id;
+			console.log("CHILDREN COMPONENT ID :" +childrenc.children[j].id +" DO COMP" + e.id);
+		}
+		this.components[e.id] = new Component(temp_transf, temp_mat, temp_text, temp_child);
+
+ 			//console.log("Read components item id "+ e.id +  transf.nodeName + transf.children[j].nodeName);
+	}
+		//console.log("Read components item id "+ e.id + transf.nodeName);
 };
 
 MySceneGraph.prototype.parsePrimitives = function(rootElement) {
