@@ -134,7 +134,7 @@
 		</primitive>
 
 		<primitive id = "plano">
-			<plane dimX="4" dimY="6" partsX="10" partsY="20"/>
+			<plane dimX="7.5" dimY="2.5" partsX="10" partsY="5"/>
 		</primitive>
 		
 		<primitive id = "curva">
@@ -226,7 +226,7 @@
         </component>
 		<component id="backWall">
             <transformation>
-				<scale x="7.5" y="2.5" z="1" />
+				<translate x="3.75" y="1.25" z="0" />
 			</transformation>
             <materials>
                 <material id="wallMat" />
