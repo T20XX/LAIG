@@ -429,7 +429,7 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
             case "animation":
                 var anims = e.children[k];
                 for (var j = 0; j < anims.children.length; j++) {
-                    temp_animations.push(this.reader.getString(anims.children[j], "id"));
+                    temp_animations.push(this.animations[this.reader.getString(anims.children[j], "id")]);
                 }
                 break;
             case "materials":
