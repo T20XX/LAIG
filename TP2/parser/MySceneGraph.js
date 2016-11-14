@@ -285,7 +285,7 @@ MySceneGraph.prototype.parseAnimations = function(rootElement) {
             for (var j = 0; j < e.children.length; j++) {
                 controlPoints.push(this.to3VectorDouble(e.children[j]));
             }
-            this.animations[id] = LinearAnimation(span, controlPoints);
+            this.animations[id] = new LinearAnimation(span,controlPoints);
             console.log("Read linear animation with ID: " + id + ", span: " + span + ", controlPoints: " + controlPoints);
         } else if (type == "circular") {
             var centerx = this.reader.getFloat(e, 'centerx');
@@ -294,7 +294,7 @@ MySceneGraph.prototype.parseAnimations = function(rootElement) {
             var radius = this.reader.getFloat(e, 'radius');
             var startang = this.reader.getFloat(e, 'startang');
             var rotang = this.reader.getFloat(e, 'rotang');
-            this.animations[id] = CircularAnimation(span, centerx, centery, centerz, radius, startang, rotang);
+            this.animations[id] = new CircularAnimation(span,centerx,centery,centerz,radius,startang,rotang);
             console.log("Read circular animation with ID: " + id + ", span: " + span + ", centerX: " + centerx + ", centerY: " + centery + ", centerZ: " + centerz + ", radius: " + radius + ", startAng: " + startang + ", rotAng: " + rotang);
         }
     }
@@ -393,6 +393,7 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
     var nnodes = elems[0].children.length;
     for (var i = 0; i < nnodes; i++) {
         var e = elems[0].children[i];
+                var temp_animations = [];
         for (var k = 0; k < e.children.length; k++) {
             switch (e.children[k].nodeName) {
             case "transformation":
@@ -425,7 +426,11 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
                     }
                 }
                 break;
-            case "animationref":
+            case "animation":
+                var anims = e.children[k];
+                for (var j = 0; j < anims.children.length; j++) {
+                    temp_animations.push(this.reader.getString(anims.children[j], "id"));
+                }
                 break;
             case "materials":
                 var mat = e.children[k];
@@ -450,7 +455,8 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
                 break;
             }
         }
-        this.components[e.id] = new Component(temp_transf,temp_mat,temp_text,temp_child);
+        console.log(temp_animations);
+        this.components[e.id] = new Component(temp_transf,temp_mat,temp_text,temp_child,temp_animations);
         //console.log("Read components item id "+ e.id +  transf.nodeName + transf.children[j].nodeName);
     }
     //console.log("Read components item id "+ e.id + transf.nodeName);

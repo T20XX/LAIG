@@ -199,6 +199,9 @@
 				<translate x="3.5" y="1.3" z="0" />
 				<scale x="0.15" y="0.15" z="0.15" />
 			</transformation>
+			<animation>
+				<animationref id="rotateBoia" />
+			</animation>
 			<materials>
                 <material id="default_mat" />
             </materials>
@@ -242,6 +245,10 @@
 				<rotate axis="y" angle="-90" />
 				<scale x="6" y="2.5" z="1" />
 			</transformation>
+			<animation>
+				<animationref id="rotateBoia" />
+				<animationref id="seta" />
+			</animation>
             <materials>
                 <material id="wallMat" />
             </materials>
@@ -1042,6 +1049,9 @@
 				<rotate axis="y" angle="90" />
 				<scale x="1" y="0.8" z="0.05" />
 			</transformation>
+			<animation>
+				<animationref id="rotateBoia" />
+			</animation>
 			<materials>
 				<material id="blackMat" />
 			</materials>
