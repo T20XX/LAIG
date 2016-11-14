@@ -136,17 +136,18 @@
 		<primitive id = "plano">
 			<plane dimX="4" dimY="6" partsX="10" partsY="20"/>
 		</primitive>
+		
 		<primitive id = "curva">
-        <patch orderU="2" orderV="3" partsU="6" partsV="9" >    
+        <patch orderU="2" orderV="3" partsU="6" partsV="9" >
             <controlpoint x="0" y="0" z="0" />
            	<controlpoint x="0" y="0" z="2" />
             <controlpoint x="0" y="0" z="4" />
-           	<controlpoint x="2" y="1" z="0" />
-            <controlpoint x="2" y="1" z="2" />
-           	<controlpoint x="2" y="1" z="4" />
-            <controlpoint x="4" y="2" z="0" />
-           	<controlpoint x="4" y="2" z="2" />
-            <controlpoint x="4" y="2" z="4" />
+           	<controlpoint x="2" y="2" z="0" />
+            <controlpoint x="2" y="2" z="2" />
+           	<controlpoint x="2" y="2" z="4" />
+            <controlpoint x="5" y="4" z="0" />
+           	<controlpoint x="5" y="4" z="2" />
+            <controlpoint x="5" y="4" z="4" />
            	<controlpoint x="6" y="0" z="0" />
             <controlpoint x="6" y="0" z="2" />
            	<controlpoint x="6" y="0" z="4" />
@@ -232,7 +233,7 @@
             </materials>
             <texture id="none" />
             <children>
-                <primitiveref id="originRectangle" />
+                <primitiveref id="plano" />
             </children>
         </component>
 		<component id="rightWall">
@@ -251,16 +252,14 @@
         </component>
 		<component id="frontWall">
             <transformation>
-				<translate x="7.5" y="0" z="6" />
-				<rotate axis="y" angle="180" />
-				<scale x="7.5" y="2.5" z="1" />
+				<translate x="0" y="0" z="0" />
 			</transformation>
             <materials>
                 <material id="wallMat" />
             </materials>
             <texture id="none" />
             <children>
-                <primitiveref id="originRectangle" />
+                <primitiveref id="curva" />
             </children>
         </component>
 		<component id="floor">

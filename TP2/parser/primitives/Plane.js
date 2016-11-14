@@ -23,6 +23,8 @@ Plane.prototype.initBuffers = function () {
 	this.normals = [];
 	this.texCoords = [];
 
+	
+
  	this.primitiveType=this.scene.gl.TRIANGLES;
 	this.initGLBuffers();
 };
