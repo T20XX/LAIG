@@ -100,6 +100,18 @@
         </transformation>
         
     </transformations>
+
+    <animations>
+    <animation id="seta" span="10" type="linear">
+        <controlpoint xx="0" yy="6" zz="4" />
+        <controlpoint xx="4" yy="6" zz="4" />
+        <controlpoint xx="6" yy="6" zz="4" />
+        <controlpoint xx="7" yy="6" zz="4" />
+    </animation>
+    <animation id="rotateBoia" span="20" type="circular"
+		centerx="0" centery="0" centerz="0"
+		radius="10" startang="20" rotang="30" />
+	</animations>
 	
 	<primitives>
 		<primitive id="originRectangle">
@@ -119,6 +131,36 @@
 		</primitive>
 		<primitive id = "torus">
 			<torus inner="1" outer="2" slices="20" loops="20" />
+		</primitive>
+
+		<primitive id = "plano">
+			<plane dimX="4" dimY="6" partsX="10" partsY="20"/>
+		</primitive>
+		<primitive id = "curva">
+        <patch orderU="2" orderV="3" partsU="6" partsV="9" >    
+            <controlpoint x="0" y="0" z="0" />
+           	<controlpoint x="0" y="0" z="2" />
+            <controlpoint x="0" y="0" z="4" />
+           	<controlpoint x="2" y="1" z="0" />
+            <controlpoint x="2" y="1" z="2" />
+           	<controlpoint x="2" y="1" z="4" />
+            <controlpoint x="4" y="2" z="0" />
+           	<controlpoint x="4" y="2" z="2" />
+            <controlpoint x="4" y="2" z="4" />
+           	<controlpoint x="6" y="0" z="0" />
+            <controlpoint x="6" y="0" z="2" />
+           	<controlpoint x="6" y="0" z="4" />
+        </patch>
+		</primitive>
+		<primitive id = "aviao">
+        <vehicle />
+		</primitive>
+		<primitive id = "tabuleiro">
+        <chessboard du="ii" dv="ii" textureref="ss" su="ii" sv="ii">
+                   <c1 r="ff" g="ff" b="ff" a="ff" />
+                   <c2 r="ff" g="ff" b="ff" a="ff" />
+                   <cs r="ff" g="ff" b="ff" a="ff" />
+ 	 	</chessboard>
 		</primitive>
         
     </primitives>

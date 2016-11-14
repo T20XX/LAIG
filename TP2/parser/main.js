@@ -22,11 +22,18 @@ serialInclude(['../lib/CGF.js',
 				'./graphData/Texture.js',
 				'./graphData/Material.js',
 				'./graphData/Component.js',
+				'./graphData/Animation.js',
+				'./graphData/LinearAnimation.js',
+				'./graphData/CircularAnimation.js',
 				'./primitives/Cylinder.js',
 				'./primitives/Sphere.js',
 				'./primitives/Rectangle.js',
 				'./primitives/Triangle.js',
 				'./primitives/Torus.js',
+				'./primitives/Plane.js',
+				'./primitives/Patch.js',
+				'./primitives/Vehicle.js',
+				'./primitives/Chessboard.js',
 
 main=function()
 {
