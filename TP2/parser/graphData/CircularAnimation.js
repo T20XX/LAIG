@@ -44,3 +44,8 @@ CircularAnimation.prototype.getRotAng=function()
 {
 	return this.rotAng;
 };
+
+CircularAnimation.prototype.getTransformation = function(deltaTime){
+	return 0;
+	
+}

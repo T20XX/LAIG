@@ -393,7 +393,7 @@ MySceneGraph.prototype.parseComponents = function(rootElement) {
     var nnodes = elems[0].children.length;
     for (var i = 0; i < nnodes; i++) {
         var e = elems[0].children[i];
-                var temp_animations = [];
+        var temp_animations = [];
         for (var k = 0; k < e.children.length; k++) {
             switch (e.children[k].nodeName) {
             case "transformation":
