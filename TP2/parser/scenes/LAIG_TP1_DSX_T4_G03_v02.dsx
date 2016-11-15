@@ -154,8 +154,8 @@
            	<controlpoint x="6" y="0" z="4" />
         </patch>
 		</primitive>
-		<primitive id = "aviao">
-        <vehicle />
+		<primitive id = "car">
+        	<vehicle />
 		</primitive>
 		<primitive id = "tabuleiro">
         <chessboard du="ii" dv="ii" textureref="ss" su="ii" sv="ii">
@@ -192,6 +192,24 @@
 				<componentref id="door" />
 				<componentref id="ball" />
 				<componentref id="basketball" />
+				<componentref id="2cv" />
+            </children>
+        </component>
+
+        <component id = "2cv">
+			<transformation>
+				<translate x="2" y="2" z="2" />
+			</transformation>
+			 <animation>
+				<animationref id="seta" />
+				<animationref id="rotateBoia" />
+			</animation> 
+			<materials>
+                <material id="default_mat" />
+            </materials>
+            <texture id="stripesText" />
+            <children>
+                <primitiveref id="car" />      
             </children>
         </component>
 		
@@ -268,7 +286,7 @@
             </materials>
             <texture id="none" />
             <children>
-                <primitiveref id="curva" />
+                <primitiveref id="plano" />
             </children>
         </component>
 		<component id="floor">

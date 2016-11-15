@@ -63,7 +63,12 @@ Patch.prototype.parseControlPoints = function(cP) {
 	for(var i = 0; i <= this.orderU; i++){
 		var temp = [];
 		for(var j = 0; j <= this.orderV; j++){
-		temp.push([cP[i+j*this.orderV].x, cP[i+j*this.orderV].y, cP[i+j*this.orderV].z, 1]);
+			if(cP[0].x != null)
+				temp.push([cP[i+j*this.orderV].x, cP[i+j*this.orderV].y, cP[i+j*this.orderV].z, 1]); //quando os valores vem do parser
+			else{
+				console.log("tentamos");
+			temp.push([cP[i+j*this.orderV][0], cP[i+j*this.orderV][1], cP[i+j*this.orderV][2], 1]); //quando os valores vem do vehicle
+			}
 		}
 		result.push(temp);
 	}
