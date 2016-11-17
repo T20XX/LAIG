@@ -20,7 +20,6 @@ function Chessboard(scene, du, dv, texture, su, sv, c1, c2, cs) {
 
 	this.shader = new CGFshader(this.scene.gl, "shaders/Chessboard.vert", "shaders/Chessboard.frag");
 
-
 	this.shader.setUniformsValues({du: this.du});
 	this.shader.setUniformsValues({dv: this.dv});
 	this.shader.setUniformsValues({su: this.su});
@@ -28,6 +27,10 @@ function Chessboard(scene, du, dv, texture, su, sv, c1, c2, cs) {
 	this.shader.setUniformsValues({c1: vec4.fromValues(c1.r, c1.g, c1.b, c1.a)});
 	this.shader.setUniformsValues({c2: vec4.fromValues(c2.r, c2.g, c2.b, c2.a)});
 	this.shader.setUniformsValues({cs: vec4.fromValues(cs.r, cs.g, cs.b, cs.a)});
+
+	this.appearance = new CGFappearance(this.scene);
+	this.appearance.loadTexture(this.texture.getFile());
+
 }
 
 
@@ -35,6 +38,7 @@ Chessboard.prototype = Object.create(CGFobject.prototype);
 Chessboard.prototype.constructor=Chessboard;
 
 Chessboard.prototype.display = function(){
+    this.appearance.apply();
     this.scene.setActiveShader(this.shader);
 	this.board.display();
     this.scene.setActiveShader(this.scene.defaultShader);
