@@ -377,6 +377,16 @@ MySceneGraph.prototype.parsePrimitives = function(rootElement) {
             this.primitives[e.id] = new Vehicle(this.scene);
             break;
         case "chessboard":
+            var du = this.reader.getInteger(prim, 'du');
+            var dv = this.reader.getInteger(prim, 'dv');
+            var textureref = this.reader.getString(prim, 'textureref');
+            var su = this.reader.getInteger(prim, 'su');
+            var sv = this.reader.getInteger(prim, 'sv');
+            var c1 = this.toRGBA(prim.children[0]);
+            var c2 = this.toRGBA(prim.children[1]);
+            var cs = this.toRGBA(prim.children[2]);
+
+            this.primitives[e.id] = new Chessboard(this.scene, du, dv, this.textures[textureref], su, sv, c1, c2, cs);
             break;
         }
         console.log("Read primitives item id " + e.id + prim.nodeName + this.primitives[e.id]);

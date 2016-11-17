@@ -158,10 +158,10 @@
         	<vehicle />
 		</primitive>
 		<primitive id = "tabuleiro">
-        <chessboard du="ii" dv="ii" textureref="ss" su="ii" sv="ii">
-                   <c1 r="ff" g="ff" b="ff" a="ff" />
-                   <c2 r="ff" g="ff" b="ff" a="ff" />
-                   <cs r="ff" g="ff" b="ff" a="ff" />
+        <chessboard du="12" dv="12" textureref="stairsText" su="2" sv="3">
+                   <c1 r="0.5" g="0" b="0" a="1" />
+                   <c2 r="0" g="0.5" b="0" a="1" />
+                   <cs r="0" g="0" b="0.5" a="1" />
  	 	</chessboard>
 		</primitive>
         
@@ -183,9 +183,9 @@
                 <componentref id="sofa2" />
 				<componentref id="buoy" />
 				<componentref id="leftWall" />
-				<componentref id="backWall" />
+				<!-- <componentref id="backWall" />
 				<componentref id="rightWall" />
-				<componentref id="frontWall" />
+				<componentref id="frontWall" /> -->
 				<componentref id="floor" />
                 <componentref id="chairs" />
                 <componentref id="tv" />
@@ -193,9 +193,21 @@
 				<componentref id="ball" />
 				<componentref id="basketball" />
 				<componentref id="2cv" />
+				<componentref id="tabuleiroXadrez" />
             </children>
         </component>
-
+		<component id = "tabuleiroXadrez">
+			<transformation>
+				<translate x="0" y="0" z="0" />
+			</transformation>
+			<materials>
+                <material id="default_mat" />
+            </materials>
+            <texture id="stripesText" />
+            <children>
+                <primitiveref id="tabuleiro" />      
+            </children>
+        </component>
         <component id = "2cv">
 			<transformation>
 				<translate x="2" y="2" z="2" />
