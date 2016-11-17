@@ -106,12 +106,19 @@
     </transformations>
 
     <animations>
-    <animation id="seta" span="10" type="linear">
+    <animation id="seta" span="50" type="linear">
         <controlpoint xx="0" yy="0" zz="0" />
-        <controlpoint xx="4" yy="1" zz="2" />
-        <controlpoint xx="6" yy="2" zz="4" />
-        <controlpoint xx="7" yy="3" zz="6" />
-        <controlpoint xx="3" yy="3" zz="6" />
+        <controlpoint xx="5" yy="0" zz="0" />
+        <controlpoint xx="0" yy="0" zz="0" />
+        <controlpoint xx="0" yy="0" zz="5" />
+        <controlpoint xx="0" yy="0" zz="0" />
+         <controlpoint xx="6" yy="3" zz="3" />
+          <controlpoint xx="6" yy="3" zz="7" />
+           <controlpoint xx="4" yy="2" zz="6" />
+        <controlpoint xx="2" yy="1" zz="4" />
+        <controlpoint xx="4" yy="2" zz="6" />
+        <controlpoint xx="6" yy="3" zz="7" />
+        <controlpoint xx="6" yy="3" zz="3" />
     </animation>
     <animation id="rotateBoia" span="20" type="circular"
 		centerx="0" centery="0" centerz="0"
@@ -214,12 +221,8 @@
         </component>
         <component id = "2cv">
 			<transformation>
-				<translate x="2" y="2" z="2" />
-			</transformation>
-			 <animation>
-				<animationref id="seta" />
-				<animationref id="rotateBoia" />
-			</animation> 
+				<translate x="5" y="5" z="5" />
+			</transformation> 
 			<materials>
                 <material id="default_mat" />
             </materials>
