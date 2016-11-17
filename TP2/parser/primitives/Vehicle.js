@@ -34,9 +34,11 @@ Vehicle.prototype.initBuffers = function () {
 	this.capotaMaterial.setDiffuse(0.5,0.5,0.5,1);
 	this.capotaMaterial.setSpecular(0.5,0.5,0.5,1);
 	this.windowMaterial = new CGFappearance(this.scene);
-	this.windowMaterial.setAmbient(0,0,0,1);
-	this.windowMaterial.setDiffuse(0,0,0,1);
-	this.windowMaterial.setSpecular(1,1,1,1);
+	this.windowMaterial.setAmbient(1,1,1,1);
+	this.windowMaterial.setDiffuse(0.5,0.5,0.5,1);
+	this.windowMaterial.setSpecular(0.5,0.5,0.5,1);
+	this.windowMaterial.loadTexture("./primitives/vidroFrenteTex.jpg");
+	//this.windowMaterial.setTextureWrap('CLAMP_TO_EDGE','CLAMP_TO_EDGE');
 
 	this.capotaControlPoints=[
 		[-1.5,		0,	-0.5],
@@ -169,7 +171,7 @@ Vehicle.prototype.display = function(){
 	this.scene.popMatrix();
 
 	this.scene.pushMatrix();
-		this.windowMaterial.apply();
+		this.guardaLMaterial.apply();
 		this.guardaLamasE.display();
 		this.guardaLamasD.display();
 	this.scene.popMatrix();
