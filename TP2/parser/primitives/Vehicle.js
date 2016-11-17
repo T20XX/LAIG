@@ -129,6 +129,7 @@ Vehicle.prototype.display = function(){
 		this.capotaMaterial.apply();
 		this.capota.display();
 	this.scene.popMatrix();
+
 	this.scene.pushMatrix();
 		this.windowMaterial.apply();
 		this.scene.translate(0.5, 0.75, 0);
@@ -136,38 +137,47 @@ Vehicle.prototype.display = function(){
 		this.scene.rotate(Math.PI,0,0,1);
 		this.vidroFrente.display();
 	this.scene.popMatrix();
+	
 	this.scene.pushMatrix();
 		this.pneuMaterial.apply();
-	this.scene.pushMatrix();
-	this.scene.pushMatrix();
-	this.scene.translate(-1,0,-0.5);
-		this.pneu.display();
+	    this.scene.pushMatrix();
+
+            this.scene.pushMatrix();
+                this.scene.translate(-1,0,-0.5);
+                this.pneu.display();
+            this.scene.popMatrix();
+
+            this.scene.pushMatrix();
+                this.scene.translate(-1,0,0.5);
+                this.pneu.display();
+            this.scene.popMatrix();
+
+            this.scene.pushMatrix();
+                this.scene.translate(1,0,-0.5);
+                this.pneu.display();
+            this.scene.popMatrix();
+
+            this.scene.pushMatrix();
+                this.scene.translate(1,0,0.5);
+                this.pneu.display();
+            this.scene.popMatrix();
+
+            this.scene.rotate(Math.PI/2,0,0,1);
+        this.scene.popMatrix();
 	this.scene.popMatrix();
-	this.scene.pushMatrix();
-		this.scene.translate(-1,0,0.5);
-		this.pneu.display();
-	this.scene.popMatrix();
-	this.scene.pushMatrix();
-		this.scene.translate(1,0,-0.5);
-		this.pneu.display();
-	this.scene.popMatrix();
-	this.scene.pushMatrix();
-		this.scene.translate(1,0,0.5);
-		this.pneu.display();
-	this.scene.popMatrix();
-		this.scene.rotate(Math.PI/2,0,0,1);
-	this.scene.popMatrix();
-	this.scene.popMatrix();
+
 	this.scene.pushMatrix();
 		this.tubeMaterial.apply();
-	this.scene.pushMatrix();
-		this.scene.translate(-1,0,-0.55);
-		this.tube.display();
-	this.scene.popMatrix();
-	this.scene.pushMatrix();
-		this.scene.translate(1,0,-0.55);
-		this.tube.display();
-	this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+            this.scene.translate(-1,0,-0.55);
+            this.tube.display();
+        this.scene.popMatrix();
+
+        this.scene.pushMatrix();
+            this.scene.translate(1,0,-0.55);
+            this.tube.display();
+        this.scene.popMatrix();
 	this.scene.popMatrix();
 
 	this.scene.pushMatrix();

@@ -106,7 +106,7 @@
     </transformations>
 
     <animations>
-    <animation id="seta" span="50" type="linear">
+    <animation id="seta" span="20" type="linear">
         <controlpoint xx="0" yy="0" zz="0" />
         <controlpoint xx="5" yy="0" zz="0" />
         <controlpoint xx="0" yy="0" zz="0" />
@@ -119,10 +119,16 @@
         <controlpoint xx="4" yy="2" zz="6" />
         <controlpoint xx="6" yy="3" zz="7" />
         <controlpoint xx="6" yy="3" zz="3" />
+        <controlpoint xx="0" yy="0" zz="0" />
+        <controlpoint xx="5" yy="0" zz="0" />
+    </animation>
+    <animation id="reta" span="2" type="linear">
+        <controlpoint xx="0" yy="0" zz="0" />
+        <controlpoint xx="5" yy="0" zz="0" />
     </animation>
     <animation id="rotateBoia" span="20" type="circular"
 		centerx="0" centery="0" centerz="0"
-		radius="0" startang="20" rotang="360" />
+		radius="0" startang="90" rotang="360" />
 	</animations>
 	
 	<primitives>
@@ -221,8 +227,12 @@
         </component>
         <component id = "2cv">
 			<transformation>
-				<translate x="5" y="5" z="5" />
-			</transformation> 
+				<translate x="0" y="5" z="5" />
+			</transformation>
+			<animation>
+				<animationref id="reta" />
+				<animationref id="rotateBoia" />
+			</animation>
 			<materials>
                 <material id="default_mat" />
             </materials>

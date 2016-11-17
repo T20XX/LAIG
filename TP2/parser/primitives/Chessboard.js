@@ -16,7 +16,7 @@ function Chessboard(scene, du, dv, texture, su, sv, c1, c2, cs) {
 	this.c2 = c2;
 	this.cs = cs;
 
-	this.board = new Plane(this.scene,1,1,this.du,this.dv);
+	this.board = new Plane(this.scene,1,1,this.du*4,this.dv*4);
 
 	this.shader = new CGFshader(this.scene.gl, "shaders/Chessboard.vert", "shaders/Chessboard.frag");
 
