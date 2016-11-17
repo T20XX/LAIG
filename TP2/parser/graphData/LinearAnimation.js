@@ -71,7 +71,7 @@ LinearAnimation.prototype.calculateDistance = function(p1, p2) {
 }
 
 LinearAnimation.prototype.calculateAngle = function(p1, p2) {
-   return  Math.atan2(-(p2[2]-p1[2]), p2[0] - p1[0]);
+   return  Math.atan2(p2[0]-p1[0] , p2[2] - p1[2]);
 }
 
 LinearAnimation.prototype.calculateInterpolatePoint = function(p1, p2, t) {

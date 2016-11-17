@@ -227,11 +227,11 @@
         </component>
         <component id = "2cv">
 			<transformation>
-				<translate x="0" y="5" z="5" />
+				<translate x="0" y="0" z="0" />
 			</transformation>
 			<animation>
-				<animationref id="reta" />
-				<animationref id="rotateBoia" />
+				<!--<animationref id="seta" /> 
+				<animationref id="rotateBoia" /> -->
 			</animation>
 			<materials>
                 <material id="default_mat" />

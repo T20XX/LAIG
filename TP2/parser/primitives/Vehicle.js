@@ -25,6 +25,11 @@ Vehicle.prototype.initBuffers = function () {
 	this.carMaterial.setAmbient(0.8,0,0,1);
 	this.carMaterial.setDiffuse(0.5,0,0,1);
 	this.carMaterial.setSpecular(0.5,0,0,1);
+	this.capotMaterial = new CGFappearance(this.scene);
+	this.capotMaterial.setAmbient(1,1,1,1);
+	this.capotMaterial.setDiffuse(0.5,0.5,0.5,1);
+	this.capotMaterial.setSpecular(0.5,0.5,0.5,1);
+	this.capotMaterial.loadTexture("./primitives/capot.jpg");
 	this.guardaLMaterial = new CGFappearance(this.scene);
 	this.guardaLMaterial.setAmbient(1,0,0,1);
 	this.guardaLMaterial.setDiffuse(0.5,0,0,1);
@@ -33,57 +38,62 @@ Vehicle.prototype.initBuffers = function () {
 	this.capotaMaterial.setAmbient(1,1,1,1);
 	this.capotaMaterial.setDiffuse(0.5,0.5,0.5,1);
 	this.capotaMaterial.setSpecular(0.5,0.5,0.5,1);
+	this.capotaMaterial.loadTexture("./primitives/capota.png");
 	this.windowMaterial = new CGFappearance(this.scene);
 	this.windowMaterial.setAmbient(1,1,1,1);
 	this.windowMaterial.setDiffuse(0.5,0.5,0.5,1);
 	this.windowMaterial.setSpecular(0.5,0.5,0.5,1);
 	this.windowMaterial.loadTexture("./primitives/vidroFrenteTex.jpg");
-	//this.windowMaterial.setTextureWrap('CLAMP_TO_EDGE','CLAMP_TO_EDGE');
 
 	this.capotaControlPoints=[
-		[-1.5,		0,	-0.5],
-		[-1.5,		0,	0.5],
-		[-0.3,	2,		-0.5],
-		[-0.3,	2,		0.5],
-		[0.5,		1,		-0.4],
-		[0.5,		1,		0.4]
+		[0.5,		0,	-1.5],
+		[-0.5,		0,	-1.5],
+		[0.5,		2,		-0.3],
+		[-0.5,		2,		-0.3],
+		[0.4,		1,		0.5],
+		[-0.4,		1,		0.5]
 	];
 	this.capota = new Patch(this.scene,1,2,1,10,this.capotaControlPoints);
         
        this.rightSideCP=[
-		[-1.5,	0,	0.5],
-		[-1.5,	0,	0.5],
-		[-0.3,	2,	0.5],
-		[-0.3,	0,	0.5],
-		[0.5, 1,	0.4],
-		[0.5, 0, 0.4],
+		[0.5,	0,	-1.5],
+		[0.5,	0,	-1.5],
+		[0.5,	0,	-0.3],
+		[0.5,	2,	-0.3],
+		[0.4, 	0, 	0.5],
+		[0.4, 	1,	0.5]
        ];
 
 	this.rightSide = new Patch(this.scene, 1,2,1,10, this.rightSideCP);
 
 	this.leftSideCP=[
-		[-1.5,	0,	-0.5],
-		[-1.5,	0,	-0.5],
-		[-0.3,	0,	-0.5],
-		[-0.3,	2,	-0.5],
-		[0.5, 0, -0.4],
-		[0.5, 1,	-0.4],
+		[-0.5,	0,	-1.5],
+		[-0.5,	0,	-1.5],
+		[-0.5,	2,	-0.3],
+		[-0.5,	0,	-0.3],
+		[-0.4, 	1,	0.5],
+		[-0.4, 	0, 	0.5]
        ];
 
        this.leftSide = new Patch(this.scene, 1,2,1,10,this.leftSideCP);
      this.vidroFrente = new Plane(this.scene, 0.8, 0.5, 1, 1);   
 
      this.capotControlPoints=[
-		[0.5,		0.5,	-0.4],
-		[0.5,		0.5,	0.4],
-		[1.3,	0.5,		-0.4],
-		[1.3,	0.5,		0.4],
-		[1.5,		0,		-0.3],
-		[1.5,		0,		0.3]
+		[0.4,		0.5,	0.5],
+		[0,		0.5,	0.5],
+		[-0.4,		0.5,	0.5],
+		
+		[0.4,	0.5,		1.3],
+		[0,	0.5,		1.3],
+		[-0.4,	0.5,		1.3],
+		
+		[0.3,		0,		1.5],
+		[0,		0,		1.5],
+		[-0.3,		0,		1.5]
 	];
-	this.capot = new Patch(this.scene,1,2,1,10,this.capotControlPoints);
+	this.capot = new Patch(this.scene,2,2,1,10,this.capotControlPoints);
   
-  this.pneu = new Torus(this.scene,0.15,0.3,10,10);
+  this.pneu = new Torus(this.scene,0.15,0.3,20,10);
 	
 	this.guardaLamasECP=[
 		[0.5,	0,	-0.5],
@@ -99,7 +109,7 @@ Vehicle.prototype.initBuffers = function () {
 		[1.5, 	0,	-0.5],
 		[1.5, 	0,	-0.3],
 	];
-	this.guardaLamasE = new Patch(this.scene,2,3,5,10, this.guardaLamasECP);
+	this.guardaLamasE = new Patch(this.scene,2,3,5,20, this.guardaLamasECP);
 	
 		this.guardaLamasDCP=[
 		[0.5,	0,	0.4],
@@ -117,7 +127,7 @@ Vehicle.prototype.initBuffers = function () {
 	];
 this.guardaLamasD = new Patch(this.scene,2,3,5,10, this.guardaLamasDCP);
 
-	this.tube = new Cylinder(this.scene, 0.15, 0.15, 1.1, 6, 1);
+	this.tube = new Cylinder(this.scene, 0.15, 0.15, 1.1, 10, 1);
 
 	this.triangleD = new Triangle(this.scene, 0.5, 0, -0.4, 0.5, 0.5, -0.4, 1.1, 0.4, -0.4) ;
 	this.triangleE = new Triangle(this.scene,  1.1, 0.4, 0.4, 0.5, 0.5, 0.4, 0.5, 0, 0.4) ;
@@ -132,43 +142,38 @@ Vehicle.prototype.display = function(){
 
 	this.scene.pushMatrix();
 		this.windowMaterial.apply();
-		this.scene.translate(0.5, 0.75, 0);
-		this.scene.rotate(Math.PI/2, 0, 1, 0);
-		this.scene.rotate(Math.PI,0,0,1);
+		this.scene.translate(0, 0.75, 0.5);
+		//this.scene.rotate(Math.PI/2, 0, 1, 0);
+		this.scene.rotate(-Math.PI,0,0,1);
 		this.vidroFrente.display();
 	this.scene.popMatrix();
 	
 	this.scene.pushMatrix();
+		this.scene.rotate(Math.PI/2,0,1,0);
+   
 		this.pneuMaterial.apply();
-	    this.scene.pushMatrix();
+		this.scene.pushMatrix();
+			this.scene.translate(-1,0,-0.5);
+			this.pneu.display();
+		this.scene.popMatrix();
 
-            this.scene.pushMatrix();
-                this.scene.translate(-1,0,-0.5);
-                this.pneu.display();
-            this.scene.popMatrix();
+		this.scene.pushMatrix();
+			this.scene.translate(-1,0,0.5);
+			this.pneu.display();
+		this.scene.popMatrix();
 
-            this.scene.pushMatrix();
-                this.scene.translate(-1,0,0.5);
-                this.pneu.display();
-            this.scene.popMatrix();
+		this.scene.pushMatrix();
+			this.scene.translate(1,0,-0.5);
+			this.pneu.display();
+		this.scene.popMatrix();
 
-            this.scene.pushMatrix();
-                this.scene.translate(1,0,-0.5);
-                this.pneu.display();
-            this.scene.popMatrix();
+		this.scene.pushMatrix();
+			this.scene.translate(1,0,0.5);
+			this.pneu.display();
+		this.scene.popMatrix();
 
-            this.scene.pushMatrix();
-                this.scene.translate(1,0,0.5);
-                this.pneu.display();
-            this.scene.popMatrix();
 
-            this.scene.rotate(Math.PI/2,0,0,1);
-        this.scene.popMatrix();
-	this.scene.popMatrix();
-
-	this.scene.pushMatrix();
 		this.tubeMaterial.apply();
-
         this.scene.pushMatrix();
             this.scene.translate(-1,0,-0.55);
             this.tube.display();
@@ -180,6 +185,7 @@ Vehicle.prototype.display = function(){
         this.scene.popMatrix();
 	this.scene.popMatrix();
 
+	
 	this.scene.pushMatrix();
 		this.guardaLMaterial.apply();
 		this.guardaLamasE.display();
@@ -187,8 +193,13 @@ Vehicle.prototype.display = function(){
 	this.scene.popMatrix();
 
 	this.scene.pushMatrix();
-		this.carMaterial.apply();
+		this.capotMaterial.apply();
 		this.capot.display();
+	this.scene.popMatrix();
+
+
+	this.scene.pushMatrix();
+		this.carMaterial.apply();
 		this.triangleD.display();
 		this.triangleE.display();
 		this.rightSide.display();
