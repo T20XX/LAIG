@@ -47,20 +47,22 @@ Vehicle.prototype.initBuffers = function () {
 
 	this.capotaControlPoints=[
 		[0.5,		0,	-1.5],
-		[-0.5,		0,	-1.5],
 		[0.5,		2,		-0.3],
-		[-0.5,		2,		-0.3],
 		[0.4,		1,		0.5],
+		
+		[-0.5,		0,	-1.5],
+		[-0.5,		2,		-0.3],
 		[-0.4,		1,		0.5]
 	];
 	this.capota = new Patch(this.scene,1,2,1,10,this.capotaControlPoints);
         
        this.rightSideCP=[
 		[0.5,	0,	-1.5],
-		[0.5,	0,	-1.5],
 		[0.5,	0,	-0.3],
-		[0.5,	2,	-0.3],
 		[0.4, 	0, 	0.5],
+		
+		[0.5,	0,	-1.5],
+		[0.5,	2,	-0.3],
 		[0.4, 	1,	0.5]
        ];
 
@@ -68,69 +70,87 @@ Vehicle.prototype.initBuffers = function () {
 
 	this.leftSideCP=[
 		[-0.5,	0,	-1.5],
-		[-0.5,	0,	-1.5],
 		[-0.5,	2,	-0.3],
-		[-0.5,	0,	-0.3],
 		[-0.4, 	1,	0.5],
+		
+		[-0.5,	0,	-1.5],
+		[-0.5,	0,	-0.3],
 		[-0.4, 	0, 	0.5]
-       ];
+	];
 
-       this.leftSide = new Patch(this.scene, 1,2,1,10,this.leftSideCP);
-     this.vidroFrente = new Plane(this.scene, 0.8, 0.5, 1, 1);   
+	this.leftSide = new Patch(this.scene, 1,2,1,10,this.leftSideCP);
+	this.vidroFrente = new Plane(this.scene, 0.8, 0.5, 1, 1);   
 
-     this.capotControlPoints=[
-		[0.4,		0.5,	0.5],
-		[0,		0.5,	0.5],
+	this.capotControlPoints=[
+		[-0.3,		0,		1.4],
+		[-0.4,		0.3,	1.5],
 		[-0.4,		0.5,	0.5],
 		
-		[0.4,	0.5,		1.3],
-		[0,	0.5,		1.3],
-		[-0.4,	0.5,		1.3],
+		[-0.3,		0,		1.5],
+		[-0.38,		0.5,	1.5],
+		[-0.38,		0.5,	0.5],
 		
 		[0.3,		0,		1.5],
-		[0,		0,		1.5],
-		[-0.3,		0,		1.5]
+		[0.38,		0.5,	1.5],
+		[0.38,		0.5,	0.5],
+		
+		[0.3,		0,		1.4],
+		[0.4,		0.3,	1.5],
+		[0.4,		0.5,	0.5]
 	];
-	this.capot = new Patch(this.scene,2,2,1,10,this.capotControlPoints);
+	this.capot = new Patch(this.scene,3,2,3,10,this.capotControlPoints);
   
-  this.pneu = new Torus(this.scene,0.15,0.3,20,10);
+	this.pneu = new Torus(this.scene,0.15,0.3,20,10);
 	
 	this.guardaLamasECP=[
-		[0.5,	0,	-0.5],
-		[0.5,	0,	-0.45],
-		[0.5,	0,	-0.4],
-		[0.6,	-0.1,	-0.5],
-		[0.6,	-0.1,	-0.45],
-		[0.6,	-0.1,	-0.4],
-		[1,	0.7,	-0.6],
-		[1,	1,	-0.5],
-		[1,	1,	-0.4],
-		[1.3, 	0,	-0.6],
-		[1.5, 	0,	-0.5],
-		[1.5, 	0,	-0.3],
+		[-0.6, 		0,		1.3],
+		[-0.6,		0.7,	1],
+		[-0.5,		-0.1,	0.6],
+		[-0.5,		0,		0.5],
+		
+		
+		[-0.5, 		0,		1.4],
+		[-0.5,		0.9,		1],
+		[-0.45,		-0.1,	0.6],
+		[-0.45,		0,		0.5],
+		
+		
+		[-0.3, 		0,		1.4],
+		[-0.4,			0.9,	1],
+		[-0.4,		-0.1,	0.6],
+		[-0.4,		0,		0.5]
 	];
 	this.guardaLamasE = new Patch(this.scene,2,3,5,20, this.guardaLamasECP);
 	
-		this.guardaLamasDCP=[
-		[0.5,	0,	0.4],
-		[0.5,	0,	0.45],
-		[0.5,	0,	0.5],
-		[0.6,	-0.1,	0.4],
-		[0.6,	-0.1,	0.45],
-		[0.6,	-0.1,	0.5],
-		[1,	1,	0.4],
-		[1,	1,	0.5],
-		[1,	0.7,	0.6],
-		[1.5, 	0,	0.3],
-		[1.5, 	0,	0.5],
-		[1.3, 	0,	0.6],
+	this.guardaLamasDCP=[
+		[0.5,		0,		0.5],
+		[0.5,		-0.1,	0.6],
+		[0.6,		0.7,	1],
+		[0.6, 		0,		1.3],
+		
+		
+		[0.45,		0,		0.5],
+		[0.45,		-0.1,	0.6],
+		[0.5,		0.9,		1],
+		[0.5, 		0,		1.4],
+		
+		
+		[0.4,		0,		0.5],
+		[0.4,		-0.1,	0.6],
+		[0.4,		0.9,	1],
+		[0.3, 		0,		1.4]
 	];
-this.guardaLamasD = new Patch(this.scene,2,3,5,10, this.guardaLamasDCP);
+	this.guardaLamasD = new Patch(this.scene,2,3,5,10, this.guardaLamasDCP);
 
 	this.tube = new Cylinder(this.scene, 0.15, 0.15, 1.1, 10, 1);
 
-	this.triangleD = new Triangle(this.scene, 0.5, 0, -0.4, 0.5, 0.5, -0.4, 1.1, 0.4, -0.4) ;
-	this.triangleE = new Triangle(this.scene,  1.1, 0.4, 0.4, 0.5, 0.5, 0.4, 0.5, 0, 0.4) ;
+	this.triangleD = new Triangle(this.scene, 	-0.4, 	0.35, 	1.1,
+												-0.4, 	0.5, 	0.5,	
+												-0.4, 	0,		0.5);
+												
+	this.triangleE = new Triangle(this.scene,   0.4, 	0,	 0.5,
+												0.4, 	0.5, 	0.5,
+												0.4,	0.35,	1.1);
 };
 
 	

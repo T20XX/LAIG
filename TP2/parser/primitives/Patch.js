@@ -67,7 +67,10 @@ Patch.prototype.parseControlPoints = function(cP) {
 				temp.push([cP[i+j*this.orderV].x, cP[i+j*this.orderV].y, cP[i+j*this.orderV].z, 1]); //quando os valores vem do parser
 			else{
 				console.log("tentamos");
-			temp.push([cP[i+j*this.orderV][0], cP[i+j*this.orderV][1], cP[i+j*this.orderV][2], 1]); //quando os valores vem do vehicle
+			temp.push([cP[i*(this.orderV + 1) + j][0],
+					cP[i*(this.orderV + 1) + j][1],
+					cP[i*(this.orderV + 1) + j][2],
+					1]); //quando os valores vem do vehicle
 			}
 		}
 		result.push(temp);
