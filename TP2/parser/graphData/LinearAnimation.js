@@ -4,7 +4,6 @@
 function LinearAnimation(span, controlPoints) {
     Animation.call(this, span);
     this.controlPoints = this.parseControlPoints(controlPoints);
-    console.log(this.controlPoints);
     this.totalDistance = 0;
     this.partialsDistances = [];
     for (var i = 0; i < (this.controlPoints.length - 1); i++) {
@@ -28,16 +27,13 @@ LinearAnimation.prototype.setControlPoints = function(controlPoints) {
 LinearAnimation.prototype.getTransformation = function(deltaTime) {
     var transf = mat4.create();
     if (deltaTime >= this.span) {
-        mat4.translate(transf, transf, this.controlPoints[this.controlPoints.length - 1]);
-        mat4.rotate(transf, transf, this.calculateAngle(this.controlPoints[this.controlPoints.length - 2], this.controlPoints[this.controlPoints.length - 1]), [0, 1, 0]);
+        //mat4.translate(transf, transf, this.controlPoints[this.controlPoints.length - 1]);
+        //mat4.rotate(transf, transf, this.calculateAngle(this.controlPoints[this.controlPoints.length - 2], this.controlPoints[this.controlPoints.length - 1]), [0, 1, 0]);
     }else if (deltaTime >= 0){
     var interPoint;
     var angle;
     var tempDistance = 0;
     for (var i = 0; i < this.partialsDistances.length; i++) {
-    	    console.log(deltaTime);
-
-    console.log((tempDistance + this.partialsDistances[i]) / this.velocity);
 
         if (deltaTime >= ((tempDistance + this.partialsDistances[i]) / this.velocity)) {
             tempDistance += this.partialsDistances[i];
@@ -49,11 +45,11 @@ LinearAnimation.prototype.getTransformation = function(deltaTime) {
             break;
         }
     }
-    console.log(interPoint);
+
     mat4.translate(transf, transf, interPoint);
     mat4.rotate(transf, transf, angle, [0, 1, 0]);
     }
-    console.log(transf);
+
     return transf;
 }
 
@@ -62,7 +58,7 @@ LinearAnimation.prototype.parseControlPoints = function(cP) {
     for (var i = 0; i < cP.length; i++) {
         result.push([cP[i].x, cP[i].y, cP[i].z]);
     }
-    console.log(result);
+    
     return result;
 }
 

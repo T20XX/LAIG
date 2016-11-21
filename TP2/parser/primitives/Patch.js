@@ -38,10 +38,7 @@ Patch.prototype.getKnotsVector = function(degree) {
 Patch.prototype.makeSurface = function (degree1, degree2, parts1, parts2, controlvertexes) {
 		
 	var knots1 = this.getKnotsVector(degree1); 
-	var knots2 = this.getKnotsVector(degree2); 
-	console.log(knots1);
-	console.log("kek");
-	console.log(knots2);
+	var knots2 = this.getKnotsVector(degree2);
 		
 	var nurbsSurface = new CGFnurbsSurface(degree1, degree2, knots1, knots2, controlvertexes); 
 	
@@ -66,7 +63,6 @@ Patch.prototype.parseControlPoints = function(cP) {
 			if(cP[0].x != null)
 				temp.push([cP[i+j*this.orderV].x, cP[i+j*this.orderV].y, cP[i+j*this.orderV].z, 1]); //quando os valores vem do parser
 			else{
-				console.log("tentamos");
 			temp.push([cP[i*(this.orderV + 1) + j][0],
 					cP[i*(this.orderV + 1) + j][1],
 					cP[i*(this.orderV + 1) + j][2],
@@ -75,6 +71,5 @@ Patch.prototype.parseControlPoints = function(cP) {
 		}
 		result.push(temp);
 	}
-	console.log(result);
 	return result;
 }

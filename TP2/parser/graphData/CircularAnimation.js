@@ -48,18 +48,20 @@ CircularAnimation.prototype.getRotAng=function()
 
 CircularAnimation.prototype.getTransformation = function(deltaTime){
     var transf = mat4.create();
-
+	if (deltaTime > this.span){
+		//mat4.rotate(transf, transf, this.startAng + this.rotAng, [0, 1, 0]);
+	}else{
 	mat4.translate(transf, transf, vec3.fromValues(this.centerX, this.centerY, this.centerZ));
-	if (deltaTime > this.span)
-		mat4.rotate(transf, transf, this.startAng + this.rotAng, [0, 1, 0]);
-	else
+	
 		mat4.rotate(transf, transf, this.startAng + (deltaTime / this.span) * this.rotAng, [0, 1, 0]);
 
 	mat4.translate(transf, transf, [this.radius, 0, 0]);
-	/*if(this.rotAng > 0)
-		mat4.rotate(transf, transf, Math.PI/2, [0, 1, 0]);
-		else if(this.rotAng < 0)
-		mat4.rotate(transf, transf, -Math.PI/2, [0, 1, 0]);*/
+	if(this.rotAng > 0)
+	{
+		mat4.rotate(transf, transf, Math.PI, [0, 1, 0]);
+
+	}
+	}
 	return transf;
 	
 }

@@ -103,7 +103,6 @@ XMLscene.prototype.graphCameras = function() {
 ;
 XMLscene.prototype.graphMaterials = function() {
     for (id in this.graph.materials) {
-        console.log(id);
         var tempMat = this.graph.materials[id];
         var tempAppearance = new CGFappearance(this);
         tempAppearance.setAmbient(tempMat.getAmbient().r, tempMat.getAmbient().g, tempMat.getAmbient().b, tempMat.getAmbient().a);
