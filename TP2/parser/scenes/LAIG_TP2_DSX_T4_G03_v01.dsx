@@ -5,23 +5,40 @@
     
     <scene root="room" axis_length="7.0"/>
 	
-	<views default="view0">
-		<perspective id="view0" near="0.1" far="500" angle="0.4">
+	<views default="view4">
+		<perspective id="view4" near="0.1" far="500" angle="25">
             <from x="3.75" y="8" z="25" />
             <to x="3.75" y="1" z="0" />
         </perspective>
-		<perspective id="view1" near="0.1" far="500" angle="0.4">
+        <perspective id="view0" near="0.1" far="500" angle="25">
+            <from x="0.75" y="3.5" z="3" />
+            <to x="0.75" y="3.5" z="0" />
+        </perspective>
+        <perspective id="view5" near="0.1" far="500" angle="25">
+            <from x="3" y="3.5" z="3" />
+            <to x="3" y="3.5" z="0" />
+        </perspective>
+        <perspective id="view6" near="0.1" far="500" angle="25">
+            <from x="5.25" y="3.5" z="3" />
+            <to x="5.25" y="3.5" z="0" />
+        </perspective>
+        <perspective id="view7" near="0.1" far="500" angle="25">
+            <from x="7.5" y="3.5" z="3" />
+            <to x="7.5" y="3.5" z="0" />
+        </perspective>
+		<perspective id="view1" near="0.1" far="500" angle="25">
        		<from x="15" y="15" z="15" />
        		<to x="0" y="0" z="0" />
         </perspective>
-		<perspective id="view2" near="0.1" far="500" angle="0.4">
+		<perspective id="view2" near="0.1" far="500" angle="20">
        		<from x="25" y="15" z="-5" />
        		<to x="0" y="0" z="6" />
         </perspective>
-		<perspective id="view3" near="0.1" far="500" angle="0.4">
+		<perspective id="view3" near="0.1" far="500" angle="25">
        		<from x="2.5" y="0.8" z="3" />
        		<to x="0" y="1.5" z="4" />
         </perspective>
+
 	</views>
     
 
@@ -31,19 +48,19 @@
     </illumination>
 
     <lights>
-        <omni id="omni_light_1" enabled="0" >
+        <omni id="omni_light_1" enabled="1" >
             <location x="2" y="3" z="3" w="1" />
             <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
             <specular r="0.1" g="0.1" b="0.1" a="1.0" />
         </omni>
-         <omni id="omni_light_2" enabled="0" >
+         <omni id="omni_light_2" enabled="1" >
             <location x="4.5" y="3" z="3" w="1" />
             <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
             <specular r="0.1" g="0.1" b="0.1" a="1.0" />
         </omni>
-        <spot id="spot_light_1" enabled="1" angle="20" exponent="2">
+        <spot id="spot_light_1" enabled="0" angle="20" exponent="2">
             <target x="0.5" y="0" z="0.5" />
             <location x="0.5" y="1.8" z="0.5" />
             <ambient r="0" g="0" b="0" a="1.0" />
@@ -54,7 +71,7 @@
     
 	 <textures>
 		<texture id="stairsText" file="./textures/stairsWood.jpg" length_s="1" length_t="1" />
-		<texture id="tableText" file="./textures/table.png" length_s="1" length_t="1" />
+		<texture id="tableText" file="./textures/table.png" length_s="2" length_t="2" />
 		<texture id="chairText" file="./textures/chair.jpg" length_s="1" length_t="1" />
 		<texture id="cakeText" file="./textures/cake.jpg" length_s="1" length_t="1" />
 		<texture id="sofaText" file="./textures/sofa.jpg" length_s="1" length_t="1" />
@@ -100,6 +117,56 @@
         </transformation>
         
     </transformations>
+
+    <animations>
+    <animation id="seta" span="20" type="linear">
+        <controlpoint xx="0" yy="0" zz="0" />
+        <controlpoint xx="5" yy="0" zz="0" />
+        <controlpoint xx="0" yy="0" zz="0" />
+        <controlpoint xx="0" yy="0" zz="5" />
+        <controlpoint xx="0" yy="0" zz="0" />
+		<controlpoint xx="6" yy="3" zz="3" />
+        <controlpoint xx="6" yy="3" zz="7" />
+        <controlpoint xx="4" yy="2" zz="6" />
+        <controlpoint xx="2" yy="1" zz="4" />
+        <controlpoint xx="4" yy="2" zz="6" />
+        <controlpoint xx="6" yy="3" zz="7" />
+        <controlpoint xx="6" yy="3" zz="3" />
+        <controlpoint xx="0" yy="0" zz="0" />
+        <controlpoint xx="5" yy="0" zz="0" />
+    </animation>
+    <animation id="reta1" span="2" type="linear">
+        <controlpoint xx="0" yy="0" zz="0" />
+        <controlpoint xx="0" yy="0" zz="5" />
+    </animation>
+    <animation id="turnLeft" span="1.5" type="circular"
+		centerx="2" centery="0" centerz="5"
+		radius="2" startang="-180" rotang="90" />
+	<animation id="reta2" span="6" type="linear">
+        <controlpoint xx="2" yy="0" zz="7" />
+        <controlpoint xx="4" yy="0" zz="7" />
+        <controlpoint xx="6" yy="0" zz="8" />
+        <controlpoint xx="7" yy="0" zz="10" />
+        <controlpoint xx="7" yy="0" zz="11" />
+    </animation>
+    <animation id="invertTurn" span="1.5" type="circular"
+		centerx="5" centery="0" centerz="11"
+		radius="2" startang="0" rotang="-90" />
+	<animation id="reta3" span="6" type="linear">
+        <controlpoint xx="5" yy="0" zz="13" />
+        <controlpoint xx="4.9" yy="0" zz="13" />
+        <controlpoint xx="4.8" yy="2" zz="13" />
+        <controlpoint xx="4" yy="3" zz="8" />
+        <controlpoint xx="3" yy="4" zz="5" />
+        <controlpoint xx="5" yy="5" zz="3" />
+    </animation>
+    <animation id="spin" span="3" type="circular"
+		centerx="5" centery="5" centerz="3"
+		radius="0" startang="-45" rotang="540" />
+    <animation id="rotateBoia" span="20" type="circular"
+		centerx="2" centery="0" centerz="0"
+		radius="0" startang="0" rotang="360" />
+	</animations>
 	
 	<primitives>
 		<primitive id="originRectangle">
@@ -120,6 +187,62 @@
 		<primitive id = "torus">
 			<torus inner="1" outer="2" slices="20" loops="20" />
 		</primitive>
+
+		<primitive id = "plano">
+			<plane dimX="7.5" dimY="2.5" partsX="10" partsY="5"/>
+		</primitive>
+		
+		<primitive id = "curva">
+        <patch orderU="2" orderV="3" partsU="6" partsV="9" >
+            <controlpoint x="0" y="0" z="0" />
+           	<controlpoint x="0" y="0" z="2" />
+            <controlpoint x="0" y="0" z="4" />
+           	<controlpoint x="2" y="2" z="0" />
+            <controlpoint x="2" y="2" z="2" />
+           	<controlpoint x="2" y="2" z="4" />
+            <controlpoint x="5" y="4" z="0" />
+           	<controlpoint x="5" y="4" z="2" />
+            <controlpoint x="5" y="4" z="4" />
+           	<controlpoint x="6" y="0" z="0" />
+            <controlpoint x="6" y="0" z="2" />
+           	<controlpoint x="6" y="0" z="4" />
+        </patch>
+		</primitive>
+		<primitive id = "car">
+        	<vehicle />
+		</primitive>
+
+		<primitive id = "tabuleiro">
+        <chessboard du="12" dv="12" textureref="stairsText" su="2" sv="1">
+                   <c1 r="0" g="0" b="0" a="1" />
+                   <c2 r="1" g="1" b="1" a="1" />
+                   <cs r="0.5" g="0.5" b="0.5" a="1" />
+ 	 	</chessboard>
+		</primitive>
+
+		<primitive id = "tabuleiroTeste1">
+        <chessboard du="15" dv="12" textureref="stairsText" su="14" sv="0">
+                   <c1 r="0" g="1" b="" a="1" />
+                   <c2 r="1" g="0" b="0" a="1" />
+                   <cs r="1" g="1" b="1" a="1" />
+ 	 	</chessboard>
+		</primitive>		
+
+		<primitive id = "tabuleiroTeste2">
+        <chessboard du="6" dv="9" textureref="stairsText" su="5" sv="8">
+                   <c1 r="0.5" g="0" b="0.8" a="1" />
+                   <c2 r="0" g="0.5" b="0.8" a="1" />
+                   <cs r="0" g="0" b="0.5" a="1" />
+ 	 	</chessboard>
+		</primitive>
+
+		<primitive id = "tabuleiroTeste3" >  
+	    <chessboard du="3" dv="2" textureref="stairsText" su="1" sv="0">
+                  <c1 r="0" g="0" b="1" a="1" />
+                  <c2 r="1" g="1" b="0" a="1" />
+                  <cs r="0" g="1" b="0" a="1" />
+ 	 	</chessboard>
+ 	 	</primitive>
         
     </primitives>
 	
@@ -148,6 +271,82 @@
 				<componentref id="door" />
 				<componentref id="ball" />
 				<componentref id="basketball" />
+				<componentref id="2cv" />
+				<componentref id="tabuleiroXadrez" />
+				<componentref id="tabuleiroPTeste" />
+				<componentref id="tabuleiroPTeste1" />
+				<componentref id="tabuleiroPTeste2" />
+            </children>
+        </component>
+		<component id = "tabuleiroXadrez">
+			<transformation>
+				<translate x="0.75" y="3.5" z="0" />
+			</transformation>
+			<materials>
+                <material id="default_mat" />
+            </materials>
+            <texture id="stripesText" />
+            <children>
+                <primitiveref id="tabuleiro" />      
+            </children>
+        </component>
+
+		<component id = "tabuleiroPTeste">
+			<transformation>
+				<translate x="3" y="3.5" z="0" />
+			</transformation>
+			<materials>
+                <material id="default_mat" />
+            </materials>
+            <texture id="stripesText" />
+            <children>
+                <primitiveref id="tabuleiroTeste1" />      
+            </children>
+        </component>
+
+        <component id = "tabuleiroPTeste1">
+			<transformation>
+				<translate x="5.25" y="3.5" z="0" />
+			</transformation>
+			<materials>
+                <material id="default_mat" />
+            </materials>
+            <texture id="stripesText" />
+            <children>
+                <primitiveref id="tabuleiroTeste2" />      
+            </children>
+        </component>
+
+        <component id = "tabuleiroPTeste2">
+			<transformation>
+				<translate x="7.5" y="3.5" z="0" />
+			</transformation>
+			<materials>
+                <material id="default_mat" />
+            </materials>
+            <texture id="stripesText" />
+            <children>
+                <primitiveref id="tabuleiroTeste3" />      
+            </children>
+        </component>
+        <component id = "2cv">
+			<transformation>
+				<translate x="0.65" y="0.3" z="1.5" />
+			</transformation>
+			<animation>
+				<animationref id = "reta1" />
+				<animationref id = "turnLeft" />
+				<animationref id = "reta2" />
+				<animationref id = "invertTurn" />
+				<animationref id = "reta3" />
+				<animationref id = "spin" />
+			</animation>
+			<materials>
+                <material id="default_mat" />
+            </materials>
+            <texture id="stripesText" />
+            <children>
+                <primitiveref id="car" />      
             </children>
         </component>
 		
@@ -183,14 +382,14 @@
         </component>
 		<component id="backWall">
             <transformation>
-				<scale x="7.5" y="2.5" z="1" />
+				<translate x="3.75" y="1.25" z="0" />
 			</transformation>
             <materials>
                 <material id="wallMat" />
             </materials>
             <texture id="none" />
             <children>
-                <primitiveref id="originRectangle" />
+                <primitiveref id="plano" />
             </children>
         </component>
 		<component id="rightWall">
@@ -209,16 +408,15 @@
         </component>
 		<component id="frontWall">
             <transformation>
-				<translate x="7.5" y="0" z="6" />
-				<rotate axis="y" angle="180" />
-				<scale x="7.5" y="2.5" z="1" />
+				<translate x="3.75" y="1.25" z="6" />
+				<rotate axis="y" angle="-180" />
 			</transformation>
             <materials>
                 <material id="wallMat" />
             </materials>
             <texture id="none" />
             <children>
-                <primitiveref id="originRectangle" />
+                <primitiveref id="plano" />
             </children>
         </component>
 		<component id="floor">
@@ -371,7 +569,7 @@
 			<materials>
 				<material id="inherit" />
 			</materials>
-			<texture id="tableText" />
+			<texture id="inherit" />
 			<children>
 				<componentref id="tableLeg" />
 			</children>
@@ -523,7 +721,7 @@
                 <material id="default_mat" />
             </materials>
                          
-            <texture id="inherit" />
+            <texture id="floorText" />
             
             <children>
                 <componentref id="cat1" />
@@ -538,7 +736,7 @@
 		
         <component id="cake">
             <transformation>
-				<translate x="1.5" y="0" z="0.75" />
+				<translate x="1.5" y="0.1" z="0.75" />
 			</transformation>
             <materials>
                 <material id="default_mat" />
@@ -897,7 +1095,7 @@
 
 		<component id="sofaArm2">
 			<transformation>
-				<translate x="0.5" y="0.5" z="1.5" />
+				<translate x="0.5" y="0.5" z="1.3" />
 				<scale x="0.5" y="0.2" z="0.2" />
 			</transformation>
 			<materials>

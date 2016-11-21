@@ -38,10 +38,7 @@ Patch.prototype.getKnotsVector = function(degree) {
 Patch.prototype.makeSurface = function (degree1, degree2, parts1, parts2, controlvertexes) {
 		
 	var knots1 = this.getKnotsVector(degree1); 
-	var knots2 = this.getKnotsVector(degree2); 
-	console.log(knots1);
-	console.log("kek");
-	console.log(knots2);
+	var knots2 = this.getKnotsVector(degree2);
 		
 	var nurbsSurface = new CGFnurbsSurface(degree1, degree2, knots1, knots2, controlvertexes); 
 	
@@ -63,10 +60,16 @@ Patch.prototype.parseControlPoints = function(cP) {
 	for(var i = 0; i <= this.orderU; i++){
 		var temp = [];
 		for(var j = 0; j <= this.orderV; j++){
-		temp.push([cP[i+j*this.orderV].x, cP[i+j*this.orderV].y, cP[i+j*this.orderV].z, 1]);
+			if(cP[0].x != null)
+				temp.push([cP[i+j*this.orderV].x, cP[i+j*this.orderV].y, cP[i+j*this.orderV].z, 1]); //quando os valores vem do parser
+			else{
+			temp.push([cP[i*(this.orderV + 1) + j][0],
+					cP[i*(this.orderV + 1) + j][1],
+					cP[i*(this.orderV + 1) + j][2],
+					1]); //quando os valores vem do vehicle
+			}
 		}
 		result.push(temp);
 	}
-	console.log(result);
 	return result;
 }
