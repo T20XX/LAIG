@@ -5,14 +5,26 @@
     
     <scene root="room" axis_length="7.0"/>
 	
-	<views default="view0">
-		<perspective id="view0" near="0.1" far="500" angle="25">
-            <from x="0" y="0" z="3" />
-            <to x="0" y="0" z="0" />
-        </perspective>
+	<views default="view4">
 		<perspective id="view4" near="0.1" far="500" angle="25">
             <from x="3.75" y="8" z="25" />
             <to x="3.75" y="1" z="0" />
+        </perspective>
+        <perspective id="view0" near="0.1" far="500" angle="25">
+            <from x="0.75" y="3.5" z="3" />
+            <to x="0.75" y="3.5" z="0" />
+        </perspective>
+        <perspective id="view5" near="0.1" far="500" angle="25">
+            <from x="3" y="3.5" z="3" />
+            <to x="3" y="3.5" z="0" />
+        </perspective>
+        <perspective id="view6" near="0.1" far="500" angle="25">
+            <from x="5.25" y="3.5" z="3" />
+            <to x="5.25" y="3.5" z="0" />
+        </perspective>
+        <perspective id="view7" near="0.1" far="500" angle="25">
+            <from x="7.5" y="3.5" z="3" />
+            <to x="7.5" y="3.5" z="0" />
         </perspective>
 		<perspective id="view1" near="0.1" far="500" angle="25">
        		<from x="15" y="15" z="15" />
@@ -26,6 +38,7 @@
        		<from x="2.5" y="0.8" z="3" />
        		<to x="0" y="1.5" z="4" />
         </perspective>
+
 	</views>
     
 
@@ -177,13 +190,38 @@
 		<primitive id = "car">
         	<vehicle />
 		</primitive>
+
 		<primitive id = "tabuleiro">
         <chessboard du="12" dv="12" textureref="stairsText" su="2" sv="1">
-                   <c1 r="0.5" g="0" b="0" a="1" />
-                   <c2 r="0" g="0.5" b="0" a="1" />
+                   <c1 r="0" g="0" b="0" a="1" />
+                   <c2 r="1" g="1" b="1" a="1" />
+                   <cs r="0.5" g="0.5" b="0.5" a="1" />
+ 	 	</chessboard>
+		</primitive>
+
+		<primitive id = "tabuleiroTeste1">
+        <chessboard du="15" dv="12" textureref="stairsText" su="14" sv="0">
+                   <c1 r="0" g="1" b="" a="1" />
+                   <c2 r="1" g="0" b="0" a="1" />
+                   <cs r="1" g="1" b="1" a="1" />
+ 	 	</chessboard>
+		</primitive>		
+
+		<primitive id = "tabuleiroTeste2">
+        <chessboard du="6" dv="9" textureref="stairsText" su="5" sv="8">
+                   <c1 r="0.5" g="0" b="0.8" a="1" />
+                   <c2 r="0" g="0.5" b="0.8" a="1" />
                    <cs r="0" g="0" b="0.5" a="1" />
  	 	</chessboard>
 		</primitive>
+
+		<primitive id = "tabuleiroTeste3" >  
+	    <chessboard du="3" dv="2" textureref="stairsText" su="1" sv="0">
+                  <c1 r="0" g="0" b="1" a="1" />
+                  <c2 r="1" g="1" b="0" a="1" />
+                  <cs r="0" g="1" b="0" a="1" />
+ 	 	</chessboard>
+ 	 	</primitive>
         
     </primitives>
 	
@@ -214,11 +252,15 @@
 				<componentref id="basketball" />
 				<componentref id="2cv" />
 				<componentref id="tabuleiroXadrez" />
+				<componentref id="tabuleiroPTeste" />
+				<componentref id="tabuleiroPTeste1" />
+				<componentref id="tabuleiroPTeste2" />
             </children>
         </component>
+
 		<component id = "tabuleiroXadrez">
 			<transformation>
-				<translate x="0" y="0" z="0" />
+				<translate x="0.75" y="3.5" z="0" />
 			</transformation>
 			<materials>
                 <material id="default_mat" />
@@ -228,6 +270,46 @@
                 <primitiveref id="tabuleiro" />      
             </children>
         </component>
+
+		<component id = "tabuleiroPTeste">
+			<transformation>
+				<translate x="3" y="3.5" z="0" />
+			</transformation>
+			<materials>
+                <material id="default_mat" />
+            </materials>
+            <texture id="stripesText" />
+            <children>
+                <primitiveref id="tabuleiroTeste1" />      
+            </children>
+        </component>
+
+        <component id = "tabuleiroPTeste1">
+			<transformation>
+				<translate x="5.25" y="3.5" z="0" />
+			</transformation>
+			<materials>
+                <material id="default_mat" />
+            </materials>
+            <texture id="stripesText" />
+            <children>
+                <primitiveref id="tabuleiroTeste2" />      
+            </children>
+        </component>
+
+        <component id = "tabuleiroPTeste2">
+			<transformation>
+				<translate x="7.5" y="3.5" z="0" />
+			</transformation>
+			<materials>
+                <material id="default_mat" />
+            </materials>
+            <texture id="stripesText" />
+            <children>
+                <primitiveref id="tabuleiroTeste3" />      
+            </children>
+        </component>
+
         <component id = "2cv">
 			<transformation>
 				<translate x="0.65" y="0.3" z="1.5" />
@@ -287,6 +369,7 @@
                 <primitiveref id="plano" />
             </children>
         </component>
+
 		<component id="rightWall">
             <transformation>
 				<translate x="7.5" y="0" z="0" />
@@ -303,7 +386,8 @@
         </component>
 		<component id="frontWall">
             <transformation>
-				<translate x="0" y="0" z="0" />
+				<translate x="3.75" y="1.25" z="6" />
+				<rotate axis="y" angle="-180" />
 			</transformation>
             <materials>
                 <material id="wallMat" />
@@ -313,6 +397,7 @@
                 <primitiveref id="plano" />
             </children>
         </component>
+
 		<component id="floor">
             <transformation>
 				<translate x="0" y="0" z="6" />
