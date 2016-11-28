@@ -29,8 +29,10 @@ XMLscene.prototype.init = function(application) {
     //Animation
     this.setUpdatePeriod(DELTA_TIME);
     this.currTime = 0;
+    
+    this.chessboard = new Chessboard(this, 12, 12, new Texture("./textures/stairsText.png", 1, 1), 0, 0, [1,1,1,1],[0,0,0,1], [0.5,0.5,1,1]);
+    this.black_piece = new Cylinder(this, 0.5, 0.5, 4, 10, 1);
 }
-;
 XMLscene.prototype.setInterface = function(interface) {
     this.interface = interface;
 }
@@ -157,7 +159,7 @@ XMLscene.prototype.display = function() {
     // Apply transformations corresponding to the camera position relative to the origin
     this.applyViewMatrix();
     // Draw axis
-    this.axis.display();
+    //this.axis.display();
     this.setDefaultAppearance();
     // ---- END Background, camera and axis setup
     // it is important that things depending on the proper loading of the graph
@@ -175,6 +177,15 @@ XMLscene.prototype.display = function() {
         this.processGraph(this.graph.root, new CGFappearance());
     }
     ;
+    this.pushMatrix();
+    this.translate(5.5, 5.5,0);
+    this.scale(12,12,1);
+    this.chessboard.display();
+    this.popMatrix();
+    this.pushMatrix();
+    this.translate(1,1,0);
+    this.black_piece.display();
+    this.popMatrix();
 }
 ;
 XMLscene.prototype.processGraph = function(nodeName, parentAppearance, parentTexture) {

@@ -237,7 +237,7 @@
 		</primitive>
 
 		<primitive id = "tabuleiroTeste3" >  
-	    <chessboard du="3" dv="2" textureref="stairsText" su="1" sv="0">
+	    <chessboard du="3" dv="2" textureref="stairsText" su="0" sv="0">
                   <c1 r="0" g="0" b="1" a="1" />
                   <c2 r="1" g="1" b="0" a="1" />
                   <cs r="0" g="1" b="0" a="1" />
