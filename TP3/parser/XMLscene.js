@@ -29,6 +29,10 @@ XMLscene.prototype.init = function(application) {
     //Animation
     this.setUpdatePeriod(DELTA_TIME);
     this.currTime = 0;
+	
+	
+	// Enables picking
+	this.setPickEnabled(true);
 }
 ;
 XMLscene.prototype.setInterface = function(interface) {
@@ -144,9 +148,31 @@ XMLscene.prototype.onGraphLoaded = function() {
     this.graphLights();
     this.graphMaterials();
     this.graphTextures();
+};
+
+
+XMLscene.prototype.logPicking = function ()
+{
+	if (this.pickMode == false) {
+		if (this.pickResults != null && this.pickResults.length > 0) {
+			for (var i=0; i< this.pickResults.length; i++) {
+				var obj = this.pickResults[i][0];
+				if (obj)
+				{
+					var customId = this.pickResults[i][1];				
+					console.log("Picked object: " + obj + ", with pick id " + customId);
+				}
+			}
+			this.pickResults.splice(0,this.pickResults.length);
+		}		
+	}
 }
-;
+
 XMLscene.prototype.display = function() {
+	// Picking
+	this.logPicking();
+	this.clearPickRegistration();
+	
     // ---- BEGIN Background, camera and axis setup
     // Clear image and depth buffer everytime we update the scene
     this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
@@ -174,9 +200,20 @@ XMLscene.prototype.display = function() {
         }
         this.processGraph(this.graph.root, new CGFappearance());
     }
-    ;
+    /*for (i =0; i<this.objects.length; i++) {
+		this.pushMatrix();
+	
+		this.translate(i*2, 0, 0);
+		this.registerForPick(i, this.objects[i]);
+		
+		this.objects[i].display();
+		this.popMatrix();
+	}*/
+	
 }
-;
+
+
+
 XMLscene.prototype.processGraph = function(nodeName, parentAppearance, parentTexture) {
     var appearance = null ;
     if (nodeName != null && this.graph.components[nodeName] != null ) {
