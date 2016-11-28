@@ -24,9 +24,9 @@ function Chessboard(scene, du, dv, texture, su, sv, c1, c2, cs) {
 	this.shader.setUniformsValues({dv: this.dv});
 	this.shader.setUniformsValues({su: this.su});
 	this.shader.setUniformsValues({sv: this.sv});
-	this.shader.setUniformsValues({c1: vec4.fromValues(c1.r, c1.g, c1.b, c1.a)});
-	this.shader.setUniformsValues({c2: vec4.fromValues(c2.r, c2.g, c2.b, c2.a)});
-	this.shader.setUniformsValues({cs: vec4.fromValues(cs.r, cs.g, cs.b, cs.a)});
+	this.shader.setUniformsValues({c1: this.c1});
+	this.shader.setUniformsValues({c2: this.c2});
+	this.shader.setUniformsValues({cs: this.cs});
 
 	this.appearance = new CGFappearance(this.scene);
 	this.appearance.loadTexture(this.texture.getFile());
