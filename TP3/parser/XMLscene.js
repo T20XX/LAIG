@@ -29,12 +29,18 @@ XMLscene.prototype.init = function(application) {
     //Animation
     this.setUpdatePeriod(DELTA_TIME);
     this.currTime = 0;
-	
-	// Enables picking
-	this.setPickEnabled(true);
     
     this.chessboard = new Chessboard(this, 12, 12, new Texture("./textures/stairsText.png", 1, 1), 0, 0, [1,1,1,1],[0,0,0,1], [0.5,0.5,1,1]);
     this.black_piece = new Cylinder(this, 0.5, 0.5, 4, 10, 1);
+	
+	this.objects = [];
+	
+	for (i = 0; i < 144 ; i++){
+		this.objects.push(new Plane(this, 1, 1, 1, 1));
+	}
+	
+	// Enables picking
+	this.setPickEnabled(false);
 	
 }
 XMLscene.prototype.setInterface = function(interface) {
@@ -172,8 +178,6 @@ XMLscene.prototype.logPicking = function ()
 
 XMLscene.prototype.display = function() {
 	// Picking
-	this.logPicking();
-	this.clearPickRegistration();
 	
     // ---- BEGIN Background, camera and axis setup
     // Clear image and depth buffer everytime we update the scene
@@ -202,17 +206,27 @@ XMLscene.prototype.display = function() {
         }
         this.processGraph(this.graph.root, new CGFappearance());
     }
-    /*for (i =0; i<this.objects.length; i++) {
+
+	this.setPickEnabled(true);
+	
+	for (x =0; x< 12; x++) {
+		for (y =0; y< 12; y++) {
 		this.pushMatrix();
 	
-		this.translate(i*2, 0, 0);
-		this.registerForPick(i, this.objects[i]);
+		this.translate(x, y, -0.1);
+		this.registerForPick(x+y*12+1, this.objects[x*12+y]);
 		
-		this.objects[i].display();
+		this.objects[x*12+y].display();
 		this.popMatrix();
-	}*/
+		}
+	}
 	
-    ;
+	this.logPicking();
+	this.clearPickRegistration();
+	
+		this.setPickEnabled(false);
+
+
     this.pushMatrix();
     this.translate(5.5, 5.5,0);
     this.scale(12,12,1);
@@ -222,6 +236,9 @@ XMLscene.prototype.display = function() {
     this.translate(1,1,0);
     this.black_piece.display();
     this.popMatrix();
+
+		
+    
 }
 
 
