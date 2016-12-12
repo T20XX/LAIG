@@ -40,7 +40,8 @@ XMLscene.prototype.init = function(application) {
 	}
 	
 	// Enables picking
-	this.setPickEnabled(false);
+	this.setPickEnabled(true);
+	getPrologRequest("handshake");
 	
 }
 XMLscene.prototype.setInterface = function(interface) {
@@ -178,7 +179,9 @@ XMLscene.prototype.logPicking = function ()
 
 XMLscene.prototype.display = function() {
 	// Picking
-	
+	this.logPicking();
+	this.clearPickRegistration();
+
     // ---- BEGIN Background, camera and axis setup
     // Clear image and depth buffer everytime we update the scene
     this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
@@ -206,25 +209,19 @@ XMLscene.prototype.display = function() {
         }
         this.processGraph(this.graph.root, new CGFappearance());
     }
-
-	this.setPickEnabled(true);
 	
 	for (x =0; x< 12; x++) {
 		for (y =0; y< 12; y++) {
 		this.pushMatrix();
 	
-		this.translate(x, y, -0.1);
+		if (this.pickMode == true) {
+		this.translate(x, y, +0.1);
 		this.registerForPick(x+y*12+1, this.objects[x*12+y]);
 		
-		this.objects[x*12+y].display();
+		this.objects[x*12+y].display();}
 		this.popMatrix();
 		}
 	}
-	
-	this.logPicking();
-	this.clearPickRegistration();
-	
-		this.setPickEnabled(false);
 
 
     this.pushMatrix();
