@@ -30,18 +30,25 @@ XMLscene.prototype.init = function(application) {
     this.setUpdatePeriod(DELTA_TIME);
     this.currTime = 0;
     
-    this.chessboard = new Chessboard(this, 12, 12, new Texture("./textures/stairsText.png", 1, 1), 0, 0, [1,1,1,1],[0,0,0,1], [0.5,0.5,1,1]);
-    this.black_piece = new Cylinder(this, 0.5, 0.5, 4, 10, 1);
+    this.board = new Chessboard(this, 12, 12, new Texture("./textures/stairsText.png", 1, 1), 0, 0, [1,1,1,1],[0,0,0,1], [0.5,0.5,1,1]);
+    this.blackPieces = [];
+    for (i = 0; i < 20 ; i++){
+        this.blackPieces.push(new Cylinder(this, 0.5, 0.5, 4, 0.5, 1));
+    }
+    //this.black_piece = new Cylinder(this, 0.5, 0.5, 4, 10, 1);
 	
-	this.objects = [];
+	this.pickingCells = [];
 	
 	for (i = 0; i < 144 ; i++){
-		this.objects.push(new Plane(this, 1, 1, 1, 1));
+		this.pickingCells.push(new Plane(this, 1, 1, 1, 1));
 	}
 	
 	// Enables picking
 	this.setPickEnabled(true);
-	getPrologRequest("handshake");
+
+    //Game
+    this.game = new Game(this);
+    this.game.initializeGame(1,1);
 	
 }
 XMLscene.prototype.setInterface = function(interface) {
@@ -216,9 +223,9 @@ XMLscene.prototype.display = function() {
 	
 		if (this.pickMode == true) {
 		this.translate(x, y, +0.1);
-		this.registerForPick(x+y*12+1, this.objects[x*12+y]);
+		this.registerForPick(x+y*12+1, this.pickingCells[x*12+y]);
 		
-		this.objects[x*12+y].display();}
+		this.pickingCells[x*12+y].display();}
 		this.popMatrix();
 		}
 	}
@@ -227,11 +234,40 @@ XMLscene.prototype.display = function() {
     this.pushMatrix();
     this.translate(5.5, 5.5,0);
     this.scale(12,12,1);
-    this.chessboard.display();
+    this.board.display();
     this.popMatrix();
+    var blackPiecesUsed = 0;
+    var whitePiecesUsed = 0;
+    /*for (y = 0; y < 12; y--){
+        for(x = 0; x < 12; x++){
+            console.log(this.game.getBoard());
+            var cell = this.game.getBoard()[11 - y][x];
+            if(cell == 0){
+            }else if(cell == 1){
+
+            }else if(cell == -1){
+                this.pushMatrix();
+                this.translate(y,x,0);
+                this.blackPieces[blackPiecesUsed].display();
+                blackPiecesUsed++;
+                this.popMatrix();
+            }else if(cell > 1){
+
+            }else if(cell < -1){
+                this.pushMatrix();
+                for(i = 0; i < cell; i++){
+                    this.translate(y,x,i*0.5);
+                    this.blackPieces[blackPiecesUsed].display();
+                    blackPiecesUsed++;
+                    this.popMatrix();
+                }
+            }
+        }
+    }*/
     this.pushMatrix();
-    this.translate(1,1,0);
-    this.black_piece.display();
+    //this.translate(1,1,0);
+
+    //this.black_piece.display();
     this.popMatrix();
 
 		

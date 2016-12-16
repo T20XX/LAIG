@@ -107,6 +107,8 @@ print_header_line(_).
 parse_input(handshake, handshake).
 parse_input(legal_move(CurPlayer, Board, Xinitial, Yinitial, Xfinal, Yfinal), true) :-
 	legal_move(CurPlayer, Board, Xinitial, Yinitial, Xfinal, Yfinal).
+parse_input(initializeBoard, Board) :-
+    	board_initialized(Board).
 parse_input(test(C,N), Res) :- test(C,Res,N).
 parse_input(quit, goodbye).
 

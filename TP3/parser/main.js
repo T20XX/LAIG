@@ -35,6 +35,7 @@ serialInclude(['../lib/CGF.js',
 				'./primitives/Vehicle.js',
 				'./primitives/Chessboard.js',
 				'./prolog/Communication.js',
+				'./game/Game.js',
 
 main=function()
 {
