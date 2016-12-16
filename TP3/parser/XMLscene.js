@@ -1,4 +1,4 @@
-var DELTA_TIME = 100;
+var DELTA_TIME = 1000;
 function XMLscene() {
     CGFscene.call(this);
 }
@@ -30,10 +30,14 @@ XMLscene.prototype.init = function(application) {
     this.setUpdatePeriod(DELTA_TIME);
     this.currTime = 0;
     
-    this.board = new Chessboard(this, 12, 12, new Texture("./textures/stairsText.png", 1, 1), 0, 0, [1,1,1,1],[0,0,0,1], [0.5,0.5,1,1]);
+    this.board = new Chessboard(this, 12, 12, new Texture("./textures/stairsWood.jpg", 1, 1), 0, 0, [1,1,1,1],[0,0,0,1], [0.5,0.5,1,1]);
     this.blackPieces = [];
     for (i = 0; i < 20 ; i++){
-        this.blackPieces.push(new Cylinder(this, 0.5, 0.5, 4, 0.5, 1));
+        this.blackPieces.push(new Cylinder(this, 0.5, 0.5, 0.2, 10, 1));
+    }
+    this.whitePieces = [];
+    for (i = 0; i < 20 ; i++){
+        this.whitePieces.push(new Cylinder(this, 0.5, 0.5, 0.2, 10, 1));
     }
     //this.black_piece = new Cylinder(this, 0.5, 0.5, 4, 10, 1);
 	
@@ -47,8 +51,8 @@ XMLscene.prototype.init = function(application) {
 	this.setPickEnabled(true);
 
     //Game
-    this.game = new Game(this);
-    this.game.initializeGame(1,1);
+    //this.game = new Game(this);
+    initializeGameVariables(1,1);
 	
 }
 XMLscene.prototype.setInterface = function(interface) {
@@ -214,19 +218,19 @@ XMLscene.prototype.display = function() {
             }
             this.lights[i].update();
         }
-        this.processGraph(this.graph.root, new CGFappearance());
+        //this.processGraph(this.graph.root, new CGFappearance());
     }
 	
-	for (x =0; x< 12; x++) {
+    for (x =0; x< 12; x++) {
 		for (y =0; y< 12; y++) {
-		this.pushMatrix();
-	
+
 		if (this.pickMode == true) {
-		this.translate(x, y, +0.1);
-		this.registerForPick(x+y*12+1, this.pickingCells[x*12+y]);
-		
-		this.pickingCells[x*12+y].display();}
-		this.popMatrix();
+		    this.pushMatrix();
+                this.translate(x, y, +0.1);
+                this.registerForPick(x+y*12+1, this.pickingCells[x*12+y]);
+                this.pickingCells[x*12+y].display();
+            this.popMatrix();
+		}
 		}
 	}
 
@@ -238,32 +242,44 @@ XMLscene.prototype.display = function() {
     this.popMatrix();
     var blackPiecesUsed = 0;
     var whitePiecesUsed = 0;
-    /*for (y = 0; y < 12; y--){
+    //var cell = board[11][0];
+    var cell;
+    for (y = 0; y < 12; y++){
         for(x = 0; x < 12; x++){
-            console.log(this.game.getBoard());
-            var cell = this.game.getBoard()[11 - y][x];
+            cell = board[11-y][x];
+            //console.log(cell);
             if(cell == 0){
             }else if(cell == 1){
-
+                this.pushMatrix();
+                this.translate(x,y,0);
+                this.whitePieces[whitePiecesUsed].display();
+                whitePiecesUsed++;
+                this.popMatrix();
             }else if(cell == -1){
                 this.pushMatrix();
-                this.translate(y,x,0);
+                this.translate(x,y,0);
                 this.blackPieces[blackPiecesUsed].display();
                 blackPiecesUsed++;
                 this.popMatrix();
             }else if(cell > 1){
-
+                for(var j = 0; j < cell; j++){
+                    this.pushMatrix();
+                    this.translate(x,y,j*0.2);
+                    this.whitePieces[whitePiecesUsed].display();
+                    whitePiecesUsed++;
+                    this.popMatrix();
+                }
             }else if(cell < -1){
-                this.pushMatrix();
-                for(i = 0; i < cell; i++){
-                    this.translate(y,x,i*0.5);
+                for(var j = 0; j > cell; j--){
+                    this.pushMatrix();
+                    this.translate(x,y,-j*0.2);
                     this.blackPieces[blackPiecesUsed].display();
                     blackPiecesUsed++;
                     this.popMatrix();
                 }
             }
         }
-    }*/
+    }
     this.pushMatrix();
     //this.translate(1,1,0);
 
