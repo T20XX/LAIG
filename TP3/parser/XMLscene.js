@@ -29,31 +29,32 @@ XMLscene.prototype.init = function(application) {
     //Animation
     this.setUpdatePeriod(DELTA_TIME);
     this.currTime = 0;
-    
-    this.board = new Chessboard(this, 12, 12, new Texture("./textures/stairsWood.jpg", 1, 1), 0, 0, [1,1,1,1],[0,0,0,1], [0.5,0.5,1,1]);
+    this.board = new Chessboard(this,12,12,new Texture("./textures/stairsWood.jpg",1,1),0,0,[1, 1, 1, 1],[0, 0, 0, 1],[0.5, 0.5, 1, 1]);
     this.blackPieces = [];
-    for (i = 0; i < 20 ; i++){
-        this.blackPieces.push(new Cylinder(this, 0.5, 0.5, 0.2, 10, 1));
+    for (i = 0; i < 20; i++) {
+        this.blackPieces.push(new Cylinder(this,0.5,0.5,0.2,10,1));
     }
     this.whitePieces = [];
-    for (i = 0; i < 20 ; i++){
-        this.whitePieces.push(new Cylinder(this, 0.5, 0.5, 0.2, 10, 1));
+    for (i = 0; i < 20; i++) {
+        this.whitePieces.push(new Cylinder(this,0.5,0.5,0.2,10,1));
     }
-    //this.black_piece = new Cylinder(this, 0.5, 0.5, 4, 10, 1);
-	
-	this.pickingCells = [];
-	
-	for (i = 0; i < 144 ; i++){
-		this.pickingCells.push(new Plane(this, 1, 1, 1, 1));
-	}
-	
-	// Enables picking
-	this.setPickEnabled(true);
-
+    this.pickingCells = [];
+    for (i = 0; i < 144; i++) {
+        this.pickingCells.push(new Plane(this,1,1,1,1));
+    }
+    this.blackPickingPieces = [];
+    for (i = 0; i < 20; i++) {
+        this.blackPickingPieces.push(new Cylinder(this,0.5,0.5,0.2,5,1));
+    }
+    this.whitePickingPieces = [];
+    for (i = 0; i < 20; i++) {
+        this.whitePickingPieces.push(new Cylinder(this,0.5,0.5,0.2,5,1));
+    }
+    // Enables picking
+    this.setPickEnabled(true);
     //Game
     //this.game = new Game(this);
-    initializeGameVariables(1,1);
-	
+    initializeGameVariables(1, 1);
 }
 XMLscene.prototype.setInterface = function(interface) {
     this.interface = interface;
@@ -168,31 +169,26 @@ XMLscene.prototype.onGraphLoaded = function() {
     this.graphLights();
     this.graphMaterials();
     this.graphTextures();
-};
-
-
-XMLscene.prototype.logPicking = function ()
-{
-	if (this.pickMode == false) {
-		if (this.pickResults != null && this.pickResults.length > 0) {
-			for (var i=0; i< this.pickResults.length; i++) {
-				var obj = this.pickResults[i][0];
-				if (obj)
-				{
-					var customId = this.pickResults[i][1];				
-					console.log("Picked object: " + obj + ", with pick id " + customId);
-				}
-			}
-			this.pickResults.splice(0,this.pickResults.length);
-		}		
-	}
 }
-
+;
+XMLscene.prototype.logPicking = function() {
+    if (this.pickMode == false) {
+        if (this.pickResults != null && this.pickResults.length > 0) {
+            for (var i = 0; i < this.pickResults.length; i++) {
+                var obj = this.pickResults[i][0];
+                if (obj) {
+                    var customId = this.pickResults[i][1];
+                    console.log("Picked object: " + obj + ", with pick id " + customId);
+                }
+            }
+            this.pickResults.splice(0, this.pickResults.length);
+        }
+    }
+}
 XMLscene.prototype.display = function() {
-	// Picking
-	this.logPicking();
-	this.clearPickRegistration();
-
+    // Picking
+    this.logPicking();
+    this.clearPickRegistration();
     // ---- BEGIN Background, camera and axis setup
     // Clear image and depth buffer everytime we update the scene
     this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
@@ -220,61 +216,78 @@ XMLscene.prototype.display = function() {
         }
         //this.processGraph(this.graph.root, new CGFappearance());
     }
-	
-    for (x =0; x< 12; x++) {
-		for (y =0; y< 12; y++) {
-
-		if (this.pickMode == true) {
-		    this.pushMatrix();
+    for (x = 0; x < 12; x++) {
+        for (y = 0; y < 12; y++) {
+            if (this.pickMode == true) {
+                this.pushMatrix();
                 this.translate(x, y, +0.1);
-                this.registerForPick(x+y*12+1, this.pickingCells[x*12+y]);
-                this.pickingCells[x*12+y].display();
-            this.popMatrix();
-		}
-		}
-	}
-
-
+                this.registerForPick(x + y * 12 + 1, this.pickingCells[x * 12 + y]);
+                this.pickingCells[x * 12 + y].display();
+                this.popMatrix();
+            }
+        }
+    }
     this.pushMatrix();
-    this.translate(5.5, 5.5,0);
-    this.scale(12,12,1);
+    this.translate(5.5, 5.5, 0);
+    this.scale(12, 12, 1);
     this.board.display();
     this.popMatrix();
     var blackPiecesUsed = 0;
     var whitePiecesUsed = 0;
+    var blackPickingPiecesUsed = 0;
+    var whitePickingPiecesUsed = 0;
     //var cell = board[11][0];
     var cell;
-    for (y = 0; y < 12; y++){
-        for(x = 0; x < 12; x++){
-            cell = board[11-y][x];
+    for (y = 0; y < 12; y++) {
+        for (x = 0; x < 12; x++) {
+            cell = board[11 - y][x];
             //console.log(cell);
-            if(cell == 0){
-            }else if(cell == 1){
+            if (cell == 0) {} else if (cell == 1) {
                 this.pushMatrix();
-                this.translate(x,y,0);
+                this.translate(x, y, 0);
                 this.whitePieces[whitePiecesUsed].display();
                 whitePiecesUsed++;
+                if (this.pickMode == true) {
+                    this.registerForPick(x + y * 12 + 1, this.whitePickingPieces[whitePickingPiecesUsed]);
+                    this.whitePickingPieces[whitePickingPiecesUsed].display();
+                    whitePickingPiecesUsed++;
+                }
                 this.popMatrix();
-            }else if(cell == -1){
+            } else if (cell == -1) {
                 this.pushMatrix();
-                this.translate(x,y,0);
+                this.translate(x, y, 0);
                 this.blackPieces[blackPiecesUsed].display();
                 blackPiecesUsed++;
+                if (this.pickMode == true) {
+                    this.registerForPick(x + y * 12 + 1, this.blackPickingPieces[blackPickingPiecesUsed]);
+                    this.blackPickingPieces[blackPickingPiecesUsed].display();
+                    blackPickingPiecesUsed++;
+                }
                 this.popMatrix();
-            }else if(cell > 1){
-                for(var j = 0; j < cell; j++){
+            } else if (cell > 1) {
+                for (var j = 0; j < cell; j++) {
                     this.pushMatrix();
-                    this.translate(x,y,j*0.2);
-                    this.whitePieces[whitePiecesUsed].display();
+                    this.translate(x, y, j * 0.2);
+                    //this.whitePieces[whitePiecesUsed].display();
                     whitePiecesUsed++;
+                   // if (this.pickMode == true) {
+                        this.registerForPick(x + y * 12 + 1, this.whitePickingPieces[whitePickingPiecesUsed]);
+                        this.whitePickingPieces[whitePickingPiecesUsed].display();
+                        whitePickingPiecesUsed++;
+                    //}
                     this.popMatrix();
                 }
-            }else if(cell < -1){
-                for(var j = 0; j > cell; j--){
+            } else if (cell < -1) {
+                for (var j = 0; j > cell; j--) {
                     this.pushMatrix();
-                    this.translate(x,y,-j*0.2);
+                    this.translate(x, y, -j * 0.2);
                     this.blackPieces[blackPiecesUsed].display();
                     blackPiecesUsed++;
+                    if (this.pickMode == true) {
+                        this.registerForPick(x + y * 12 + 1, this.blackPickingPieces[blackPickingPiecesUsed]);
+                        this.blackPickingPieces[blackPickingPiecesUsed].display();
+                        blackPickingPiecesUsed++;
+                    }
                     this.popMatrix();
                 }
             }
@@ -282,19 +295,12 @@ XMLscene.prototype.display = function() {
     }
     this.pushMatrix();
     //this.translate(1,1,0);
-
     //this.black_piece.display();
     this.popMatrix();
-
-		
-    
 }
-
-
-
 XMLscene.prototype.processGraph = function(nodeName, parentAppearance, parentTexture) {
-    var appearance = null ;
-    if (nodeName != null && this.graph.components[nodeName] != null ) {
+    var appearance = null;
+    if (nodeName != null && this.graph.components[nodeName] != null) {
         var node = this.graph.components[nodeName];
         var selectedMaterial = this.curMaterial % node.getMaterial().length;
         if (node.getMaterial()[selectedMaterial] == "inherit") {
@@ -303,7 +309,7 @@ XMLscene.prototype.processGraph = function(nodeName, parentAppearance, parentTex
             appearance = this.materials[node.getMaterial()[selectedMaterial]];
         }
         if (node.getTexture() == "none") {
-            appearance.setTexture(null );
+            appearance.setTexture(null);
         } else if (node.getTexture() == "inherit") {
             appearance.setTexture(parentTexture);
         } else {
@@ -314,18 +320,16 @@ XMLscene.prototype.processGraph = function(nodeName, parentAppearance, parentTex
             appearance.setTexture(this.textures[node.getTexture()]);
             appearance.setTextureWrap('REPEAT', 'REPEAT');
         }
-        if (appearance != null ) {
+        if (appearance != null) {
             appearance.apply();
         }
         this.multMatrix(node.getTransformation().getMatrix());
-
-        if(node.getAnimations().length > 0)
+        if (node.getAnimations().length > 0)
             this.multMatrix(node.getAnimationsTransformations(this.currTime));
-
         for (let i = 0; i < node.getChildren().length; i++) {
             this.pushMatrix();
             var nextID = node.getChildren()[i];
-            if (this.graph.primitives[nextID] == null ) {
+            if (this.graph.primitives[nextID] == null) {
                 if (node.getTexture() != "inherit") {
                     this.processGraph(nextID, appearance, this.textures[node.getTexture()]);
                 } else {
@@ -338,7 +342,6 @@ XMLscene.prototype.processGraph = function(nodeName, parentAppearance, parentTex
         }
     }
 }
-
 /**
  * Interface functions
  */
@@ -350,16 +353,16 @@ XMLscene.prototype.processVDown = function() {
 XMLscene.prototype.processMDown = function() {
     this.curMaterial++;
 }
-
 /**
  * Animation functions
  */
 XMLscene.prototype.update = function(currTime) {
-    if(this.graph.loadedOk){
-    this.lastTime = this.lastTime || currTime;
-    this.deltaTime = currTime - this.lastTime;
-    this.currTime += this.deltaTime / 1000; //in seconds
-    this.lastTime = currTime;
-    //console.log(this.currTime);
+    if (this.graph.loadedOk) {
+        this.lastTime = this.lastTime || currTime;
+        this.deltaTime = currTime - this.lastTime;
+        this.currTime += this.deltaTime / 1000;
+        //in seconds
+        this.lastTime = currTime;
+        //console.log(this.currTime);
     }
 }
