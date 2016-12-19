@@ -17,6 +17,7 @@ uniform float sv;
 
 void main() {
     
+    	if (su > -1.0){
     	float posX = floor(du*aTextureCoord.s);
     	float posY = floor(dv*aTextureCoord.t);
 
@@ -24,6 +25,8 @@ void main() {
     		gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition+vec3(0.0,0.0,0.05), 1.0);
 		else
     		gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-
+    	}else{
+    		    		gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+}
 		vTextureCoord = aTextureCoord;
 }

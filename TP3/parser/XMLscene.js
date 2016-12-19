@@ -180,6 +180,7 @@ XMLscene.prototype.logPicking = function() {
                     if (waitingMoveState == "WAITING_FIRST_PICK"){
                        if(isValidInitialPosition(pickedX + 1, 12 - pickedY)) {
                         setInitialPosition(pickedX + 1, 12 - pickedY);
+                        this.board.setSelectedCell(pickedX,pickedY);
                         waitingMoveState = "WAITING_SECOND_PICK";
                     } else {
                         console.log("Pick a valid starting piece");
@@ -187,10 +188,13 @@ XMLscene.prototype.logPicking = function() {
                     } else if (waitingMoveState == "WAITING_SECOND_PICK"){
                        if (isValidFinalPosition(pickedX + 1, 12 - pickedY)) {
                         setFinalPosition(pickedX + 1, 12 - pickedY);
+                       this.board.clearSelectedCell();
                        movePiece();
                     } else{
                         var initialPos = getInitialPosition();
                         if((initialPos[0] == pickedX + 1) && (initialPos[1] == 12 - pickedY)){
+                       this.board.clearSelectedCell();
+
 waitingMoveState = "WAITING_FIRST_PICK";
                         } else {
                         console.log("Pick a valid finishing piece");
@@ -314,6 +318,7 @@ XMLscene.prototype.display = function() {
             }
         }
     }
+
 }
 XMLscene.prototype.processGraph = function(nodeName, parentAppearance, parentTexture) {
     var appearance = null;

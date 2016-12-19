@@ -10,13 +10,14 @@ function Chessboard(scene, du, dv, texture, su, sv, c1, c2, cs) {
 	this.du = du;
 	this.dv = dv;
 	this.texture = texture;
-	this.su = su;
-	this.sv = sv;
+	this.su = -1;
+	this.sv = -1;
 	this.c1 = c1;
 	this.c2 = c2;
 	this.cs = cs;
 
 	this.board = new Plane(this.scene,1,1,this.du*4,this.dv*4);
+
 
 	this.shader = new CGFshader(this.scene.gl, "shaders/Chessboard.vert", "shaders/Chessboard.frag");
 
@@ -38,10 +39,24 @@ Chessboard.prototype = Object.create(CGFobject.prototype);
 Chessboard.prototype.constructor=Chessboard;
 
 Chessboard.prototype.display = function(){
-	this.scene.pushMatrix();
+this.scene.pushMatrix();
     this.appearance.apply();
     this.scene.setActiveShader(this.shader);
 	this.board.display();
     this.scene.setActiveShader(this.scene.defaultShader);
     this.scene.popMatrix();
+}
+
+Chessboard.prototype.setSelectedCell = function(x,y){
+	this.su = x;
+	this.sv = y;
+	this.shader.setUniformsValues({su: this.su});
+	this.shader.setUniformsValues({sv: this.sv});
+}
+
+Chessboard.prototype.clearSelectedCell = function(){
+	this.su = -1;
+	this.sv = -1;
+	this.shader.setUniformsValues({su: this.su});
+	this.shader.setUniformsValues({sv: this.sv});
 }
