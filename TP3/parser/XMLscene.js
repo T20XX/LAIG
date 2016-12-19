@@ -46,6 +46,10 @@ XMLscene.prototype.init = function(application) {
     for (i = 0; i < 20; i++) {
         this.whitePickingPieces.push(new Cylinder(this,0.5,0.5,0.2,5,1));
     }
+    this.whitePiecesAppearance = new CGFappearance(this);
+    this.whitePiecesAppearance.loadTexture("./textures/chair.jpg");
+    this.blackPiecesAppearance = new CGFappearance(this);
+    this.blackPiecesAppearance.loadTexture("./textures/stairsWood.jpg");
     // Enables picking
     this.setPickEnabled(true);
     //Game
@@ -177,29 +181,28 @@ XMLscene.prototype.logPicking = function() {
                     var pickedX = (customId - 1) % 12;
                     var pickedY = Math.floor((customId - 1) / 12);
                     console.log("Picked object: " + obj + ", with pick id " + customId, "  X: " + pickedX + " ,  Y: " + pickedY);
-                    if (waitingMoveState == "WAITING_FIRST_PICK"){
-                       if(isValidInitialPosition(pickedX + 1, 12 - pickedY)) {
-                        setInitialPosition(pickedX + 1, 12 - pickedY);
-                        this.board.setSelectedCell(pickedX,pickedY);
-                        waitingMoveState = "WAITING_SECOND_PICK";
-                    } else {
-                        console.log("Pick a valid starting piece");
-                    }
-                    } else if (waitingMoveState == "WAITING_SECOND_PICK"){
-                       if (isValidFinalPosition(pickedX + 1, 12 - pickedY)) {
-                        setFinalPosition(pickedX + 1, 12 - pickedY);
-                       this.board.clearSelectedCell();
-                       movePiece();
-                    } else{
-                        var initialPos = getInitialPosition();
-                        if((initialPos[0] == pickedX + 1) && (initialPos[1] == 12 - pickedY)){
-                       this.board.clearSelectedCell();
-
-waitingMoveState = "WAITING_FIRST_PICK";
+                    if (waitingMoveState == "WAITING_FIRST_PICK") {
+                        if (isValidInitialPosition(pickedX + 1, 12 - pickedY)) {
+                            setInitialPosition(pickedX + 1, 12 - pickedY);
+                            this.board.setSelectedCell(pickedX, pickedY);
+                            waitingMoveState = "WAITING_SECOND_PICK";
                         } else {
-                        console.log("Pick a valid finishing piece");
+                            console.log("Pick a valid starting piece");
                         }
-                    } 
+                    } else if (waitingMoveState == "WAITING_SECOND_PICK") {
+                        if (isValidFinalPosition(pickedX + 1, 12 - pickedY)) {
+                            setFinalPosition(pickedX + 1, 12 - pickedY);
+                            this.board.clearSelectedCell();
+                            movePiece();
+                        } else {
+                            var initialPos = getInitialPosition();
+                            if ((initialPos[0] == pickedX + 1) && (initialPos[1] == 12 - pickedY)) {
+                                this.board.clearSelectedCell();
+                                waitingMoveState = "WAITING_FIRST_PICK";
+                            } else {
+                                console.log("Pick a valid finishing piece");
+                            }
+                        }
                     }
                 }
             }
@@ -268,6 +271,7 @@ XMLscene.prototype.display = function() {
                 //console.log(cell);
                 if (cell == 0) {} else if (cell == 1) {
                     this.pushMatrix();
+                    this.whitePiecesAppearance.apply();
                     this.translate(x, y, 0);
                     this.whitePieces[whitePiecesUsed].display();
                     whitePiecesUsed++;
@@ -279,6 +283,7 @@ XMLscene.prototype.display = function() {
                     this.popMatrix();
                 } else if (cell == -1) {
                     this.pushMatrix();
+                    this.blackPiecesAppearance.apply();
                     this.translate(x, y, 0);
                     this.blackPieces[blackPiecesUsed].display();
                     blackPiecesUsed++;
@@ -291,6 +296,7 @@ XMLscene.prototype.display = function() {
                 } else if (cell > 1) {
                     for (var j = 0; j < cell; j++) {
                         this.pushMatrix();
+                        this.whitePiecesAppearance.apply();
                         this.translate(x, y, j * 0.2);
                         this.whitePieces[whitePiecesUsed].display();
                         whitePiecesUsed++;
@@ -304,6 +310,7 @@ XMLscene.prototype.display = function() {
                 } else if (cell < -1) {
                     for (var j = 0; j > cell; j--) {
                         this.pushMatrix();
+                        this.blackPiecesAppearance.apply();
                         this.translate(x, y, -j * 0.2);
                         this.blackPieces[blackPiecesUsed].display();
                         blackPiecesUsed++;
@@ -318,7 +325,6 @@ XMLscene.prototype.display = function() {
             }
         }
     }
-
 }
 XMLscene.prototype.processGraph = function(nodeName, parentAppearance, parentTexture) {
     var appearance = null;
