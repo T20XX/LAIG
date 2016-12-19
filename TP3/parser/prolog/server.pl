@@ -126,6 +126,10 @@ parse_input(botMove(CurPlayer, Board, Difficulty), NewBoard):-
 		
 parse_input(gameOver(Board),Winner):-
 	game_over(Board,Winner).
+	
+parse_input(gameOver(Board),Winner):-
+	\+game_over(Board,Winner),
+	Winner is 0.
 
 %parse_input(test(C,N), Res) :- test(C,Res,N).
 parse_input(quit, goodbye).
