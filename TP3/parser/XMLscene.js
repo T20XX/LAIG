@@ -50,7 +50,7 @@ XMLscene.prototype.init = function(application) {
     this.setPickEnabled(true);
     //Game
     //this.game = new Game(this);
-    initializeGameVariables(2, 1);
+    initializeGameVariables(2, 4);
 }
 XMLscene.prototype.setInterface = function(interface) {
     this.interface = interface;

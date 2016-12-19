@@ -164,8 +164,6 @@ function updateGameState(newBoard) {
 function checkGameOver() {
     gameState = "CHECKING_GAME_OVER";
     getPrologRequest("gameOver(" + JSON.stringify(board) + ")", (function(data) {
-                    console.log(data.target.response);
-                    console.log("Bad Request");
 
         if (data.target.response != 1 && data.target.response != 2) {
             move = [];
