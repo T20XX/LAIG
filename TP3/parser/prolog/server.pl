@@ -105,11 +105,29 @@ print_header_line(_).
 % Require your Prolog Files here
 
 parse_input(handshake, handshake).
-parse_input(legal_move(CurPlayer, Board, Xinitial, Yinitial, Xfinal, Yfinal), true) :-
-	legal_move(CurPlayer, Board, Xinitial, Yinitial, Xfinal, Yfinal).
+
+%parse_input(legal_move(CurPlayer, Board, Xinitial, Yinitial, Xfinal, Yfinal), true) :-
+%	legal_move(CurPlayer, Board, Xinitial, Yinitial, Xfinal, Yfinal).
+	
 parse_input(initializeBoard, Board) :-
     	board_initialized(Board).
-parse_input(test(C,N), Res) :- test(C,Res,N).
+		
+parse_input(validMoves(Board, Player),ListOfMoves):-
+valid_moves(Board, Player, ListOfMoves).		
+
+parse_input(move(CurPlayer, Board, Xinitial, Yinitial, Xfinal, Yfinal), NewBoard):-
+	move(CurPlayer, Board, Xinitial, Yinitial, Xfinal, Yfinal, NewBoard).
+	
+parse_input(botMove(CurPlayer, Board, Difficulty), NewBoard):-
+		valid_moves(Board, CurPlayer, ListOfMoves),
+        value_moves(Board, CurPlayer, ListOfMoves, ListOfValues),
+        once(choose_move(Difficulty, ListOfMoves, ListOfValues, Xinitial, Yinitial, Xfinal, Yfinal)),  
+        move(CurPlayer, Board, Xinitial, Yinitial, Xfinal, Yfinal, NewBoard).
+		
+parse_input(gameOver(Board),Winner):-
+	game_over(Board,Winner).
+
+%parse_input(test(C,N), Res) :- test(C,Res,N).
 parse_input(quit, goodbye).
 
 test(_,[],N) :- N =< 0.

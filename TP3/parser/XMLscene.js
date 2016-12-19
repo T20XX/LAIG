@@ -16,10 +16,6 @@ XMLscene.prototype.init = function(application) {
     this.gl.enable(this.gl.CULL_FACE);
     this.gl.cullFace(this.gl.BACK);
     this.enableTextures(true);
-    /*this.gl.clearDepth(100.0);
-    this.gl.enable(this.gl.DEPTH_TEST);
-	this.gl.enable(this.gl.CULL_FACE);
-    this.gl.depthFunc(this.gl.LEQUAL);*/
     this.axis = new CGFaxis(this);
     this.lightStates = [];
     this.materials = [];
@@ -54,7 +50,7 @@ XMLscene.prototype.init = function(application) {
     this.setPickEnabled(true);
     //Game
     //this.game = new Game(this);
-    initializeGameVariables(1, 1);
+    initializeGameVariables(2, 1);
 }
 XMLscene.prototype.setInterface = function(interface) {
     this.interface = interface;
@@ -178,7 +174,29 @@ XMLscene.prototype.logPicking = function() {
                 var obj = this.pickResults[i][0];
                 if (obj) {
                     var customId = this.pickResults[i][1];
-                    console.log("Picked object: " + obj + ", with pick id " + customId);
+                    var pickedX = (customId - 1) % 12;
+                    var pickedY = Math.floor((customId - 1) / 12);
+                    console.log("Picked object: " + obj + ", with pick id " + customId, "  X: " + pickedX + " ,  Y: " + pickedY);
+                    if (waitingMoveState == "WAITING_FIRST_PICK"){
+                       if(isValidInitialPosition(pickedX + 1, 12 - pickedY)) {
+                        setInitialPosition(pickedX + 1, 12 - pickedY);
+                        waitingMoveState = "WAITING_SECOND_PICK";
+                    } else {
+                        console.log("Pick a valid starting piece");
+                    }
+                    } else if (waitingMoveState == "WAITING_SECOND_PICK"){
+                       if (isValidFinalPosition(pickedX + 1, 12 - pickedY)) {
+                        setFinalPosition(pickedX + 1, 12 - pickedY);
+                       movePiece();
+                    } else{
+                        var initialPos = getInitialPosition();
+                        if((initialPos[0] == pickedX + 1) && (initialPos[1] == 12 - pickedY)){
+waitingMoveState = "WAITING_FIRST_PICK";
+                        } else {
+                        console.log("Pick a valid finishing piece");
+                        }
+                    } 
+                    }
                 }
             }
             this.pickResults.splice(0, this.pickResults.length);
@@ -216,87 +234,86 @@ XMLscene.prototype.display = function() {
         }
         //this.processGraph(this.graph.root, new CGFappearance());
     }
-    for (x = 0; x < 12; x++) {
-        for (y = 0; y < 12; y++) {
-            if (this.pickMode == true) {
-                this.pushMatrix();
-                this.translate(x, y, +0.1);
-                this.registerForPick(x + y * 12 + 1, this.pickingCells[x * 12 + y]);
-                this.pickingCells[x * 12 + y].display();
-                this.popMatrix();
+    if (gameState == "WAITING_MOVE") {
+        for (x = 0; x < 12; x++) {
+            for (y = 0; y < 12; y++) {
+                if (this.pickMode == true) {
+                    this.pushMatrix();
+                    this.translate(x, y, +0.1);
+                    this.registerForPick(x + y * 12 + 1, this.pickingCells[x * 12 + y]);
+                    this.pickingCells[x * 12 + y].display();
+                    this.popMatrix();
+                }
             }
         }
     }
-    this.pushMatrix();
-    this.translate(5.5, 5.5, 0);
-    this.scale(12, 12, 1);
-    this.board.display();
-    this.popMatrix();
-    var blackPiecesUsed = 0;
-    var whitePiecesUsed = 0;
-    var blackPickingPiecesUsed = 0;
-    var whitePickingPiecesUsed = 0;
-    //var cell = board[11][0];
-    var cell;
-    for (y = 0; y < 12; y++) {
-        for (x = 0; x < 12; x++) {
-            cell = board[11 - y][x];
-            //console.log(cell);
-            if (cell == 0) {} else if (cell == 1) {
-                this.pushMatrix();
-                this.translate(x, y, 0);
-                this.whitePieces[whitePiecesUsed].display();
-                whitePiecesUsed++;
-                if (this.pickMode == true) {
-                    this.registerForPick(x + y * 12 + 1, this.whitePickingPieces[whitePickingPiecesUsed]);
-                    this.whitePickingPieces[whitePickingPiecesUsed].display();
-                    whitePickingPiecesUsed++;
-                }
-                this.popMatrix();
-            } else if (cell == -1) {
-                this.pushMatrix();
-                this.translate(x, y, 0);
-                this.blackPieces[blackPiecesUsed].display();
-                blackPiecesUsed++;
-                if (this.pickMode == true) {
-                    this.registerForPick(x + y * 12 + 1, this.blackPickingPieces[blackPickingPiecesUsed]);
-                    this.blackPickingPieces[blackPickingPiecesUsed].display();
-                    blackPickingPiecesUsed++;
-                }
-                this.popMatrix();
-            } else if (cell > 1) {
-                for (var j = 0; j < cell; j++) {
+    if (gameState != "MAIN_MENU") {
+        this.pushMatrix();
+        this.translate(5.5, 5.5, 0);
+        this.scale(12, 12, 1);
+        this.board.display();
+        this.popMatrix();
+        var blackPiecesUsed = 0;
+        var whitePiecesUsed = 0;
+        var blackPickingPiecesUsed = 0;
+        var whitePickingPiecesUsed = 0;
+        var cell;
+        for (y = 0; y < 12; y++) {
+            for (x = 0; x < 12; x++) {
+                cell = board[11 - y][x];
+                //console.log(cell);
+                if (cell == 0) {} else if (cell == 1) {
                     this.pushMatrix();
-                    this.translate(x, y, j * 0.2);
-                    //this.whitePieces[whitePiecesUsed].display();
+                    this.translate(x, y, 0);
+                    this.whitePieces[whitePiecesUsed].display();
                     whitePiecesUsed++;
-                   // if (this.pickMode == true) {
+                    if (gameState == "WAITING_MOVE" && this.pickMode == true) {
                         this.registerForPick(x + y * 12 + 1, this.whitePickingPieces[whitePickingPiecesUsed]);
                         this.whitePickingPieces[whitePickingPiecesUsed].display();
                         whitePickingPiecesUsed++;
-                    //}
+                    }
                     this.popMatrix();
-                }
-            } else if (cell < -1) {
-                for (var j = 0; j > cell; j--) {
+                } else if (cell == -1) {
                     this.pushMatrix();
-                    this.translate(x, y, -j * 0.2);
+                    this.translate(x, y, 0);
                     this.blackPieces[blackPiecesUsed].display();
                     blackPiecesUsed++;
-                    if (this.pickMode == true) {
+                    if (gameState == "WAITING_MOVE" && this.pickMode == true) {
                         this.registerForPick(x + y * 12 + 1, this.blackPickingPieces[blackPickingPiecesUsed]);
                         this.blackPickingPieces[blackPickingPiecesUsed].display();
                         blackPickingPiecesUsed++;
                     }
                     this.popMatrix();
+                } else if (cell > 1) {
+                    for (var j = 0; j < cell; j++) {
+                        this.pushMatrix();
+                        this.translate(x, y, j * 0.2);
+                        this.whitePieces[whitePiecesUsed].display();
+                        whitePiecesUsed++;
+                        if (gameState == "WAITING_MOVE" && this.pickMode == true) {
+                            this.registerForPick(x + y * 12 + 1, this.whitePickingPieces[whitePickingPiecesUsed]);
+                            this.whitePickingPieces[whitePickingPiecesUsed].display();
+                            whitePickingPiecesUsed++;
+                        }
+                        this.popMatrix();
+                    }
+                } else if (cell < -1) {
+                    for (var j = 0; j > cell; j--) {
+                        this.pushMatrix();
+                        this.translate(x, y, -j * 0.2);
+                        this.blackPieces[blackPiecesUsed].display();
+                        blackPiecesUsed++;
+                        if (gameState == "WAITING_MOVE" && this.pickMode == true) {
+                            this.registerForPick(x + y * 12 + 1, this.blackPickingPieces[blackPickingPiecesUsed]);
+                            this.blackPickingPieces[blackPickingPiecesUsed].display();
+                            blackPickingPiecesUsed++;
+                        }
+                        this.popMatrix();
+                    }
                 }
             }
         }
     }
-    this.pushMatrix();
-    //this.translate(1,1,0);
-    //this.black_piece.display();
-    this.popMatrix();
 }
 XMLscene.prototype.processGraph = function(nodeName, parentAppearance, parentTexture) {
     var appearance = null;
