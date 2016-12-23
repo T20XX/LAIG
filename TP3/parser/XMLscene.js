@@ -224,6 +224,18 @@ XMLscene.prototype.logPicking = function() {
     }
 }
 XMLscene.prototype.display = function() {
+    if (gameState == "WAITING_MOVE"){
+        if(this.currTime - startTimeoutTime > timeoutTurn){
+            window.alert("timeout");
+            this.backMenu();
+        }
+    }else if (gameState != "GAME_OVER"){
+        startTimeoutTime = this.currTime;
+    }else if (gameState == "GAME_OVER"){
+        window.alert("PLAYER " + winner + " WINS!");
+        this.backMenu();
+    }
+
     // Picking
     this.logPicking();
     this.clearPickRegistration();
@@ -267,6 +279,7 @@ XMLscene.prototype.display = function() {
             }
         }
     }
+
 
     var blackPiecesUsed = 20;
     var whitePiecesUsed = 20;

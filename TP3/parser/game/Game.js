@@ -14,6 +14,7 @@ var gameIndex;
 //GAME STATES: MAIN_MENU, INITIALIZING_GAME, WAITING_NEW_BOARD, WAITING_VALID_MOVES, WAITING_MOVE, CHECKING_GAME_OVER, GAME_OVER
 var gameState = "MAIN_MENU";
 var isMoving = false;
+var startTimeoutTime = 0;
 //GAME STATES: WAITING_FIRST_PICK, WAITING_SECOND_PICK
 var waitingMoveState = "";
 var timeoutTurn;
@@ -176,7 +177,6 @@ function checkGameOver() {
         } else {
             winner = data.target.response;
             gameState = "GAME_OVER";
-            console.log("WINNER:", winner);
         }
     }), (function() {
         console.log("ERRO");
