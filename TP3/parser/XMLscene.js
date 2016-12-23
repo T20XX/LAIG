@@ -1,4 +1,5 @@
-var DELTA_TIME = 1000;
+var DELTA_TIME = 100;
+var PIECE_ANIMATION_VELOCITY = 3;
 function XMLscene() {
     CGFscene.call(this);
 }
@@ -57,6 +58,12 @@ XMLscene.prototype.init = function(application) {
     //Game
     //this.game = new Game(this);
     initializeGameVariables(2, 4);
+
+    //STATES: 1, 2, 3
+    this.movingPieceState = 1;
+    this.movingPieceStartTime;
+    this.movingPieceGameIndex;
+    this.movingPieceAnimation = new PieceAnimation(PIECE_ANIMATION_VELOCITY);
 }
 XMLscene.prototype.setInterface = function(interface) {
     this.interface = interface;
@@ -243,7 +250,7 @@ XMLscene.prototype.display = function() {
         }
         //this.processGraph(this.graph.root, new CGFappearance());
     }
-    if (gameState == "WAITING_MOVE") {
+    if (gameState == "WAITING_MOVE" && !isMoving) {
         for (x = 0; x < 12; x++) {
             for (y = 0; y < 12; y++) {
                 if (this.pickMode == true) {
@@ -262,44 +269,20 @@ XMLscene.prototype.display = function() {
         this.scale(12, 12, 1);
         this.board.display();
         this.popMatrix();
-        var blackPiecesUsed = 0;
-        var whitePiecesUsed = 0;
-        var blackPickingPiecesUsed = 0;
-        var whitePickingPiecesUsed = 0;
-        var cell;
-        for (y = 0; y < 12; y++) {
-            for (x = 0; x < 12; x++) {
-                cell = board[11 - y][x];
-                //console.log(cell);
-                if (cell == 0) {} else if (cell == 1) {
-                    this.pushMatrix();
-                    this.whitePiecesAppearance.apply();
-                    this.translate(x, y, 0);
-                    this.whitePieces[whitePiecesUsed].display();
-                    whitePiecesUsed++;
-                    if (gameState == "WAITING_MOVE" && this.pickMode == true) {
-                        this.registerForPick(x + y * 12 + 1, this.whitePickingPieces[whitePickingPiecesUsed]);
-                        this.whitePickingPieces[whitePickingPiecesUsed].display();
-                        whitePickingPiecesUsed++;
-                    }
-                    this.popMatrix();
-                } else if (cell == -1) {
-                    this.pushMatrix();
-                    this.blackPiecesAppearance.apply();
-                    this.translate(x, y, 0);
-                    this.blackPieces[blackPiecesUsed].display();
-                    blackPiecesUsed++;
-                    if (gameState == "WAITING_MOVE" && this.pickMode == true) {
-                        this.registerForPick(x + y * 12 + 1, this.blackPickingPieces[blackPickingPiecesUsed]);
-                        this.blackPickingPieces[blackPickingPiecesUsed].display();
-                        blackPickingPiecesUsed++;
-                    }
-                    this.popMatrix();
-                } else if (cell > 1) {
-                    for (var j = 0; j < cell; j++) {
+        if (!isMoving) {
+            var blackPiecesUsed = 0;
+            var whitePiecesUsed = 0;
+            var blackPickingPiecesUsed = 0;
+            var whitePickingPiecesUsed = 0;
+            var cell;
+            for (y = 0; y < 12; y++) {
+                for (x = 0; x < 12; x++) {
+                    cell = board[11 - y][x];
+                    if (cell == 0) {
+                    } else if (cell == 1) {
                         this.pushMatrix();
                         this.whitePiecesAppearance.apply();
-                        this.translate(x, y, j * 0.2);
+                        this.translate(x, y, 0);
                         this.whitePieces[whitePiecesUsed].display();
                         whitePiecesUsed++;
                         if (gameState == "WAITING_MOVE" && this.pickMode == true) {
@@ -308,12 +291,10 @@ XMLscene.prototype.display = function() {
                             whitePickingPiecesUsed++;
                         }
                         this.popMatrix();
-                    }
-                } else if (cell < -1) {
-                    for (var j = 0; j > cell; j--) {
+                    } else if (cell == -1) {
                         this.pushMatrix();
                         this.blackPiecesAppearance.apply();
-                        this.translate(x, y, -j * 0.2);
+                        this.translate(x, y, 0);
                         this.blackPieces[blackPiecesUsed].display();
                         blackPiecesUsed++;
                         if (gameState == "WAITING_MOVE" && this.pickMode == true) {
@@ -322,9 +303,107 @@ XMLscene.prototype.display = function() {
                             blackPickingPiecesUsed++;
                         }
                         this.popMatrix();
+                    } else if (cell > 1) {
+                        for (var j = 0; j < cell; j++) {
+                            this.pushMatrix();
+                            this.whitePiecesAppearance.apply();
+                            this.translate(x, y, j * 0.2);
+                            this.whitePieces[whitePiecesUsed].display();
+                            whitePiecesUsed++;
+                            if (gameState == "WAITING_MOVE" && this.pickMode == true) {
+                                this.registerForPick(x + y * 12 + 1, this.whitePickingPieces[whitePickingPiecesUsed]);
+                                this.whitePickingPieces[whitePickingPiecesUsed].display();
+                                whitePickingPiecesUsed++;
+                            }
+                            this.popMatrix();
+                        }
+                    } else if (cell < -1) {
+                        for (var j = 0; j > cell; j--) {
+                            this.pushMatrix();
+                            this.blackPiecesAppearance.apply();
+                            this.translate(x, y, -j * 0.2);
+                            this.blackPieces[blackPiecesUsed].display();
+                            blackPiecesUsed++;
+                            if (gameState == "WAITING_MOVE" && this.pickMode == true) {
+                                this.registerForPick(x + y * 12 + 1, this.blackPickingPieces[blackPickingPiecesUsed]);
+                                this.blackPickingPieces[blackPickingPiecesUsed].display();
+                                blackPickingPiecesUsed++;
+                            }
+                            this.popMatrix();
+                        }
                     }
                 }
             }
+        } else {
+            switch (this.movingPieceState) {
+                case 1:
+                    this.movingPieceAnimation.setMove(move);
+                    this.movingPieceStartTime = this.currTime;
+                    this.movingPieceGameIndex = gameIndex;
+                    this.movingPieceState = 2;
+                case 2:
+                    if (this.currTime - this.movingPieceStartTime < this.movingPieceAnimation.getSpan()) {
+                        var movingMove = this.movingPieceAnimation.getMove();
+                        var blackPiecesUsed = 0;
+                        var whitePiecesUsed = 0;
+                        var cell;
+                        for (y = 0; y < 12; y++) {
+                            for (x = 0; x < 12; x++) {
+                                cell = boardHistory[this.movingPieceGameIndex][11 - y][x];
+                                this.pushMatrix();
+                                if (movingMove[0] == x+1 && movingMove[1] == 12-y) {
+                                    this.multMatrix(this.movingPieceAnimation.getTransformation(this.currTime - this.movingPieceStartTime));
+                                }
+                                if (cell == 0) {
+                                } else if (cell == 1) {
+                                    this.pushMatrix();
+                                    this.whitePiecesAppearance.apply();
+
+                                    this.translate(x, y, 0);
+                                    this.whitePieces[whitePiecesUsed].display();
+                                    whitePiecesUsed++;
+                                    this.popMatrix();
+                                } else if (cell == -1) {
+                                    this.pushMatrix();
+                                    this.blackPiecesAppearance.apply();
+                                    this.translate(x, y, 0);
+                                    this.blackPieces[blackPiecesUsed].display();
+                                    blackPiecesUsed++;
+                                    this.popMatrix();
+                                } else if (cell > 1) {
+                                    for (var j = 0; j < cell; j++) {
+                                        this.pushMatrix();
+                                        this.whitePiecesAppearance.apply();
+                                        this.translate(x, y, j * 0.2);
+                                        this.whitePieces[whitePiecesUsed].display();
+                                        whitePiecesUsed++;
+                                        this.popMatrix();
+                                    }
+                                } else if (cell < -1) {
+                                    for (var j = 0; j > cell; j--) {
+                                        this.pushMatrix();
+                                        this.blackPiecesAppearance.apply();
+                                        this.translate(x, y, -j * 0.2);
+                                        this.blackPieces[blackPiecesUsed].display();
+                                        blackPiecesUsed++;
+                                        this.popMatrix();
+                                    }
+                                }
+                                this.popMatrix();
+                            }
+                        }
+                    } else {
+                        this.movingPieceState = 3;
+                    }
+                    break;
+                case 3:
+                    this.movingPieceState = 1;
+                    isMoving = false;
+                    break;
+                default:
+                    break;
+            }
+
         }
     }
 }

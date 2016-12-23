@@ -13,6 +13,7 @@ var player2Type;
 var gameIndex;
 //GAME STATES: MAIN_MENU, INITIALIZING_GAME, WAITING_NEW_BOARD, WAITING_VALID_MOVES, WAITING_MOVE, CHECKING_GAME_OVER, GAME_OVER
 var gameState = "MAIN_MENU";
+var isMoving = false;
 //GAME STATES: WAITING_FIRST_PICK, WAITING_SECOND_PICK
 var waitingMoveState = "";
 function initializeGameVariables(newGameMode, newGameDifficulty) {
@@ -45,6 +46,7 @@ function initializeGameVariables(newGameMode, newGameDifficulty) {
         return false;
     }
     gameState = "WAITING_NEW_BOARD";
+    isMoving = false;
     getPrologRequest("initializeBoard", (function(data) {
         setBoard(JSON.parse(data.target.response));
         if (player1Type == 0) {
@@ -69,6 +71,7 @@ function changeCurrentPlayer() {
 }
 function getValidMoves() {
     gameState = "WAITING_VALID_MOVES";
+    console.log("TOP");
     getPrologRequest("validMoves(" + JSON.stringify(board) + "," + currentPlayer + ")", (function(data) {
         listOfMoves = JSON.parse(data.target.response);
         listOfMovesHistory.push(listOfMoves);
@@ -134,7 +137,7 @@ function isValidFinalPosition(finalX, finalY) {
     }));
 }*/
 function movePiece() {
-    gameState = "MOVING";
+    isMoving = true;
     if (move.length != 4) {
         return false;
     }
@@ -147,9 +150,9 @@ function movePiece() {
     }));
 }
 function botMove() {
-    gameState = "MOVING";
     getPrologRequest("botMove(" + currentPlayer + "," + JSON.stringify(board) + "," + gameDifficulty + ")", (function(data) {
-        updateGameState(JSON.parse(data.target.response));
+        move = JSON.parse(data.target.response);
+        movePiece();
     }), (function() {
         console.log("Erro");
         botMove();
@@ -168,19 +171,7 @@ function checkGameOver() {
         if (data.target.response != 1 && data.target.response != 2) {
             move = [];
             changeCurrentPlayer();
-            if (currentPlayer == 1) {
-                if (player1Type == 0) {
-                    getValidMoves();
-                } else if (player1Type == 1) {
-                    botMove();
-                }
-            } else if (currentPlayer == 2) {
-                if (player2Type == 0) {
-                    getValidMoves();
-                } else if (player2Type == 1) {
-                    botMove();
-                }
-            }
+            passTurnIfPossible();
         } else {
             winner = data.target.response;
             gameState = "GAME_OVER";
@@ -190,6 +181,26 @@ function checkGameOver() {
         console.log("ERRO");
     }));
 }
+function passTurnIfPossible() {
+    if (isMoving){
+        setTimeout(passTurnIfPossible,1000);
+    } else {
+        if (currentPlayer == 1) {
+            if (player1Type == 0) {
+                getValidMoves();
+            } else if (player1Type == 1) {
+                botMove();
+            }
+        } else if (currentPlayer == 2) {
+            if (player2Type == 0) {
+                getValidMoves();
+            } else if (player2Type == 1) {
+                botMove();
+            }
+        }
+    }
+}
+
 function setInitialPosition(initialX, initialY) {
     move[0] = initialX;
     move[1] = initialY;

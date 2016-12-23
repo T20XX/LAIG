@@ -118,11 +118,10 @@ valid_moves(Board, Player, ListOfMoves).
 parse_input(move(CurPlayer, Board, Xinitial, Yinitial, Xfinal, Yfinal), NewBoard):-
 	move(CurPlayer, Board, Xinitial, Yinitial, Xfinal, Yfinal, NewBoard).
 	
-parse_input(botMove(CurPlayer, Board, Difficulty), NewBoard):-
+parse_input(botMove(CurPlayer, Board, Difficulty), [Xinitial, Yinitial, Xfinal, Yfinal]):-
 		valid_moves(Board, CurPlayer, ListOfMoves),
         value_moves(Board, CurPlayer, ListOfMoves, ListOfValues),
-        once(choose_move(Difficulty, ListOfMoves, ListOfValues, Xinitial, Yinitial, Xfinal, Yfinal)),  
-        move(CurPlayer, Board, Xinitial, Yinitial, Xfinal, Yfinal, NewBoard).
+        once(choose_move(Difficulty, ListOfMoves, ListOfValues, Xinitial, Yinitial, Xfinal, Yfinal)).
 		
 parse_input(gameOver(Board),Winner):-
 	game_over(Board,Winner).
