@@ -268,8 +268,8 @@ XMLscene.prototype.display = function() {
         }
     }
 
-    var blackPiecesUsed = 0;
-    var whitePiecesUsed = 0;
+    var blackPiecesUsed = 20;
+    var whitePiecesUsed = 20;
 
     if (gameState != "MAIN_MENU") {
         this.pushMatrix();
@@ -277,7 +277,76 @@ XMLscene.prototype.display = function() {
         this.scale(12, 12, 1);
         this.board.display();
         this.popMatrix();
+ if (isMoving){
+            switch (this.movingPieceState) {
+                case 1:
+                    this.movingPieceAnimation.setMove(move);
+                    this.movingPieceStartTime = this.currTime;
+                    this.movingPieceGameIndex = gameIndex;
+                    this.movingPieceState = 2;
+                case 2:
+                    var deltaTime = this.currTime - this.movingPieceStartTime;
+                    if (deltaTime < this.movingPieceAnimation.getSpan()) {
+                        blackPiecesUsed = 0;
+                        whitePiecesUsed = 0;
+                        var movingMove = this.movingPieceAnimation.getMove();
+                        var cell;
+                        for (y = 0; y < 12; y++) {
+                            for (x = 0; x < 12; x++) {
+                                cell = boardHistory[this.movingPieceGameIndex][11 - y][x];
+                                this.pushMatrix();
+                                if (movingMove[0] == x+1 && movingMove[1] == 12-y) {
+                                    this.multMatrix(this.movingPieceAnimation.getTransformation(deltaTime));
+                                }
+                                if (cell == 0) {
+                                } else if (cell == 1) {
+                                    this.pushMatrix();
+                                    this.translate(x, y, 0);
+                                    this.whitePieces[whitePiecesUsed].display();
+                                    whitePiecesUsed++;
+                                    this.popMatrix();
+                                } else if (cell == -1) {
+                                    this.pushMatrix();
+                                    this.translate(x, y, 0);
+                                    this.blackPieces[blackPiecesUsed].display();
+                                    blackPiecesUsed++;
+                                    this.popMatrix();
+                                } else if (cell > 1) {
+                                    for (var j = 0; j < cell; j++) {
+                                        this.pushMatrix();
+                                        this.translate(x, y, j * 0.2);
+                                        this.whitePieces[whitePiecesUsed].display();
+                                        whitePiecesUsed++;
+                                        this.popMatrix();
+                                    }
+                                } else if (cell < -1) {
+                                    for (var j = 0; j > cell; j--) {
+                                        this.pushMatrix();
+                                        this.translate(x, y, -j * 0.2);
+                                        this.blackPieces[blackPiecesUsed].display();
+                                        blackPiecesUsed++;
+                                        this.popMatrix();
+                                    }
+                                }
+                                this.popMatrix();
+                            }
+                        }
+                    } else {
+                        this.movingPieceState = 3;
+                        isMoving = false;
+                    }
+                    break;
+                case 3:
+                    this.movingPieceState = 1;
+                    break;
+                default:
+                    break;
+            }
+
+        }
         if (!isMoving) {
+            blackPiecesUsed = 0;
+            whitePiecesUsed = 0;
             var blackPickingPiecesUsed = 0;
             var whitePickingPiecesUsed = 0;
             var cell;
@@ -336,72 +405,6 @@ XMLscene.prototype.display = function() {
                     }
                 }
             }
-        } else {
-
-            this.whitePiecesUsed = 0;
-            switch (this.movingPieceState) {
-                case 1:
-                    this.movingPieceAnimation.setMove(move);
-                    this.movingPieceStartTime = this.currTime;
-                    this.movingPieceGameIndex = gameIndex;
-                    this.movingPieceState = 2;
-                case 2:
-                    var deltaTime = this.currTime - this.movingPieceStartTime;
-                    if (deltaTime < this.movingPieceAnimation.getSpan()) {
-                        var movingMove = this.movingPieceAnimation.getMove();
-                        var cell;
-                        for (y = 0; y < 12; y++) {
-                            for (x = 0; x < 12; x++) {
-                                cell = boardHistory[this.movingPieceGameIndex][11 - y][x];
-                                this.pushMatrix();
-                                if (movingMove[0] == x+1 && movingMove[1] == 12-y) {
-                                    this.multMatrix(this.movingPieceAnimation.getTransformation(deltaTime));
-                                }
-                                if (cell == 0) {
-                                } else if (cell == 1) {
-                                    this.pushMatrix();
-                                    this.translate(x, y, 0);
-                                    this.whitePieces[whitePiecesUsed].display();
-                                    whitePiecesUsed++;
-                                    this.popMatrix();
-                                } else if (cell == -1) {
-                                    this.pushMatrix();
-                                    this.translate(x, y, 0);
-                                    this.blackPieces[blackPiecesUsed].display();
-                                    blackPiecesUsed++;
-                                    this.popMatrix();
-                                } else if (cell > 1) {
-                                    for (var j = 0; j < cell; j++) {
-                                        this.pushMatrix();
-                                        this.translate(x, y, j * 0.2);
-                                        this.whitePieces[whitePiecesUsed].display();
-                                        whitePiecesUsed++;
-                                        this.popMatrix();
-                                    }
-                                } else if (cell < -1) {
-                                    for (var j = 0; j > cell; j--) {
-                                        this.pushMatrix();
-                                        this.translate(x, y, -j * 0.2);
-                                        this.blackPieces[blackPiecesUsed].display();
-                                        blackPiecesUsed++;
-                                        this.popMatrix();
-                                    }
-                                }
-                                this.popMatrix();
-                            }
-                        }
-                    } else {
-                        this.movingPieceState = 3;
-                    }
-                    break;
-                case 3:
-                    this.movingPieceState = 1;
-                    isMoving = false;
-                    break;
-                default:
-                    break;
-            }
-
         }
     }
 
