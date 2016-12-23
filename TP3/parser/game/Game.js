@@ -15,6 +15,7 @@ var gameIndex;
 var gameState = "MAIN_MENU";
 //GAME STATES: WAITING_FIRST_PICK, WAITING_SECOND_PICK
 var waitingMoveState = "";
+var timeoutTurn;
 function initializeGameVariables(newGameMode, newGameDifficulty) {
     gameState = "INITIALIZING_GAME";
     board = [];
