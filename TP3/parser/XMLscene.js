@@ -31,9 +31,9 @@ XMLscene.prototype.init = function(application) {
     this.board = new Chessboard(this,12,12,new Texture("./textures/stairsWood.jpg",1,1),0,0,[1, 1, 1, 1],[0, 0, 0, 1],[0.5, 0.5, 1, 1]);
 
     this.whitePiecesAppearance = new CGFappearance(this);
-    this.whitePiecesAppearance.loadTexture("./textures/chair.jpg");
+    this.whitePiecesAppearance.loadTexture("./textures/pecaBranca.png");
     this.blackPiecesAppearance = new CGFappearance(this);
-    this.blackPiecesAppearance.loadTexture("./textures/stairsWood.jpg");
+    this.blackPiecesAppearance.loadTexture("./textures/pecaPreta.png");
 
     this.blackPieces = [];
     for (i = 0; i < 20; i++) {
@@ -415,6 +415,10 @@ XMLscene.prototype.backMenu = function(){
      gameState = "MAIN_MENU"
      this.interface.removeFolder("Play Mode");
      this.interface.initStartMenu();
+}
+
+XMLscene.prototype.undo = function(){
+    
 }
 
 /**
