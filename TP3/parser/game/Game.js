@@ -184,7 +184,7 @@ function checkGameOver() {
 }
 function passTurnIfPossible() {
     if (isMoving){
-        setTimeout(passTurnIfPossible,1000);
+        setTimeout(passTurnIfPossible,100);
     } else {
         if (currentPlayer == 1) {
             if (player1Type == 0) {
