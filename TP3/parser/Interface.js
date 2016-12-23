@@ -134,16 +134,13 @@ Interface.prototype.initPlayMode = function() {
 		scene.cameraTotalAnimTime = 1;
 	});*/
 	
+	this.modeFolder.add(this.scene, "undo").name("Undo Move");
 	this.modeFolder.add(this.scene, "backMenu").name("Main Menu");
 	this.modeFolder.add(this.scene, "startGame").name("Restart game");
 	
 	this.modeFolder.open();
 }
 
-Interface.prototype.addUndo = function() {
-	if(typeof this.modxFolder != "undefined")
-		this.modeFolder.add(this.scene, "gameUndo").name("UNDO");
-}
 
 /*
 Interface.prototype.initGameMovie = function() {
