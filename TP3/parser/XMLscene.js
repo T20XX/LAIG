@@ -26,13 +26,19 @@ XMLscene.prototype.init = function(application) {
     this.setUpdatePeriod(DELTA_TIME);
     this.currTime = 0;
     this.board = new Chessboard(this,12,12,new Texture("./textures/stairsWood.jpg",1,1),0,0,[1, 1, 1, 1],[0, 0, 0, 1],[0.5, 0.5, 1, 1]);
+
+    this.whitePiecesAppearance = new CGFappearance(this);
+    this.whitePiecesAppearance.loadTexture("./textures/chair.jpg");
+    this.blackPiecesAppearance = new CGFappearance(this);
+    this.blackPiecesAppearance.loadTexture("./textures/stairsWood.jpg");
+
     this.blackPieces = [];
     for (i = 0; i < 20; i++) {
-        this.blackPieces.push(new Cylinder(this,0.5,0.5,0.2,10,1));
+        this.blackPieces.push(new Piece(this, this.blackPiecesAppearance));
     }
     this.whitePieces = [];
     for (i = 0; i < 20; i++) {
-        this.whitePieces.push(new Cylinder(this,0.5,0.5,0.2,10,1));
+        this.whitePieces.push(new Piece(this, this.whitePiecesAppearance));
     }
     this.pickingCells = [];
     for (i = 0; i < 144; i++) {
@@ -46,10 +52,6 @@ XMLscene.prototype.init = function(application) {
     for (i = 0; i < 20; i++) {
         this.whitePickingPieces.push(new Cylinder(this,0.5,0.5,0.2,5,1));
     }
-    this.whitePiecesAppearance = new CGFappearance(this);
-    this.whitePiecesAppearance.loadTexture("./textures/chair.jpg");
-    this.blackPiecesAppearance = new CGFappearance(this);
-    this.blackPiecesAppearance.loadTexture("./textures/stairsWood.jpg");
     // Enables picking
     this.setPickEnabled(true);
     //Game
