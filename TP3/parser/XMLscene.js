@@ -1,5 +1,5 @@
-var DELTA_TIME = 100;
-var PIECE_ANIMATION_VELOCITY = 3;
+var DELTA_TIME = 50;
+var PIECE_ANIMATION_VELOCITY = 5;
 function XMLscene() {
     CGFscene.call(this);
 }
@@ -267,6 +267,10 @@ XMLscene.prototype.display = function() {
             }
         }
     }
+
+    var blackPiecesUsed = 0;
+    var whitePiecesUsed = 0;
+
     if (gameState != "MAIN_MENU") {
         this.pushMatrix();
         this.translate(5.5, 5.5, 0);
@@ -274,8 +278,6 @@ XMLscene.prototype.display = function() {
         this.board.display();
         this.popMatrix();
         if (!isMoving) {
-            var blackPiecesUsed = 0;
-            var whitePiecesUsed = 0;
             var blackPickingPiecesUsed = 0;
             var whitePickingPiecesUsed = 0;
             var cell;
@@ -285,7 +287,6 @@ XMLscene.prototype.display = function() {
                     if (cell == 0) {
                     } else if (cell == 1) {
                         this.pushMatrix();
-                        this.whitePiecesAppearance.apply();
                         this.translate(x, y, 0);
                         this.whitePieces[whitePiecesUsed].display();
                         whitePiecesUsed++;
@@ -297,7 +298,6 @@ XMLscene.prototype.display = function() {
                         this.popMatrix();
                     } else if (cell == -1) {
                         this.pushMatrix();
-                        this.blackPiecesAppearance.apply();
                         this.translate(x, y, 0);
                         this.blackPieces[blackPiecesUsed].display();
                         blackPiecesUsed++;
@@ -310,7 +310,6 @@ XMLscene.prototype.display = function() {
                     } else if (cell > 1) {
                         for (var j = 0; j < cell; j++) {
                             this.pushMatrix();
-                            this.whitePiecesAppearance.apply();
                             this.translate(x, y, j * 0.2);
                             this.whitePieces[whitePiecesUsed].display();
                             whitePiecesUsed++;
@@ -324,7 +323,6 @@ XMLscene.prototype.display = function() {
                     } else if (cell < -1) {
                         for (var j = 0; j > cell; j--) {
                             this.pushMatrix();
-                            this.blackPiecesAppearance.apply();
                             this.translate(x, y, -j * 0.2);
                             this.blackPieces[blackPiecesUsed].display();
                             blackPiecesUsed++;
@@ -339,6 +337,8 @@ XMLscene.prototype.display = function() {
                 }
             }
         } else {
+
+            this.whitePiecesUsed = 0;
             switch (this.movingPieceState) {
                 case 1:
                     this.movingPieceAnimation.setMove(move);
@@ -346,30 +346,26 @@ XMLscene.prototype.display = function() {
                     this.movingPieceGameIndex = gameIndex;
                     this.movingPieceState = 2;
                 case 2:
-                    if (this.currTime - this.movingPieceStartTime < this.movingPieceAnimation.getSpan()) {
+                    var deltaTime = this.currTime - this.movingPieceStartTime;
+                    if (deltaTime < this.movingPieceAnimation.getSpan()) {
                         var movingMove = this.movingPieceAnimation.getMove();
-                        var blackPiecesUsed = 0;
-                        var whitePiecesUsed = 0;
                         var cell;
                         for (y = 0; y < 12; y++) {
                             for (x = 0; x < 12; x++) {
                                 cell = boardHistory[this.movingPieceGameIndex][11 - y][x];
                                 this.pushMatrix();
                                 if (movingMove[0] == x+1 && movingMove[1] == 12-y) {
-                                    this.multMatrix(this.movingPieceAnimation.getTransformation(this.currTime - this.movingPieceStartTime));
+                                    this.multMatrix(this.movingPieceAnimation.getTransformation(deltaTime));
                                 }
                                 if (cell == 0) {
                                 } else if (cell == 1) {
                                     this.pushMatrix();
-                                    this.whitePiecesAppearance.apply();
-
                                     this.translate(x, y, 0);
                                     this.whitePieces[whitePiecesUsed].display();
                                     whitePiecesUsed++;
                                     this.popMatrix();
                                 } else if (cell == -1) {
                                     this.pushMatrix();
-                                    this.blackPiecesAppearance.apply();
                                     this.translate(x, y, 0);
                                     this.blackPieces[blackPiecesUsed].display();
                                     blackPiecesUsed++;
@@ -377,7 +373,6 @@ XMLscene.prototype.display = function() {
                                 } else if (cell > 1) {
                                     for (var j = 0; j < cell; j++) {
                                         this.pushMatrix();
-                                        this.whitePiecesAppearance.apply();
                                         this.translate(x, y, j * 0.2);
                                         this.whitePieces[whitePiecesUsed].display();
                                         whitePiecesUsed++;
@@ -386,7 +381,6 @@ XMLscene.prototype.display = function() {
                                 } else if (cell < -1) {
                                     for (var j = 0; j > cell; j--) {
                                         this.pushMatrix();
-                                        this.blackPiecesAppearance.apply();
                                         this.translate(x, y, -j * 0.2);
                                         this.blackPieces[blackPiecesUsed].display();
                                         blackPiecesUsed++;
@@ -409,6 +403,21 @@ XMLscene.prototype.display = function() {
             }
 
         }
+    }
+
+    var whitePiecesLeft = 20 - whitePiecesUsed;
+    var blackPiecesLeft = 20 - blackPiecesUsed;
+for(var i = 0; i < whitePiecesLeft; i++){
+    this.pushMatrix();
+    this.translate((i - 10 *Math.floor(i/10))*1.22, - 2 - (Math.floor(i/10) * 1.22), 0);
+    this.whitePieces[whitePiecesUsed + i].display();
+    this.popMatrix();
+}
+    for(var i = 0; i < blackPiecesLeft; i++){
+        this.pushMatrix();
+        this.translate((i - 10 *Math.floor(i/10))*1.22, 13 + (Math.floor(i/10) * 1.22), 0);
+        this.blackPieces[blackPiecesUsed + i].display();
+        this.popMatrix();
     }
 }
 XMLscene.prototype.processGraph = function(nodeName, parentAppearance, parentTexture) {

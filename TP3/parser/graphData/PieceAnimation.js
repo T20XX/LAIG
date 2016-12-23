@@ -19,7 +19,7 @@ PieceAnimation.prototype.setMove=function(move)
 	this.move = move;
 	this.deltaX = this.move[2] - this.move[0];
     this.deltaY = -(this.move[3] - this.move[1]);
-    this.span = Math.sqrt(this.deltaX^2 + this.deltaY^2) / this.velocity;
+    this.span = Math.sqrt(Math.pow(this.deltaX,2) + Math.pow(this.deltaY,2)) / this.velocity;
 };
 
 PieceAnimation.prototype.getMove=function()
