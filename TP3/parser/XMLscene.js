@@ -25,13 +25,16 @@ XMLscene.prototype.init = function(application) {
     this.curMaterial = 0;
     //Animation
     this.setUpdatePeriod(DELTA_TIME);
+    this.startGameDifficulty = '2 Players';
+    this.startGameDifficulties = ['2 Players', 'vs. Easy CPU', 'vs. Medium CPU', 'vs. Hard CPU', 'vs. Very Hard CPU', 'CPU vs. CPU Easy', 'CPU vs. CPU Medium', 'CPU vs. CPU Hard', 'CPU vs. CPU Very Hard'];
+    this.timeoutTurn = 25;
     this.currTime = 0;
     this.board = new Chessboard(this,12,12,new Texture("./textures/stairsWood.jpg",1,1),0,0,[1, 1, 1, 1],[0, 0, 0, 1],[0.5, 0.5, 1, 1]);
 
     this.whitePiecesAppearance = new CGFappearance(this);
-    this.whitePiecesAppearance.loadTexture("./textures/chair.jpg");
+    this.whitePiecesAppearance.loadTexture("./textures/pecaBranca.png");
     this.blackPiecesAppearance = new CGFappearance(this);
-    this.blackPiecesAppearance.loadTexture("./textures/stairsWood.jpg");
+    this.blackPiecesAppearance.loadTexture("./textures/pecaPreta.png");
 
     this.blackPieces = [];
     for (i = 0; i < 20; i++) {
@@ -57,13 +60,13 @@ XMLscene.prototype.init = function(application) {
     this.setPickEnabled(true);
     //Game
     //this.game = new Game(this);
-    initializeGameVariables(2, 4);
 
     //STATES: 1, 2, 3
     this.movingPieceState = 1;
     this.movingPieceStartTime;
     this.movingPieceGameIndex;
     this.movingPieceAnimation = new PieceAnimation(PIECE_ANIMATION_VELOCITY);
+
 }
 XMLscene.prototype.setInterface = function(interface) {
     this.interface = interface;
@@ -178,6 +181,7 @@ XMLscene.prototype.onGraphLoaded = function() {
     this.graphLights();
     this.graphMaterials();
     this.graphTextures();
+    this.interface.initStartMenu(false);
 }
 ;
 XMLscene.prototype.logPicking = function() {
@@ -451,6 +455,51 @@ XMLscene.prototype.processGraph = function(nodeName, parentAppearance, parentTex
         }
     }
 }
+XMLscene.prototype.startGame = function() {
+    this.interface.removeFolder("Start Game");
+	this.interface.initPlayMode();
+    switch (this.startGameDifficulty){
+        case '2 Players':
+            initializeGameVariables(1, 1);
+            break;
+        case 'vs. Easy CPU':
+            initializeGameVariables(2, 1);
+            break;
+        case 'vs. Medium CPU':
+            initializeGameVariables(2, 2);
+            break;
+        case 'vs. Hard CPU':
+            initializeGameVariables(2, 3);
+            break;
+        case 'vs. Very Hard CPU':
+            initializeGameVariables(2, 4);
+            break;
+        case 'CPU vs. CPU Easy':
+            initializeGameVariables(3, 1);
+            break;
+        case 'CPU vs. CPU Medium':
+            initializeGameVariables(3, 2);
+            break;
+        case 'CPU vs. CPU Hard':
+            initializeGameVariables(3, 3);
+            break;
+        case 'CPU vs. CPU Very Hard':
+            initializeGameVariables(3, 4);
+            break;
+    }
+    timeoutTurn = this.timeoutTurn;
+}
+
+XMLscene.prototype.backMenu = function(){
+     gameState = "MAIN_MENU"
+     this.interface.removeFolder("Play Mode");
+     this.interface.initStartMenu();
+}
+
+XMLscene.prototype.undo = function(){
+    
+}
+
 /**
  * Interface functions
  */
