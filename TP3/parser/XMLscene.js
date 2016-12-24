@@ -27,6 +27,8 @@ XMLscene.prototype.init = function(application) {
     this.setUpdatePeriod(DELTA_TIME);
     this.startGameDifficulty = '2 Players';
     this.startGameDifficulties = ['2 Players', 'vs. Easy CPU', 'vs. Medium CPU', 'vs. Hard CPU', 'vs. Very Hard CPU', 'CPU vs. CPU Easy', 'CPU vs. CPU Medium', 'CPU vs. CPU Hard', 'CPU vs. CPU Very Hard'];
+    this.scenarioNames = ["Rusty Vision", "Other SHIT"];
+    this.scenarioName = "Rusty Vision";
     this.curCameraName = 'Top View';
     this.camerasName = ['Top View', 'Player 1', 'Player 2'];
     this.timeoutTurn = 25;
