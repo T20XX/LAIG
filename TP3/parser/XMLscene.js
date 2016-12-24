@@ -1,5 +1,6 @@
 var DELTA_TIME = 50;
 var PIECE_ANIMATION_VELOCITY = 5;
+var CAMERA_ANIMATION_VELOCITY = 5;
 function XMLscene() {
     CGFscene.call(this);
 }
@@ -115,7 +116,7 @@ XMLscene.prototype.initCameras = function() {
     this.cameras['Top View'] = new CGFcamera(0.5,0.1,100,vec3.fromValues(5.5, 5.5, 30),vec3.fromValues(5.5, 5.5, 0));
     this.cameras['Player 1'] = new CGFcamera(0.5,0.1,100,vec3.fromValues(5.5, -15, 25),vec3.fromValues(5.5, 5.5, 0));
     this.cameras['Player 2'] = new CGFcamera(-0.5,0.1,100,vec3.fromValues(5.5, 26, 25),vec3.fromValues(5.5, 5.5, 0));
-    this.camera = this.cameras['Top View'];
+    this.camera = this.cameras['Player 1'];
 }
 ;
 XMLscene.prototype.graphCameras = function() {
@@ -560,7 +561,8 @@ XMLscene.prototype.update = function(currTime) {
 XMLscene.prototype.updateCamera = function() {
     console.log(this.curCameraName);
     if(this.camera.position != this.cameras[this.curCameraName].position){
-        this.camera = this.cameras[this.curCameraName];
+        //this.camera.rotate(this.cameras[this.curCameraName].calculateDirection(), CAMERA_ANIMATION_VELOCITY/50);
+        //this.camera = this.cameras[this.curCameraName];
     }
 }
 
