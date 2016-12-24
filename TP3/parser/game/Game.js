@@ -4,7 +4,7 @@ var move = [];
 var gameMode;
 var gameDifficulty;
 var currentPlayer;
-var boardHistory;
+var boardHistory = [];
 var movesHistory;
 var listOfMovesHistory;
 var winner;
@@ -18,6 +18,9 @@ var startTimeoutTime = 0;
 //GAME STATES: WAITING_FIRST_PICK, WAITING_SECOND_PICK
 var waitingMoveState = "";
 var timeoutTurn;
+
+var gameMovieIndex = 0;
+var gameMovieLoop;
 function initializeGameVariables(newGameMode, newGameDifficulty) {
     gameState = "INITIALIZING_GAME";
     board = [];
@@ -220,4 +223,8 @@ function setFinalPosition(finalX, finalY) {
 function setBoard(newBoard) {
     board = newBoard;
     boardHistory.push(newBoard);
+}
+
+function setGameState(newGameState) {
+    gameState = newGameState;
 }

@@ -538,7 +538,7 @@ XMLscene.prototype.startGame = function() {
 }
 
 XMLscene.prototype.backMenu = function(){
-     gameState = "MAIN_MENU"
+     gameState = "MAIN_MENU";
      this.interface.removeFolder("Play Mode");
      this.interface.initStartMenu();
 }
@@ -557,6 +557,54 @@ XMLscene.prototype.changeScene = function(){
             break;
     }
    this.graph = new MySceneGraph(filename, this);
+}
+
+/*XMLscene.prototype.gameMovie = function(){
+    setGameState("GAME_MOVIE");
+    window.alert(gameState);
+    var totalTurns = boardHistory.length;
+    currentPlayer = 1;
+    for(var i=0; i < totalTurns - 1; i++){
+
+    }
+    window.alert(gameState);
+    //gameState = "MAIN_MENU";
+    window.alert(gameState);
+}*/
+
+XMLscene.prototype.gameMovie = function(){
+    gameMovieIndex = 0;
+    isMoving = false;
+    gameMovieLoop = setInterval(this.gameMovieLoop,100);
+}
+XMLscene.prototype.gameMovieLoop = function() {
+    if (isMoving) {
+        //setTimeout(this.gameMovie,100);
+    } else {
+        console.log(gameMovieIndex);
+        console.log(boardHistory.length - 1);
+        if (gameMovieIndex < boardHistory.length - 1) {
+            setGameState("GAME_MOVIE");
+            gameIndex = gameMovieIndex;
+            board = boardHistory[gameMovieIndex];
+            move = movesHistory[gameMovieIndex];
+            isMoving = true;
+            //changeCurrentPlayer();
+            gameMovieIndex++;
+            board = boardHistory[gameMovieIndex];
+            //window.alert(this.gameMovieIndex);
+            //setTimeout(this.gameMovie,100);
+        } else {
+            clearInterval(gameMovieLoop);
+            if(winner == 0){
+                window.alert("The game was not finished");
+            }else{
+                window.alert("PLAYER " + winner + " WINS!");
+            }
+            gameState = "MAIN_MENU";
+            //this.backMenu();
+        }
+    }
 }
 
 /**

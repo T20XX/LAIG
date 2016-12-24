@@ -114,9 +114,10 @@ Interface.prototype.initStartMenu = function(movie) {
 	this.resetFolder("Start Game");
 	this.startGameFolder.add(this.scene, 'startGameDifficulty', this.scene.startGameDifficulties).name("Game Type");
 	this.startGameFolder.add(this.scene, 'scenarioName', this.scene.scenarioNames).name("Scenario");
-	var play_timeout = this.startGameFolder.add(this.scene, 'timeoutTurn', 5, 120, 1);
+	var play_timeout = this.startGameFolder.add(this.scene, 'timeoutTurn', 10, 120, 1);
 	play_timeout.name("Play Timeout");
-	play_timeout.step(1);
+	play_timeout.step(5);
+	this.startGameFolder.add(this.scene, 'gameMovie').name("Last Game Movie");
 	this.startGameFolder.add(this.scene, 'startGame').name("Start Game");
 	
 	this.startGameFolder.open();
