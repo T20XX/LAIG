@@ -48,7 +48,7 @@ Interface.prototype.init = function(application) {
 	
 	this.luzes=this.gui.addFolder("Lights");
 	this.luzes.open();
-	this.gui.add(this.scene, 'scenarioName', this.scene.scenarioNames).name("Scenario");
+
 	
 	return true;
 };

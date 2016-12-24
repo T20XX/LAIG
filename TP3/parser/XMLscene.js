@@ -490,6 +490,8 @@ XMLscene.prototype.processGraph = function(nodeName, parentAppearance, parentTex
     }
 }
 XMLscene.prototype.startGame = function() {
+    this.changeScene();
+    
     this.interface.removeFolder("Start Game");
 	this.interface.initPlayMode();
     switch (this.startGameDifficulty){
@@ -522,7 +524,6 @@ XMLscene.prototype.startGame = function() {
             break;
     }
     timeoutTurn = this.timeoutTurn;
-    this.changeScene();
 }
 
 XMLscene.prototype.backMenu = function(){
@@ -534,8 +535,8 @@ XMLscene.prototype.backMenu = function(){
 XMLscene.prototype.undo = function(){
     
 }
-
 XMLscene.prototype.changeScene = function(){
+
     switch (this.scenarioName){
         case "Rusty Vision":
             var filename=getUrlVars()['file'] || "LAIG_TP2_DSX_T4_G03_v01.dsx"
@@ -544,8 +545,9 @@ XMLscene.prototype.changeScene = function(){
             var filename=getUrlVars()['file'] || "LAIG_TP2_DSX_T4_G03_v02.dsx"
             break;
     }
-	var myGraph = new MySceneGraph(filename, this);
+   //new MySceneGraph(filename, this);
 }
+
 /**
  * Interface functions
  */
