@@ -28,6 +28,8 @@ XMLscene.prototype.init = function(application) {
     this.setUpdatePeriod(DELTA_TIME);
     this.startGameDifficulty = '2 Players';
     this.startGameDifficulties = ['2 Players', 'vs. Easy CPU', 'vs. Medium CPU', 'vs. Hard CPU', 'vs. Very Hard CPU', 'CPU vs. CPU Easy', 'CPU vs. CPU Medium', 'CPU vs. CPU Hard', 'CPU vs. CPU Very Hard'];
+    this.scenarioNames = ["Rusty Vision", "Other SHIT"];
+    this.scenarioName = "Rusty Vision";
     this.curCameraName = 'Top View';
     this.camerasName = ['Top View', 'Player 1', 'Player 2'];
     this.timeoutTurn = 25;
@@ -272,7 +274,7 @@ XMLscene.prototype.display = function() {
             }
             this.lights[i].update();
         }
-        //this.processGraph(this.graph.root, new CGFappearance());
+        this.processGraph(this.graph.root, new CGFappearance());
     }
     if (gameState == "WAITING_MOVE" && !isMoving) {
         for (x = 0; x < 12; x++) {
@@ -521,6 +523,7 @@ XMLscene.prototype.startGame = function() {
             break;
     }
     timeoutTurn = this.timeoutTurn;
+    this.changeScene();
 }
 
 XMLscene.prototype.backMenu = function(){
@@ -533,6 +536,17 @@ XMLscene.prototype.undo = function(){
     
 }
 
+XMLscene.prototype.changeScene = function(){
+    switch (this.scenarioName){
+        case "Rusty Vision":
+            var filename=getUrlVars()['file'] || "LAIG_TP2_DSX_T4_G03_v01.dsx"
+            break;
+        case "Other SHIT":
+            var filename=getUrlVars()['file'] || "LAIG_TP2_DSX_T4_G03_v02.dsx"
+            break;
+    }
+	var myGraph = new MySceneGraph(filename, this);
+}
 /**
  * Interface functions
  */

@@ -112,8 +112,6 @@
             <texture id="stairsText" />
             <children>
             	<componentref id = "globalbox" />
-            	<componentref id = "box1" />
-            	<componentref id = "box2" />
             </children>
         </component>
 
