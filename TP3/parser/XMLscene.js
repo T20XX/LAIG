@@ -522,6 +522,7 @@ XMLscene.prototype.startGame = function() {
             break;
     }
     timeoutTurn = this.timeoutTurn;
+    this.changeScene();
 }
 
 XMLscene.prototype.backMenu = function(){
@@ -534,6 +535,17 @@ XMLscene.prototype.undo = function(){
     
 }
 
+XMLscene.prototype.changeScene = function(){
+    switch (this.scenarioName){
+        case "Rusty Vision":
+            var filename=getUrlVars()['file'] || "LAIG_TP2_DSX_T4_G03_v01.dsx"
+            break;
+        case "Other SHIT":
+            var filename=getUrlVars()['file'] || "LAIG_TP2_DSX_T4_G03_v02.dsx"
+            break;
+    }
+	var myGraph = new MySceneGraph(filename, this);
+}
 /**
  * Interface functions
  */
