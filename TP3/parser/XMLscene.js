@@ -578,7 +578,7 @@ XMLscene.prototype.update = function(currTime) {
 XMLscene.prototype.updateCamera = function() {
     console.log(this.curCameraName);
     if(this.camera.position != this.cameras[this.curCameraName].position){
-        //this.camera.rotate(this.cameras[this.curCameraName].calculateDirection(), CAMERA_ANIMATION_VELOCITY/50);
+        this.camera.setPosition(vec3(this.camera.position.x,this.camera.position.y + 0.5, this.camera.position.z));
         //this.camera = this.cameras[this.curCameraName];
     }
 }
