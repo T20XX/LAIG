@@ -27,8 +27,8 @@ XMLscene.prototype.init = function(application) {
     this.setUpdatePeriod(DELTA_TIME);
     this.startGameDifficulty = '2 Players';
     this.startGameDifficulties = ['2 Players', 'vs. Easy CPU', 'vs. Medium CPU', 'vs. Hard CPU', 'vs. Very Hard CPU', 'CPU vs. CPU Easy', 'CPU vs. CPU Medium', 'CPU vs. CPU Hard', 'CPU vs. CPU Very Hard'];
-    this.scenarioNames = ["Rusty Vision", "Other SHIT"];
-    this.scenarioName = "Rusty Vision";
+    this.scenarioNames = ["Scene 1", "Scene 2"];
+    this.scenarioName = "Scene 1";
     this.curCameraName = 'Top View';
     this.camerasName = ['Top View', 'Player 1', 'Player 2'];
     this.timeoutTurn = 25;
@@ -542,10 +542,10 @@ XMLscene.prototype.undo = function(){
 XMLscene.prototype.changeScene = function(){
 
     switch (this.scenarioName){
-        case "Rusty Vision":
+        case "Scene 1":
             var filename=getUrlVars()['file'] || "LAIG_TP2_DSX_T4_G03_v01.dsx"
             break;
-        case "Other SHIT":
+        case "Scene 2":
             var filename=getUrlVars()['file'] || "LAIG_TP2_DSX_T4_G03_v02.dsx"
             break;
     }
