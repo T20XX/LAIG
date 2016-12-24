@@ -27,6 +27,8 @@ XMLscene.prototype.init = function(application) {
     this.setUpdatePeriod(DELTA_TIME);
     this.startGameDifficulty = '2 Players';
     this.startGameDifficulties = ['2 Players', 'vs. Easy CPU', 'vs. Medium CPU', 'vs. Hard CPU', 'vs. Very Hard CPU', 'CPU vs. CPU Easy', 'CPU vs. CPU Medium', 'CPU vs. CPU Hard', 'CPU vs. CPU Very Hard'];
+    this.curCameraName = 'Top View';
+    this.camerasName = ['Top View', 'Player 1', 'Player 2'];
     this.timeoutTurn = 25;
     this.currTime = 0;
     this.board = new Chessboard(this,12,12,new Texture("./textures/stairsWood.jpg",1,1),0,0,[1, 1, 1, 1],[0, 0, 0, 1],[0.5, 0.5, 1, 1]);
@@ -109,7 +111,11 @@ XMLscene.prototype.graphLights = function() {
 }
 ;
 XMLscene.prototype.initCameras = function() {
-    this.camera = new CGFcamera(0.4,0.1,500,vec3.fromValues(15, 15, 15),vec3.fromValues(0, 0, 0));
+    this.cameras = [];
+    this.cameras['Top View'] = new CGFcamera(0.5,0.1,100,vec3.fromValues(5.5, 5.5, 30),vec3.fromValues(5.5, 5.5, 0));
+    this.cameras['Player 1'] = new CGFcamera(0.5,0.1,100,vec3.fromValues(5.5, -15, 25),vec3.fromValues(5.5, 5.5, 0));
+    this.cameras['Player 2'] = new CGFcamera(-0.5,0.1,100,vec3.fromValues(5.5, 26, 25),vec3.fromValues(5.5, 5.5, 0));
+    this.camera = this.cameras['Top View'];
 }
 ;
 XMLscene.prototype.graphCameras = function() {
@@ -177,7 +183,7 @@ XMLscene.prototype.onGraphLoaded = function() {
     var ambient = this.graph.illumination.getAmbient();
     this.gl.clearColor(background.r, background.g, background.b, background.a);
     this.setGlobalAmbientLight(ambient.r, ambient.g, ambient.b, ambient.a);
-    this.graphCameras();
+    //this.graphCameras();
     this.graphLights();
     this.graphMaterials();
     this.graphTextures();
@@ -246,6 +252,7 @@ XMLscene.prototype.display = function() {
     // Initialize Model-View matrix as identity (no transformation
     this.updateProjectionMatrix();
     this.loadIdentity();
+    this.updateCamera();
     // Apply transformations corresponding to the camera position relative to the origin
     this.applyViewMatrix();
     // Draw axis
@@ -549,3 +556,11 @@ XMLscene.prototype.update = function(currTime) {
         //console.log(this.currTime);
     }
 }
+
+XMLscene.prototype.updateCamera = function() {
+    console.log(this.curCameraName);
+    if(this.camera.position != this.cameras[this.curCameraName].position){
+        this.camera = this.cameras[this.curCameraName];
+    }
+}
+

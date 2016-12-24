@@ -124,15 +124,16 @@ Interface.prototype.initPlayMode = function() {
 	this.resetFolders();
 	this.resetFolder("Play Mode");
 	
-	/*this.camera = this.modeFolder.add(this.scene, 'cameraName', this.scene.cameraNames).name("Camera");
+	this.camera = this.modeFolder.add(this.scene, 'curCameraName', this.scene.camerasName).name("Camera");
 	var scene = this.scene;
 	this.camera.onChange(function(value) {
-		scene.oldCameraPosition = vec3.clone(scene.camera.position);
-		scene.newCameraPosition = vec3.clone(scene.cameraPositions[scene.cameraNames[value]]);
-		scene.cameraAnimTime = 0;
-		scene.cameraAnimStartTime = scene.currTime;
-		scene.cameraTotalAnimTime = 1;
-	});*/
+		//scene.oldCameraPosition = vec3.clone(scene.camera.position);
+		//scene.newCameraPosition = vec3.clone(scene.cameraPositions[scene.cameraNames[value]]);
+		//scene.curCameraIndex = value;
+		//scene.cameraAnimTime = 0;
+		//scene.cameraAnimStartTime = scene.currTime;
+		//scene.cameraTotalAnimTime = 1;
+	});
 	
 	this.modeFolder.add(this.scene, "undo").name("Undo Move");
 	this.modeFolder.add(this.scene, "backMenu").name("Main Menu");
@@ -142,7 +143,6 @@ Interface.prototype.initPlayMode = function() {
 }
 
 
-/*
 Interface.prototype.initGameMovie = function() {
 	this.resetFolders();
 	this.resetFolder("Game Movie");
@@ -160,7 +160,7 @@ Interface.prototype.initGameMovie = function() {
 	
 	this.gameMovieFolder.open();
 }
-*/
+
 Interface.prototype.addLights = function(lights) {
 	this.scene.lightStates = [];
 	var i = 0;
