@@ -1,5 +1,7 @@
 var DELTA_TIME = 50;
 var PIECE_ANIMATION_VELOCITY = 5;
+var CAMERA_DISTANCE = 32;
+var CAMERA_ANGLE_VELOCITY = 0.03;
 function XMLscene() {
     CGFscene.call(this);
 }
@@ -29,7 +31,7 @@ XMLscene.prototype.init = function(application) {
     this.startGameDifficulties = ['2 Players', 'vs. Easy CPU', 'vs. Medium CPU', 'vs. Hard CPU', 'vs. Very Hard CPU', 'CPU vs. CPU Easy', 'CPU vs. CPU Medium', 'CPU vs. CPU Hard', 'CPU vs. CPU Very Hard'];
     this.scenarioNames = ["Rusty Vision", "Other SHIT"];
     this.scenarioName = "Rusty Vision";
-    this.curCameraName = 'Top View';
+    this.curCameraName = 'Player 1';
     this.camerasName = ['Top View', 'Player 1', 'Player 2'];
     this.timeoutTurn = 25;
     this.currTime = 0;
@@ -120,7 +122,11 @@ XMLscene.prototype.initCameras = function() {
     this.cameras['Top View'] = new CGFcamera(0.5,0.1,100,vec3.fromValues(5.5, 5.5, 30),vec3.fromValues(5.5, 5.5, 0));
     this.cameras['Player 1'] = new CGFcamera(0.5,0.1,100,vec3.fromValues(5.5, -15, 25),vec3.fromValues(5.5, 5.5, 0));
     this.cameras['Player 2'] = new CGFcamera(-0.5,0.1,100,vec3.fromValues(5.5, 26, 25),vec3.fromValues(5.5, 5.5, 0));
-    this.camera = this.cameras['Top View'];
+    this.camerasAngle = [];
+    this.camerasAngle['Top View'] = 90 * Math.PI/180;
+    this.camerasAngle['Player 1'] = 50 * Math.PI/180;
+    this.camerasAngle['Player 2'] = 140 * Math.PI/180;
+    this.camera = this.cameras['Player 1'];
 }
 ;
 XMLscene.prototype.graphCameras = function() {
@@ -578,10 +584,40 @@ XMLscene.prototype.update = function(currTime) {
 }
 
 XMLscene.prototype.updateCamera = function() {
-    console.log(this.curCameraName);
-    if(this.camera.position != this.cameras[this.curCameraName].position){
-        this.camera = this.cameras[this.curCameraName];
-        //this.camera.setPosition(vec3(this.camera.position.x,this.camera.position.y + 0.5, this.camera.position.z));
+    //console.log(this.camera.position);
+    var angle = Math.atan(Math.abs(this.camera.calculateDirection()[2])/this.camera.calculateDirection()[1]);
+
+    //console.log("Angulo clean:" + angle);
+    if(angle < 0){
+        angle = Math.PI + angle;
     }
+    //console.log("Angulo atual:" + angle);
+    //console.log("Angulo pretendido:" + this.camerasAngle[this.curCameraName]);
+    if(Math.floor(angle*10) < Math.floor(this.camerasAngle[this.curCameraName]*10)){
+        /*angle += CAMERA_ANGLE_VELOCITY;
+        if (angle < Math.PI/2){
+            this.camera.setPosition(vec3.fromValues(this.camera.position[0], this.camera.target[1] - CAMERA_DISTANCE * Math.cos(angle), this.camera.target[2] + CAMERA_DISTANCE * Math.sin(angle)));
+        }else{
+            angle -= Math.PI/2;
+            this.camera.setPosition(vec3.fromValues(this.camera.position[0], this.camera.target[1] + CAMERA_DISTANCE * Math.sin(angle), this.camera.target[2] + CAMERA_DISTANCE * Math.cos(angle)));
+        }*/
+        //var positionn = this.camera.position;
+        //this.camera.setPosition(vec3.fromValues(5.5,5.5,30));
+        //this.camera.orbit(CGFcameraAxisID.Y,Math.PI/2);
+        //this.camera.setPosition(positionn);
+        this.camera.orbit(CGFcameraAxisID.X,CAMERA_ANGLE_VELOCITY);
+
+    } else if(Math.floor(angle*10) > Math.floor(this.camerasAngle[this.curCameraName]*10)){
+        /*angle -= CAMERA_ANGLE_VELOCITY;
+
+        if (angle < Math.PI/2){
+            this.camera.setPosition(vec3.fromValues(this.camera.position[0], this.camera.target[1] - CAMERA_DISTANCE * Math.cos(angle), this.camera.target[2] + CAMERA_DISTANCE * Math.sin(angle)));
+        }else{
+            angle -= Math.PI/2;
+            this.camera.setPosition(vec3.fromValues(this.camera.position[0], this.camera.target[1] + CAMERA_DISTANCE * Math.sin(angle), this.camera.target[2] + CAMERA_DISTANCE * Math.cos(angle)));
+        }*/
+        this.camera.orbit(CGFcameraAxisID.X,-CAMERA_ANGLE_VELOCITY);
+    }
+
 }
 
