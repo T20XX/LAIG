@@ -189,7 +189,9 @@ XMLscene.prototype.onGraphLoaded = function() {
     this.graphLights();
     this.graphMaterials();
     this.graphTextures();
+    if(gameState != "MAIN_MENU")
     this.interface.initPlayMode();
+    else this.interface.initStartMenu();
 }
 ;
 XMLscene.prototype.logPicking = function() {
