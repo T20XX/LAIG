@@ -1,6 +1,5 @@
 var DELTA_TIME = 50;
 var PIECE_ANIMATION_VELOCITY = 5;
-var CAMERA_ANIMATION_VELOCITY = 5;
 function XMLscene() {
     CGFscene.call(this);
 }
@@ -75,6 +74,7 @@ XMLscene.prototype.init = function(application) {
 }
 XMLscene.prototype.setInterface = function(interface) {
     this.interface = interface;
+    this.interface.initStartMenu();
 }
 XMLscene.prototype.initLights = function() {
     this.lights[0].setPosition(2, 3, 3, 1);
@@ -118,7 +118,7 @@ XMLscene.prototype.initCameras = function() {
     this.cameras['Top View'] = new CGFcamera(0.5,0.1,100,vec3.fromValues(5.5, 5.5, 30),vec3.fromValues(5.5, 5.5, 0));
     this.cameras['Player 1'] = new CGFcamera(0.5,0.1,100,vec3.fromValues(5.5, -15, 25),vec3.fromValues(5.5, 5.5, 0));
     this.cameras['Player 2'] = new CGFcamera(-0.5,0.1,100,vec3.fromValues(5.5, 26, 25),vec3.fromValues(5.5, 5.5, 0));
-    this.camera = this.cameras['Player 1'];
+    this.camera = this.cameras['Top View'];
 }
 ;
 XMLscene.prototype.graphCameras = function() {
@@ -190,7 +190,6 @@ XMLscene.prototype.onGraphLoaded = function() {
     this.graphLights();
     this.graphMaterials();
     this.graphTextures();
-    this.interface.initStartMenu(false);
 }
 ;
 XMLscene.prototype.logPicking = function() {
@@ -275,8 +274,8 @@ XMLscene.prototype.display = function() {
             this.lights[i].update();
         }
         if (gameState != "MAIN_MENU") {
-            this.processGraph(this.graph.root, new CGFappearance());
-        }
+             this.processGraph(this.graph.root, new CGFappearance());
+         }
     }
     if (gameState == "WAITING_MOVE" && !isMoving) {
         for (x = 0; x < 12; x++) {
@@ -493,8 +492,8 @@ XMLscene.prototype.processGraph = function(nodeName, parentAppearance, parentTex
     }
 }
 XMLscene.prototype.startGame = function() {
-
-    //this.changeScene();
+    this.changeScene();
+    
     this.interface.removeFolder("Start Game");
 	this.interface.initPlayMode();
     switch (this.startGameDifficulty){
@@ -538,8 +537,8 @@ XMLscene.prototype.backMenu = function(){
 XMLscene.prototype.undo = function(){
     
 }
-
 XMLscene.prototype.changeScene = function(){
+
     switch (this.scenarioName){
         case "Rusty Vision":
             var filename=getUrlVars()['file'] || "LAIG_TP2_DSX_T4_G03_v01.dsx"
@@ -548,8 +547,9 @@ XMLscene.prototype.changeScene = function(){
             var filename=getUrlVars()['file'] || "LAIG_TP2_DSX_T4_G03_v02.dsx"
             break;
     }
-	this.graph = new MySceneGraph(filename, this);
+   this.graph = new MySceneGraph(filename, this);
 }
+
 /**
  * Interface functions
  */
@@ -579,7 +579,6 @@ XMLscene.prototype.updateCamera = function() {
     console.log(this.curCameraName);
     if(this.camera.position != this.cameras[this.curCameraName].position){
         this.camera.setPosition(vec3(this.camera.position.x,this.camera.position.y + 0.5, this.camera.position.z));
-        //this.camera = this.cameras[this.curCameraName];
     }
 }
 

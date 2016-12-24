@@ -49,6 +49,7 @@ Interface.prototype.init = function(application) {
 	this.luzes=this.gui.addFolder("Lights");
 	this.luzes.open();
 
+	
 	return true;
 };
 
@@ -111,8 +112,8 @@ Interface.prototype.resetFolder = function(name) {
 Interface.prototype.initStartMenu = function(movie) {
 	this.resetFolders();
 	this.resetFolder("Start Game");
-    this.startGameFolder.add(this.scene, 'scenarioName', this.scene.scenarioNames).name("Scenario");
-    this.startGameFolder.add(this.scene, 'startGameDifficulty', this.scene.startGameDifficulties).name("Game Type");
+	this.startGameFolder.add(this.scene, 'startGameDifficulty', this.scene.startGameDifficulties).name("Game Type");
+	this.startGameFolder.add(this.scene, 'scenarioName', this.scene.scenarioNames).name("Scenario");
 	var play_timeout = this.startGameFolder.add(this.scene, 'timeoutTurn', 5, 120, 1);
 	play_timeout.name("Play Timeout");
 	play_timeout.step(1);
