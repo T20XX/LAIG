@@ -274,7 +274,9 @@ XMLscene.prototype.display = function() {
             }
             this.lights[i].update();
         }
-        this.processGraph(this.graph.root, new CGFappearance());
+        if (gameState != "MAIN_MENU") {
+            this.processGraph(this.graph.root, new CGFappearance());
+        }
     }
     if (gameState == "WAITING_MOVE" && !isMoving) {
         for (x = 0; x < 12; x++) {
@@ -491,6 +493,8 @@ XMLscene.prototype.processGraph = function(nodeName, parentAppearance, parentTex
     }
 }
 XMLscene.prototype.startGame = function() {
+
+    //this.changeScene();
     this.interface.removeFolder("Start Game");
 	this.interface.initPlayMode();
     switch (this.startGameDifficulty){
@@ -523,7 +527,6 @@ XMLscene.prototype.startGame = function() {
             break;
     }
     timeoutTurn = this.timeoutTurn;
-    this.changeScene();
 }
 
 XMLscene.prototype.backMenu = function(){
@@ -545,7 +548,7 @@ XMLscene.prototype.changeScene = function(){
             var filename=getUrlVars()['file'] || "LAIG_TP2_DSX_T4_G03_v02.dsx"
             break;
     }
-	var myGraph = new MySceneGraph(filename, this);
+	this.graph = new MySceneGraph(filename, this);
 }
 /**
  * Interface functions
