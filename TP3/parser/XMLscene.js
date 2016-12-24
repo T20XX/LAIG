@@ -189,7 +189,7 @@ XMLscene.prototype.onGraphLoaded = function() {
     this.graphLights();
     this.graphMaterials();
     this.graphTextures();
-    this.interface.initStartMenu(false);
+    this.interface.initPlayMode();
 }
 ;
 XMLscene.prototype.logPicking = function() {
@@ -273,7 +273,9 @@ XMLscene.prototype.display = function() {
             }
             this.lights[i].update();
         }
-        this.processGraph(this.graph.root, new CGFappearance());
+        if (gameState != "MAIN_MENU") {
+             this.processGraph(this.graph.root, new CGFappearance());
+         }
     }
     if (gameState == "WAITING_MOVE" && !isMoving) {
         for (x = 0; x < 12; x++) {
@@ -545,7 +547,7 @@ XMLscene.prototype.changeScene = function(){
             var filename=getUrlVars()['file'] || "LAIG_TP2_DSX_T4_G03_v02.dsx"
             break;
     }
-   //new MySceneGraph(filename, this);
+   this.graph = new MySceneGraph(filename, this);
 }
 
 /**
