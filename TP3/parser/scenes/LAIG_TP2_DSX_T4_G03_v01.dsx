@@ -151,7 +151,7 @@
 
          <component id ="box1">
         	<transformation>
-        		<translate x="-0.5" y="0" z="0" />
+        		<translate x="-0.5" y="-0.5" z="0" />
         		<rotate axis="x" angle="90"/>
         		<scale x="13" y="1" z="5" />
         	</transformation>
@@ -166,7 +166,7 @@
 
           <component id ="box2">
         	<transformation>
-        		<translate x="-0.5" y="16" z="0" />
+        		<translate x="-0.5" y="16.5" z="0" />
         		<rotate axis="x" angle="90"/>
         		<scale x="13" y="1" z="5" />
         	</transformation>
