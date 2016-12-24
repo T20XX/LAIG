@@ -83,6 +83,8 @@ XMLscene.prototype.initLights = function() {
 }
 ;
 XMLscene.prototype.graphLights = function() {
+    this.interface.removeFolder("Lights");
+    this.interface.addFolder("Lights");
     var lights = this.graph.lights;
     var i = 0;
     for (id in lights) {
@@ -578,7 +580,8 @@ XMLscene.prototype.update = function(currTime) {
 XMLscene.prototype.updateCamera = function() {
     console.log(this.curCameraName);
     if(this.camera.position != this.cameras[this.curCameraName].position){
-        this.camera.setPosition(vec3(this.camera.position.x,this.camera.position.y + 0.5, this.camera.position.z));
+        this.camera = this.cameras[this.curCameraName];
+        //this.camera.setPosition(vec3(this.camera.position.x,this.camera.position.y + 0.5, this.camera.position.z));
     }
 }
 

@@ -46,8 +46,8 @@ Interface.prototype.init = function(application) {
 
 	// add a group of controls (and open/expand by defult)
 	
-	this.luzes=this.gui.addFolder("Lights");
-	this.luzes.open();
+	this.lights=this.gui.addFolder("Lights");
+	this.lights.open();
 
 	
 	return true;
@@ -169,7 +169,7 @@ Interface.prototype.addLights = function(lights) {
     for(id in lights)
     {
         this.scene.lightStates[i] = lights[id].isEnabled();
-        this.luzes.add(this.scene.lightStates, i);
+        this.lights.add(this.scene.lightStates, i);
 		i++;
     }
 }
