@@ -271,7 +271,7 @@ XMLscene.prototype.display = function() {
             }
             this.lights[i].update();
         }
-        //this.processGraph(this.graph.root, new CGFappearance());
+        this.processGraph(this.graph.root, new CGFappearance());
     }
     if (gameState == "WAITING_MOVE" && !isMoving) {
         for (x = 0; x < 12; x++) {
