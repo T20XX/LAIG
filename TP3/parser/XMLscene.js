@@ -668,5 +668,11 @@ XMLscene.prototype.updateCamera = function() {
         this.camera.orbit(CGFcameraAxisID.X,-CAMERA_ANGLE_VELOCITY);
     }
 
+    if (Math.floor(angle*10) == Math.floor(this.camerasAngle['Player 1']*10)){
+        this.camera.fov = 0.5;
+    } else if (Math.floor(angle*10) == Math.floor(this.camerasAngle['Player 2']*10)){
+        this.camera.fov = -0.5;
+    }
+
 }
 
