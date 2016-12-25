@@ -505,6 +505,8 @@ XMLscene.prototype.startGame = function() {
     
     this.interface.removeFolder("Start Game");
 	this.interface.initPlayMode();
+	setBoard(null);
+	
     switch (this.startGameDifficulty){
         case '2 Players':
             initializeGameVariables(1, 1);
@@ -544,7 +546,7 @@ XMLscene.prototype.backMenu = function(){
 }
 
 XMLscene.prototype.undo = function(){
-    
+    undoPlay();
 }
 XMLscene.prototype.changeScene = function(){
 
