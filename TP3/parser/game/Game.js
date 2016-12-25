@@ -228,3 +228,14 @@ function setBoard(newBoard) {
 function setGameState(newGameState) {
     gameState = newGameState;
 }
+
+function undoPlay(){
+    if(gameIndex == 0) return;
+    gameIndex--;
+    setBoard(boardHistory[gameIndex]);
+    console.log("AHHAHAHAH" + currentPlayer);  
+    changeCurrentPlayer(); 
+    passTurnIfPossible();
+    
+    console.log("AHHAHAHAH" + currentPlayer);
+}
