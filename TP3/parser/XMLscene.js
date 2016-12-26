@@ -470,7 +470,6 @@ XMLscene.prototype.display = function() {
                     }
                 }
             }
-            console.log("picking white used: " + whitePickingPiecesUsed);
         }
         //DISPLAY SCOREBOARD
         if (this.showScoreboard && gameState != "GAME_MOVIE") {
@@ -646,8 +645,8 @@ XMLscene.prototype.gameMovie = function() {
 XMLscene.prototype.gameMovieLoop = function() {
     if (isMoving) {//setTimeout(this.gameMovie,100);
     } else {
-        console.log(gameMovieIndex);
-        console.log(boardHistory.length - 1);
+        //console.log(gameMovieIndex);
+        //console.log(boardHistory.length - 1);
         if (gameMovieIndex < boardHistory.length - 1) {
             setGameState("GAME_MOVIE");
             gameIndex = gameMovieIndex;

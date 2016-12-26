@@ -76,7 +76,6 @@ function changeCurrentPlayer() {
 }
 function getValidMoves() {
     gameState = "WAITING_VALID_MOVES";
-    console.log("TOP");
     getPrologRequest("validMoves(" + JSON.stringify(board) + "," + currentPlayer + ")", (function(data) {
         listOfMoves = JSON.parse(data.target.response);
         listOfMovesHistory.push(listOfMoves);
@@ -89,7 +88,7 @@ function getValidMoves() {
 }
 function isValidInitialPosition(initialX, initialY) {
     for (var i = 0; i < listOfMoves.length; i++) {
-        console.log(listOfMoves[i][0]);
+        //console.log(listOfMoves[i][0]);
         if (listOfMoves[i][0] == initialX && listOfMoves[i][1] == initialY) {
             return true;
         }
@@ -101,7 +100,7 @@ function isValidFinalPosition(finalX, finalY) {
         return false;
     }
     for (var i = 0; i < listOfMoves.length; i++) {
-        console.log(listOfMoves[i][0]);
+        //console.log(listOfMoves[i][0]);
         if (listOfMoves[i][0] == move[0] && listOfMoves[i][1] == move[1] && listOfMoves[i][2] == finalX && listOfMoves[i][3] == finalY) {
             return true;
         }
@@ -252,10 +251,7 @@ function undoPlay(){
         movesHistory.pop();
         listOfMovesHistory.pop();
         move = [];
-        console.log("AHHAHAHAH" + currentPlayer);
         changeCurrentPlayer();
     }
     passTurnIfPossible();
-    
-    console.log("AHHAHAHAH" + currentPlayer);
 }
