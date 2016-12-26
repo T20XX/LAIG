@@ -143,16 +143,10 @@ Interface.prototype.initGameMovie = function() {
 	this.resetFolders();
 	this.resetFolder("Game Movie");
 	
-	this.camera = this.gameMovieFolder.add(this.scene, 'cameraName', this.scene.cameraNames).name("Camera");
-	var scene = this.scene;
-	this.camera.onChange(function(value) {
-		scene.oldCameraPosition = vec3.clone(scene.camera.position);
-		scene.newCameraPosition = vec3.clone(scene.cameraPositions[scene.cameraNames[value]]);
-		scene.cameraAnimTime = 0;
-		scene.cameraAnimStartTime = scene.currTime;
-		scene.cameraTotalAnimTime = 1;
-	});
-	this.gameMovieFolder.add(this.scene, "gameEndMovie").name("End movie");
+	this.camera = this.gameMovieFolder.add(this.scene, 'curCameraName', this.scene.camerasName).name("Camera");
+	this.gameMovieFolder.add(this.scene, 'gameMovie').name("Restart Game Movie");
+	this.gameMovieFolder.add(this.scene, "backMenu").name("Main Menu");
+	//this.gameMovieFolder.add(this.scene, "gameEndMovie").name("End movie");
 	
 	this.gameMovieFolder.open();
 }

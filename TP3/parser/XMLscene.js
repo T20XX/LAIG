@@ -457,7 +457,7 @@ XMLscene.prototype.display = function() {
             console.log("picking white used: " + whitePickingPiecesUsed);
         }
         //DISPLAY SCOREBOARD
-        if (this.showScoreboard) {
+        if (this.showScoreboard && gameState != "GAME_MOVIE") {
             this.pushMatrix();
             this.translate(12, 7, 0.5);
             this.rotate(-Math.PI / 4, 0, 1, 0);
@@ -609,6 +609,10 @@ XMLscene.prototype.changeScene = function() {
     window.alert(gameState);
 }*/
 XMLscene.prototype.gameMovie = function() {
+    
+            clearInterval(gameMovieLoop);
+        this.interface.removeFolder("Start Game");
+        this.interface.initGameMovie();
     gameMovieIndex = 0;
     isMoving = false;
     gameMovieLoop = setInterval(this.gameMovieLoop, 100);
@@ -636,8 +640,6 @@ XMLscene.prototype.gameMovieLoop = function() {
             } else {
                 window.alert("PLAYER " + winner + " WINS!");
             }
-            gameState = "MAIN_MENU";
-            //this.backMenu();
         }
     }
 }
