@@ -11,7 +11,7 @@ var winner;
 var player1Type;
 var player2Type;
 var gameIndex;
-//GAME STATES: MAIN_MENU, INITIALIZING_GAME, WAITING_NEW_BOARD, WAITING_VALID_MOVES, WAITING_MOVE, CHECKING_GAME_OVER, GAME_OVER
+//GAME STATES: MAIN_MENU, INITIALIZING_GAME, WAITING_NEW_BOARD, WAITING_VALID_MOVES, WAITING_MOVE, WAITING_BOT_MOVE, CHECKING_GAME_OVER, GAME_OVER
 var gameState = "MAIN_MENU";
 var isMoving = false;
 var startTimeoutTime = 0;
@@ -34,7 +34,7 @@ function initializeGameVariables(newGameMode, newGameDifficulty) {
     listOfMovesHistory = [];
     gameIndex = 0;
     winner = 0;
-    switch (this.gameMode) {
+    switch (gameMode) {
     case 1:
         player1Type = 0;
         player2Type = 0;
@@ -155,6 +155,7 @@ function movePiece() {
     }));
 }
 function botMove() {
+    gameState = "WAITING_BOT_MOVE";
     getPrologRequest("botMove(" + currentPlayer + "," + JSON.stringify(board) + "," + gameDifficulty + ")", (function(data) {
         move = JSON.parse(data.target.response);
         movePiece();
@@ -179,7 +180,7 @@ function checkGameOver() {
             passTurnIfPossible();
         } else {
             winner = data.target.response;
-            gameState = "GAME_OVER";
+            setGameOverIfPossible();
         }
     }), (function() {
         console.log("ERRO");
@@ -204,6 +205,14 @@ function passTurnIfPossible() {
         }
     }
 }
+function setGameOverIfPossible() {
+    if (isMoving){
+        setTimeout(setGameOverIfPossible,100);
+    } else {
+        gameState = "GAME_OVER";
+    }
+}
+
 
 function setInitialPosition(initialX, initialY) {
     move[0] = initialX;
@@ -230,11 +239,22 @@ function setGameState(newGameState) {
 }
 
 function undoPlay(){
-    if(gameIndex == 0) return;
-    gameIndex--;
-    setBoard(boardHistory[gameIndex]);
-    console.log("AHHAHAHAH" + currentPlayer);  
-    changeCurrentPlayer(); 
+    if(gameIndex == 0 || gameMode == 3 || (gameMode == 2 && currentPlayer == 2)) return;
+    if (gameMode == 1){
+        nUndos = 1;
+    }else if (gameMode == 2){
+        nUndos = 2;
+    }
+    for(var i = 0; i < nUndos; i++) {
+        gameIndex--;
+        board = boardHistory[gameIndex];
+        boardHistory.pop();
+        movesHistory.pop();
+        listOfMovesHistory.pop();
+        move = [];
+        console.log("AHHAHAHAH" + currentPlayer);
+        changeCurrentPlayer();
+    }
     passTurnIfPossible();
     
     console.log("AHHAHAHAH" + currentPlayer);

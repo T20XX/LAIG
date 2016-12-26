@@ -1,4 +1,4 @@
-var DELTA_TIME = 50;
+var DELTA_TIME = 100;
 var PIECE_ANIMATION_VELOCITY = 5;
 var CAMERA_DISTANCE = 32;
 var CAMERA_ANGLE_VELOCITY = 0.03;
@@ -36,11 +36,14 @@ XMLscene.prototype.init = function(application) {
     this.camerasName = ['Top View', 'Player 1', 'Player 2'];
     this.timeoutTurn = 25;
     this.currTime = 0;
+    this.showScoreboard = true;
     this.board = new Chessboard(this,12,12,new Texture("./textures/stairsWood.jpg",1,1),0,0,[1, 1, 1, 1],[0, 0, 0, 1],[0.5, 0.5, 1, 1]);
 
     this.whitePiecesAppearance = new CGFappearance(this);
+    this.whitePiecesAppearance.setAmbient(0.8,0.8,0.8,1);
     this.whitePiecesAppearance.loadTexture("./textures/pecaBranca.png");
     this.blackPiecesAppearance = new CGFappearance(this);
+    this.blackPiecesAppearance.setAmbient(0.8,0.8,0.8,1);
     this.blackPiecesAppearance.loadTexture("./textures/pecaPreta.png");
 
     this.blackPieces = [];
@@ -73,6 +76,9 @@ XMLscene.prototype.init = function(application) {
     this.movingPieceStartTime;
     this.movingPieceGameIndex;
     this.movingPieceAnimation = new PieceAnimation(PIECE_ANIMATION_VELOCITY);
+
+    this.font = new Font(this,[0, 0, 1, 1] , [0,0,0,1]);
+    this.scoreboard = new Plane(this, 5, 2, 1, 1);
 
 }
 XMLscene.prototype.setInterface = function(interface) {
@@ -305,6 +311,7 @@ XMLscene.prototype.display = function() {
     var whitePiecesUsed = 20;
 
     if (gameState != "MAIN_MENU") {
+        //DISPLAY BOARD
         this.pushMatrix();
         this.translate(5.5, 5.5, 0);
         this.scale(12, 12, 1);
@@ -365,12 +372,9 @@ XMLscene.prototype.display = function() {
                             }
                         }
                     } else {
-                        this.movingPieceState = 3;
+                        this.movingPieceState = 1;
                         isMoving = false;
                     }
-                    break;
-                case 3:
-                    this.movingPieceState = 1;
                     break;
                 default:
                     break;
@@ -438,6 +442,32 @@ XMLscene.prototype.display = function() {
                     }
                 }
             }
+            console.log("picking white used: " + whitePickingPiecesUsed);
+        }
+
+        //DISPLAY SCOREBOARD
+        if (this.showScoreboard) {
+            this.pushMatrix();
+            this.translate(12,7,0.5);
+            this.rotate(-Math.PI/4, 0,1,0);
+            this.rotate(-Math.PI/2, 0,0,1);
+            this.pushMatrix();
+            this.translate(2, 0.5, 0);
+            this.scoreboard.display();
+            this.popMatrix();
+            this.pushMatrix();
+            this.translate(0, 0, 0.1);
+            this.translate(0.5, 1, 0);
+            var leftTime = timeoutTurn - (this.currTime - startTimeoutTime);
+            this.font.displayTime(Math.floor(leftTime / 60), Math.floor(leftTime % 60));
+            this.popMatrix();
+            this.pushMatrix();
+            this.translate(0, 0, 0.1);
+            this.font.displayNumber(blackPiecesUsed);
+            this.translate(3, 0, 0);
+            this.font.displayNumber(whitePiecesUsed);
+            this.popMatrix();
+            this.popMatrix();
         }
     }
 
@@ -501,42 +531,43 @@ XMLscene.prototype.processGraph = function(nodeName, parentAppearance, parentTex
     }
 }
 XMLscene.prototype.startGame = function() {
-    this.changeScene();
-    
-    this.interface.removeFolder("Start Game");
-	this.interface.initPlayMode();
-	setBoard(null);
-	
-    switch (this.startGameDifficulty){
-        case '2 Players':
-            initializeGameVariables(1, 1);
-            break;
-        case 'vs. Easy CPU':
-            initializeGameVariables(2, 1);
-            break;
-        case 'vs. Medium CPU':
-            initializeGameVariables(2, 2);
-            break;
-        case 'vs. Hard CPU':
-            initializeGameVariables(2, 3);
-            break;
-        case 'vs. Very Hard CPU':
-            initializeGameVariables(2, 4);
-            break;
-        case 'CPU vs. CPU Easy':
-            initializeGameVariables(3, 1);
-            break;
-        case 'CPU vs. CPU Medium':
-            initializeGameVariables(3, 2);
-            break;
-        case 'CPU vs. CPU Hard':
-            initializeGameVariables(3, 3);
-            break;
-        case 'CPU vs. CPU Very Hard':
-            initializeGameVariables(3, 4);
-            break;
+    if(gameState != "WAITING_VALID_MOVES") {
+        this.changeScene();
+
+        this.interface.removeFolder("Start Game");
+        this.interface.initPlayMode();
+
+        switch (this.startGameDifficulty) {
+            case '2 Players':
+                initializeGameVariables(1, 1);
+                break;
+            case 'vs. Easy CPU':
+                initializeGameVariables(2, 1);
+                break;
+            case 'vs. Medium CPU':
+                initializeGameVariables(2, 2);
+                break;
+            case 'vs. Hard CPU':
+                initializeGameVariables(2, 3);
+                break;
+            case 'vs. Very Hard CPU':
+                initializeGameVariables(2, 4);
+                break;
+            case 'CPU vs. CPU Easy':
+                initializeGameVariables(3, 1);
+                break;
+            case 'CPU vs. CPU Medium':
+                initializeGameVariables(3, 2);
+                break;
+            case 'CPU vs. CPU Hard':
+                initializeGameVariables(3, 3);
+                break;
+            case 'CPU vs. CPU Very Hard':
+                initializeGameVariables(3, 4);
+                break;
+        }
+        timeoutTurn = this.timeoutTurn;
     }
-    timeoutTurn = this.timeoutTurn;
 }
 
 XMLscene.prototype.backMenu = function(){
@@ -552,10 +583,10 @@ XMLscene.prototype.changeScene = function(){
 
     switch (this.scenarioName){
         case "Scene 1":
-            var filename=getUrlVars()['file'] || "LAIG_TP2_DSX_T4_G03_v01.dsx"
+            var filename=getUrlVars()['file'] || "scene1.dsx"
             break;
         case "Scene 2":
-            var filename=getUrlVars()['file'] || "LAIG_TP2_DSX_T4_G03_v02.dsx"
+            var filename=getUrlVars()['file'] || "scene2.dsx"
             break;
     }
    this.graph = new MySceneGraph(filename, this);
