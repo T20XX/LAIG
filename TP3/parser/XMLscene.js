@@ -29,7 +29,6 @@ XMLscene.prototype.init = function(application) {
     this.setUpdatePeriod(DELTA_TIME);
     this.startGameDifficulty = '2 Players';
     this.startGameDifficulties = ['2 Players', 'vs. Easy CPU', 'vs. Medium CPU', 'vs. Hard CPU', 'vs. Very Hard CPU', 'CPU vs. CPU Easy', 'CPU vs. CPU Medium', 'CPU vs. CPU Hard', 'CPU vs. CPU Very Hard'];
-
     this.scenarioNames = ["Scene 1", "Scene 2"];
     this.scenarioName = "Scene 1";
     this.curCameraName = 'Player 1';
@@ -38,21 +37,19 @@ XMLscene.prototype.init = function(application) {
     this.currTime = 0;
     this.showScoreboard = true;
     this.board = new Chessboard(this,12,12,new Texture("./textures/stairsWood.jpg",1,1),0,0,[1, 1, 1, 1],[0, 0, 0, 1],[0.5, 0.5, 1, 1]);
-
     this.whitePiecesAppearance = new CGFappearance(this);
-    this.whitePiecesAppearance.setAmbient(0.8,0.8,0.8,1);
+    this.whitePiecesAppearance.setAmbient(0.8, 0.8, 0.8, 1);
     this.whitePiecesAppearance.loadTexture("./textures/pecaBranca.png");
     this.blackPiecesAppearance = new CGFappearance(this);
-    this.blackPiecesAppearance.setAmbient(0.8,0.8,0.8,1);
+    this.blackPiecesAppearance.setAmbient(0.8, 0.8, 0.8, 1);
     this.blackPiecesAppearance.loadTexture("./textures/pecaPreta.png");
-
     this.blackPieces = [];
     for (i = 0; i < 20; i++) {
-        this.blackPieces.push(new Piece(this, this.blackPiecesAppearance));
+        this.blackPieces.push(new Piece(this,this.blackPiecesAppearance));
     }
     this.whitePieces = [];
     for (i = 0; i < 20; i++) {
-        this.whitePieces.push(new Piece(this, this.whitePiecesAppearance));
+        this.whitePieces.push(new Piece(this,this.whitePiecesAppearance));
     }
     this.pickingCells = [];
     for (i = 0; i < 144; i++) {
@@ -70,16 +67,13 @@ XMLscene.prototype.init = function(application) {
     this.setPickEnabled(true);
     //Game
     //this.game = new Game(this);
-
     //STATES: 1, 2, 3
     this.movingPieceState = 1;
     this.movingPieceStartTime;
     this.movingPieceGameIndex;
     this.movingPieceAnimation = new PieceAnimation(PIECE_ANIMATION_VELOCITY);
-
-    this.font = new Font(this,[0, 0, 1, 1] , [0,0,0,1]);
-    this.scoreboard = new Plane(this, 5, 2, 1, 1);
-
+    this.font = new Font(this,[0, 0, 1, 1],[0, 0, 0, 1]);
+    this.scoreboard = new Plane(this,5,2,1,1);
 }
 XMLscene.prototype.setInterface = function(interface) {
     this.interface = interface;
@@ -130,9 +124,9 @@ XMLscene.prototype.initCameras = function() {
     this.cameras['Player 1'] = new CGFcamera(0.5,0.1,100,vec3.fromValues(5.5, -15, 25),vec3.fromValues(5.5, 5.5, 0));
     this.cameras['Player 2'] = new CGFcamera(-0.5,0.1,100,vec3.fromValues(5.5, 26, 25),vec3.fromValues(5.5, 5.5, 0));
     this.camerasAngle = [];
-    this.camerasAngle['Top View'] = 90 * Math.PI/180;
-    this.camerasAngle['Player 1'] = 50 * Math.PI/180;
-    this.camerasAngle['Player 2'] = 140 * Math.PI/180;
+    this.camerasAngle['Top View'] = 90 * Math.PI / 180;
+    this.camerasAngle['Player 1'] = 50 * Math.PI / 180;
+    this.camerasAngle['Player 2'] = 140 * Math.PI / 180;
     this.camera = this.cameras['Player 1'];
 }
 ;
@@ -247,18 +241,17 @@ XMLscene.prototype.logPicking = function() {
     }
 }
 XMLscene.prototype.display = function() {
-    if (gameState == "WAITING_MOVE"){
-        if(this.currTime - startTimeoutTime > timeoutTurn){
+    if (gameState == "WAITING_MOVE") {
+        if (this.currTime - startTimeoutTime > timeoutTurn) {
             window.alert("timeout");
             this.backMenu();
         }
-    }else if (gameState != "GAME_OVER"){
+    } else if (gameState != "GAME_OVER") {
         startTimeoutTime = this.currTime;
-    }else if (gameState == "GAME_OVER"){
+    } else if (gameState == "GAME_OVER") {
         window.alert("PLAYER " + winner + " WINS!");
         this.backMenu();
     }
-
     // Picking
     this.logPicking();
     this.clearPickRegistration();
@@ -289,8 +282,8 @@ XMLscene.prototype.display = function() {
             this.lights[i].update();
         }
         if (gameState != "MAIN_MENU") {
-             this.processGraph(this.graph.root, new CGFappearance());
-         }
+            this.processGraph(this.graph.root, new CGFappearance());
+        }
     }
     if (gameState == "WAITING_MOVE" && !isMoving) {
         for (x = 0; x < 12; x++) {
@@ -305,11 +298,8 @@ XMLscene.prototype.display = function() {
             }
         }
     }
-
-
     var blackPiecesUsed = 20;
     var whitePiecesUsed = 20;
-
     if (gameState != "MAIN_MENU") {
         //DISPLAY BOARD
         this.pushMatrix();
@@ -317,69 +307,92 @@ XMLscene.prototype.display = function() {
         this.scale(12, 12, 1);
         this.board.display();
         this.popMatrix();
- if (isMoving){
+        if (isMoving) {
             switch (this.movingPieceState) {
-                case 1:
-                    this.movingPieceAnimation.setMove(move);
-                    this.movingPieceStartTime = this.currTime;
-                    this.movingPieceGameIndex = gameIndex;
-                    this.movingPieceState = 2;
-                case 2:
-                    var deltaTime = this.currTime - this.movingPieceStartTime;
-                    if (deltaTime < this.movingPieceAnimation.getSpan()) {
-                        blackPiecesUsed = 0;
-                        whitePiecesUsed = 0;
-                        var movingMove = this.movingPieceAnimation.getMove();
-                        var cell;
-                        for (y = 0; y < 12; y++) {
-                            for (x = 0; x < 12; x++) {
-                                cell = boardHistory[this.movingPieceGameIndex][11 - y][x];
+            case 1:
+                this.movingPieceAnimation.setMove(move);
+                this.movingPieceStartTime = this.currTime;
+                this.movingPieceGameIndex = gameIndex;
+                this.movingPieceState = 2;
+            case 2:
+                var deltaTime = this.currTime - this.movingPieceStartTime;
+                if (deltaTime < this.movingPieceAnimation.getSpan()) {
+                    blackPiecesUsed = 0;
+                    whitePiecesUsed = 0;
+                    var movingMove = this.movingPieceAnimation.getMove();
+                    var cell;
+                    var isThePieceMoving;
+                    for (y = 0; y < 12; y++) {
+                        for (x = 0; x < 12; x++) {
+                            isThePieceMoving = false;
+                            cell = boardHistory[this.movingPieceGameIndex][11 - y][x];
+                            this.pushMatrix();
+                            if (movingMove[0] == x + 1 && movingMove[1] == 12 - y) {
+                                this.multMatrix(this.movingPieceAnimation.getTransformation(deltaTime));
+                                isThePieceMoving = true;
+                            }
+                            if (cell == 0) {} else if (cell == 1) {
                                 this.pushMatrix();
-                                if (movingMove[0] == x+1 && movingMove[1] == 12-y) {
-                                    this.multMatrix(this.movingPieceAnimation.getTransformation(deltaTime));
-                                }
-                                if (cell == 0) {
-                                } else if (cell == 1) {
-                                    this.pushMatrix();
-                                    this.translate(x, y, 0);
-                                    this.whitePieces[whitePiecesUsed].display();
-                                    whitePiecesUsed++;
-                                    this.popMatrix();
-                                } else if (cell == -1) {
-                                    this.pushMatrix();
-                                    this.translate(x, y, 0);
-                                    this.blackPieces[blackPiecesUsed].display();
-                                    blackPiecesUsed++;
-                                    this.popMatrix();
-                                } else if (cell > 1) {
-                                    for (var j = 0; j < cell; j++) {
+                                this.translate(x, y, 0);
+                                this.whitePieces[whitePiecesUsed].display();
+                                whitePiecesUsed++;
+                                this.popMatrix();
+                            } else if (cell == -1) {
+                                this.pushMatrix();
+                                this.translate(x, y, 0);
+                                this.blackPieces[blackPiecesUsed].display();
+                                blackPiecesUsed++;
+                                this.popMatrix();
+                            } else if (cell > 1) {
+                                var destinationCell = boardHistory[this.movingPieceGameIndex][movingMove[3] - 1][movingMove[2] - 1];
+                                for (var j = 0; j < cell; j++) {
+                                    if (j == cell - 1 && isThePieceMoving && destinationCell == 0){
+                                        this.popMatrix();
+                                        this.pushMatrix();
+                                        this.pushMatrix();
+                                        this.translate(x, y, 0);
+                                        this.whitePieces[whitePiecesUsed].display();
+                                        whitePiecesUsed++;
+                                        this.popMatrix();
+                                    } else {
                                         this.pushMatrix();
                                         this.translate(x, y, j * 0.2);
                                         this.whitePieces[whitePiecesUsed].display();
                                         whitePiecesUsed++;
                                         this.popMatrix();
                                     }
-                                } else if (cell < -1) {
-                                    for (var j = 0; j > cell; j--) {
-                                        this.pushMatrix();
-                                        this.translate(x, y, -j * 0.2);
-                                        this.blackPieces[blackPiecesUsed].display();
-                                        blackPiecesUsed++;
+                                }
+                            } else if (cell < -1) {
+                                var destinationCell = boardHistory[this.movingPieceGameIndex][movingMove[3] - 1][movingMove[2] - 1];
+                                for (var j = 0; j > cell; j--) {
+                                    if (j == cell + 1 && isThePieceMoving && destinationCell == 0){
                                         this.popMatrix();
+                                        this.pushMatrix();
+                                    this.pushMatrix();
+                                    this.translate(x, y, 0);
+                                    this.blackPieces[blackPiecesUsed].display();
+                                    blackPiecesUsed++;
+                                    this.popMatrix();
+                                    } else {
+                                    this.pushMatrix();
+                                    this.translate(x, y, -j * 0.2);
+                                    this.blackPieces[blackPiecesUsed].display();
+                                    blackPiecesUsed++;
+                                    this.popMatrix();
                                     }
                                 }
-                                this.popMatrix();
                             }
+                            this.popMatrix();
                         }
-                    } else {
-                        this.movingPieceState = 1;
-                        isMoving = false;
                     }
-                    break;
-                default:
-                    break;
+                } else {
+                    this.movingPieceState = 1;
+                    isMoving = false;
+                }
+                break;
+            default:
+                break;
             }
-
         }
         if (!isMoving) {
             blackPiecesUsed = 0;
@@ -390,8 +403,7 @@ XMLscene.prototype.display = function() {
             for (y = 0; y < 12; y++) {
                 for (x = 0; x < 12; x++) {
                     cell = board[11 - y][x];
-                    if (cell == 0) {
-                    } else if (cell == 1) {
+                    if (cell == 0) {} else if (cell == 1) {
                         this.pushMatrix();
                         this.translate(x, y, 0);
                         this.whitePieces[whitePiecesUsed].display();
@@ -444,13 +456,12 @@ XMLscene.prototype.display = function() {
             }
             console.log("picking white used: " + whitePickingPiecesUsed);
         }
-
         //DISPLAY SCOREBOARD
         if (this.showScoreboard) {
             this.pushMatrix();
-            this.translate(12,7,0.5);
-            this.rotate(-Math.PI/4, 0,1,0);
-            this.rotate(-Math.PI/2, 0,0,1);
+            this.translate(12, 7, 0.5);
+            this.rotate(-Math.PI / 4, 0, 1, 0);
+            this.rotate(-Math.PI / 2, 0, 0, 1);
             this.pushMatrix();
             this.translate(2, 0.5, 0);
             this.scoreboard.display();
@@ -470,18 +481,17 @@ XMLscene.prototype.display = function() {
             this.popMatrix();
         }
     }
-
     var whitePiecesLeft = 20 - whitePiecesUsed;
     var blackPiecesLeft = 20 - blackPiecesUsed;
-for(var i = 0; i < whitePiecesLeft; i++){
-    this.pushMatrix();
-    this.translate((i - 10 *Math.floor(i/10))*1.22, - 2 - (Math.floor(i/10) * 1.22), 0);
-    this.whitePieces[whitePiecesUsed + i].display();
-    this.popMatrix();
-}
-    for(var i = 0; i < blackPiecesLeft; i++){
+    for (var i = 0; i < whitePiecesLeft; i++) {
         this.pushMatrix();
-        this.translate((i - 10 *Math.floor(i/10))*1.22, 13 + (Math.floor(i/10) * 1.22), 0);
+        this.translate((i - 10 * Math.floor(i / 10)) * 1.22, -2 - (Math.floor(i / 10) * 1.22), 0);
+        this.whitePieces[whitePiecesUsed + i].display();
+        this.popMatrix();
+    }
+    for (var i = 0; i < blackPiecesLeft; i++) {
+        this.pushMatrix();
+        this.translate((i - 10 * Math.floor(i / 10)) * 1.22, 13 + (Math.floor(i / 10) * 1.22), 0);
         this.blackPieces[blackPiecesUsed + i].display();
         this.popMatrix();
     }
@@ -531,67 +541,61 @@ XMLscene.prototype.processGraph = function(nodeName, parentAppearance, parentTex
     }
 }
 XMLscene.prototype.startGame = function() {
-    if(gameState != "WAITING_VALID_MOVES") {
+    if (gameState != "WAITING_VALID_MOVES") {
         this.changeScene();
-
         this.interface.removeFolder("Start Game");
         this.interface.initPlayMode();
-
         switch (this.startGameDifficulty) {
-            case '2 Players':
-                initializeGameVariables(1, 1);
-                break;
-            case 'vs. Easy CPU':
-                initializeGameVariables(2, 1);
-                break;
-            case 'vs. Medium CPU':
-                initializeGameVariables(2, 2);
-                break;
-            case 'vs. Hard CPU':
-                initializeGameVariables(2, 3);
-                break;
-            case 'vs. Very Hard CPU':
-                initializeGameVariables(2, 4);
-                break;
-            case 'CPU vs. CPU Easy':
-                initializeGameVariables(3, 1);
-                break;
-            case 'CPU vs. CPU Medium':
-                initializeGameVariables(3, 2);
-                break;
-            case 'CPU vs. CPU Hard':
-                initializeGameVariables(3, 3);
-                break;
-            case 'CPU vs. CPU Very Hard':
-                initializeGameVariables(3, 4);
-                break;
+        case '2 Players':
+            initializeGameVariables(1, 1);
+            break;
+        case 'vs. Easy CPU':
+            initializeGameVariables(2, 1);
+            break;
+        case 'vs. Medium CPU':
+            initializeGameVariables(2, 2);
+            break;
+        case 'vs. Hard CPU':
+            initializeGameVariables(2, 3);
+            break;
+        case 'vs. Very Hard CPU':
+            initializeGameVariables(2, 4);
+            break;
+        case 'CPU vs. CPU Easy':
+            initializeGameVariables(3, 1);
+            break;
+        case 'CPU vs. CPU Medium':
+            initializeGameVariables(3, 2);
+            break;
+        case 'CPU vs. CPU Hard':
+            initializeGameVariables(3, 3);
+            break;
+        case 'CPU vs. CPU Very Hard':
+            initializeGameVariables(3, 4);
+            break;
         }
         timeoutTurn = this.timeoutTurn;
     }
 }
-
-XMLscene.prototype.backMenu = function(){
-     gameState = "MAIN_MENU";
-     this.interface.removeFolder("Play Mode");
-     this.interface.initStartMenu();
+XMLscene.prototype.backMenu = function() {
+    gameState = "MAIN_MENU";
+    this.interface.removeFolder("Play Mode");
+    this.interface.initStartMenu();
 }
-
-XMLscene.prototype.undo = function(){
+XMLscene.prototype.undo = function() {
     undoPlay();
 }
-XMLscene.prototype.changeScene = function(){
-
-    switch (this.scenarioName){
-        case "Scene 1":
-            var filename=getUrlVars()['file'] || "scene1.dsx"
-            break;
-        case "Scene 2":
-            var filename=getUrlVars()['file'] || "scene2.dsx"
-            break;
+XMLscene.prototype.changeScene = function() {
+    switch (this.scenarioName) {
+    case "Scene 1":
+        var filename = getUrlVars()['file'] || "scene1.dsx"
+        break;
+    case "Scene 2":
+        var filename = getUrlVars()['file'] || "scene2.dsx"
+        break;
     }
-   this.graph = new MySceneGraph(filename, this);
+    this.graph = new MySceneGraph(filename,this);
 }
-
 /*XMLscene.prototype.gameMovie = function(){
     setGameState("GAME_MOVIE");
     window.alert(gameState);
@@ -604,15 +608,13 @@ XMLscene.prototype.changeScene = function(){
     //gameState = "MAIN_MENU";
     window.alert(gameState);
 }*/
-
-XMLscene.prototype.gameMovie = function(){
+XMLscene.prototype.gameMovie = function() {
     gameMovieIndex = 0;
     isMoving = false;
-    gameMovieLoop = setInterval(this.gameMovieLoop,100);
+    gameMovieLoop = setInterval(this.gameMovieLoop, 100);
 }
 XMLscene.prototype.gameMovieLoop = function() {
-    if (isMoving) {
-        //setTimeout(this.gameMovie,100);
+    if (isMoving) {//setTimeout(this.gameMovie,100);
     } else {
         console.log(gameMovieIndex);
         console.log(boardHistory.length - 1);
@@ -629,9 +631,9 @@ XMLscene.prototype.gameMovieLoop = function() {
             //setTimeout(this.gameMovie,100);
         } else {
             clearInterval(gameMovieLoop);
-            if(winner == 0){
+            if (winner == 0) {
                 window.alert("The game was not finished");
-            }else{
+            } else {
                 window.alert("PLAYER " + winner + " WINS!");
             }
             gameState = "MAIN_MENU";
@@ -639,7 +641,6 @@ XMLscene.prototype.gameMovieLoop = function() {
         }
     }
 }
-
 /**
  * Interface functions
  */
@@ -664,18 +665,16 @@ XMLscene.prototype.update = function(currTime) {
         //console.log(this.currTime);
     }
 }
-
 XMLscene.prototype.updateCamera = function() {
     //console.log(this.camera.position);
-    var angle = Math.atan(Math.abs(this.camera.calculateDirection()[2])/this.camera.calculateDirection()[1]);
-
+    var angle = Math.atan(Math.abs(this.camera.calculateDirection()[2]) / this.camera.calculateDirection()[1]);
     //console.log("Angulo clean:" + angle);
-    if(angle < 0){
+    if (angle < 0) {
         angle = Math.PI + angle;
     }
     //console.log("Angulo atual:" + angle);
     //console.log("Angulo pretendido:" + this.camerasAngle[this.curCameraName]);
-    if(Math.floor(angle*10) < Math.floor(this.camerasAngle[this.curCameraName]*10)){
+    if (Math.floor(angle * 10) < Math.floor(this.camerasAngle[this.curCameraName] * 10)) {
         /*angle += CAMERA_ANGLE_VELOCITY;
         if (angle < Math.PI/2){
             this.camera.setPosition(vec3.fromValues(this.camera.position[0], this.camera.target[1] - CAMERA_DISTANCE * Math.cos(angle), this.camera.target[2] + CAMERA_DISTANCE * Math.sin(angle)));
@@ -687,9 +686,8 @@ XMLscene.prototype.updateCamera = function() {
         //this.camera.setPosition(vec3.fromValues(5.5,5.5,30));
         //this.camera.orbit(CGFcameraAxisID.Y,Math.PI/2);
         //this.camera.setPosition(positionn);
-        this.camera.orbit(CGFcameraAxisID.X,CAMERA_ANGLE_VELOCITY);
-
-    } else if(Math.floor(angle*10) > Math.floor(this.camerasAngle[this.curCameraName]*10)){
+        this.camera.orbit(CGFcameraAxisID.X, CAMERA_ANGLE_VELOCITY);
+    } else if (Math.floor(angle * 10) > Math.floor(this.camerasAngle[this.curCameraName] * 10)) {
         /*angle -= CAMERA_ANGLE_VELOCITY;
 
         if (angle < Math.PI/2){
@@ -698,14 +696,11 @@ XMLscene.prototype.updateCamera = function() {
             angle -= Math.PI/2;
             this.camera.setPosition(vec3.fromValues(this.camera.position[0], this.camera.target[1] + CAMERA_DISTANCE * Math.sin(angle), this.camera.target[2] + CAMERA_DISTANCE * Math.cos(angle)));
         }*/
-        this.camera.orbit(CGFcameraAxisID.X,-CAMERA_ANGLE_VELOCITY);
+        this.camera.orbit(CGFcameraAxisID.X, -CAMERA_ANGLE_VELOCITY);
     }
-
-    if (Math.floor(angle*10) == Math.floor(this.camerasAngle['Player 1']*10)){
+    if (Math.floor(angle * 10) == Math.floor(this.camerasAngle['Player 1'] * 10)) {
         this.camera.fov = 0.5;
-    } else if (Math.floor(angle*10) == Math.floor(this.camerasAngle['Player 2']*10)){
+    } else if (Math.floor(angle * 10) == Math.floor(this.camerasAngle['Player 2'] * 10)) {
         this.camera.fov = -0.5;
     }
-
 }
-
