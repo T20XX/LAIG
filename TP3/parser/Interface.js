@@ -128,7 +128,7 @@ Interface.prototype.initPlayMode = function() {
 	this.resetFolder("Play Mode");
 	
 	this.camera = this.modeFolder.add(this.scene, 'curCameraName', this.scene.camerasName).name("Camera");
-
+    this.modeFolder.add(this.scene, "autoCameraChange").name("Auto Camera Change");
     this.modeFolder.add(this.scene, "showScoreboard").name("Scoreboard");
 	
 	this.modeFolder.add(this.scene, "undo").name("Undo Move");

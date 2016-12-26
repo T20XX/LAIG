@@ -36,6 +36,7 @@ XMLscene.prototype.init = function(application) {
     this.timeoutTurn = 25;
     this.currTime = 0;
     this.showScoreboard = true;
+    this.autoCameraChange = true;
     this.board = new Chessboard(this,12,12,new Texture("./textures/stairsWood.jpg",1,1),0,0,[1, 1, 1, 1],[0, 0, 0, 1],[0.5, 0.5, 1, 1]);
     this.whitePiecesAppearance = new CGFappearance(this);
     this.whitePiecesAppearance.setAmbient(0.8, 0.8, 0.8, 1);
@@ -43,6 +44,13 @@ XMLscene.prototype.init = function(application) {
     this.blackPiecesAppearance = new CGFappearance(this);
     this.blackPiecesAppearance.setAmbient(0.8, 0.8, 0.8, 1);
     this.blackPiecesAppearance.loadTexture("./textures/pecaPreta.png");
+    this.mainMenuAppearance = new CGFappearance(this);
+    this.mainMenuAppearance.setEmission(0.5,0.5,0.5,1);
+    this.mainMenuAppearance.loadTexture("./textures/mainmenu.png");
+    this.blackScoreboardAppearance = new CGFappearance(this);
+    this.blackScoreboardAppearance.setAmbient(0, 0, 0, 1);
+    this.blackScoreboardAppearance.setSpecular(0, 0, 0, 1);
+    this.blackScoreboardAppearance.setDiffuse(0, 0, 0, 1);
     this.blackPieces = [];
     for (i = 0; i < 20; i++) {
         this.blackPieces.push(new Piece(this,this.blackPiecesAppearance));
@@ -74,6 +82,7 @@ XMLscene.prototype.init = function(application) {
     this.movingPieceAnimation = new PieceAnimation(PIECE_ANIMATION_VELOCITY);
     this.font = new Font(this,[0, 0, 1, 1],[0, 0, 0, 1]);
     this.scoreboard = new Plane(this,5,2,1,1);
+    this.mainmenu = new Plane(this,10,10,1,1);
 }
 XMLscene.prototype.setInterface = function(interface) {
     this.interface = interface;
@@ -388,6 +397,13 @@ XMLscene.prototype.display = function() {
                 } else {
                     this.movingPieceState = 1;
                     isMoving = false;
+                    if(this.autoCameraChange && gameState != "GAME_MOVIE"){
+                        if(currentPlayer == 1){
+                            this.curCameraName = "Player 1";
+                        } else if(currentPlayer == 2){
+                            this.curCameraName = "Player 2";
+                        }
+                    }
                 }
                 break;
             default:
@@ -464,6 +480,7 @@ XMLscene.prototype.display = function() {
             this.rotate(-Math.PI / 2, 0, 0, 1);
             this.pushMatrix();
             this.translate(2, 0.5, 0);
+            this.blackScoreboardAppearance.apply();
             this.scoreboard.display();
             this.popMatrix();
             this.pushMatrix();
@@ -480,6 +497,15 @@ XMLscene.prototype.display = function() {
             this.popMatrix();
             this.popMatrix();
         }
+    }else {
+        this.curCameraName = "Player 1";
+        this.pushMatrix();
+        this.mainMenuAppearance.apply();
+        this.rotate(Math.PI/8, 1, 0,0);
+        this.rotate(Math.PI, 0,0, 1);
+        this.translate(-5.5,-5,0);
+        this.mainmenu.display();
+        this.popMatrix();
     }
     var whitePiecesLeft = 20 - whitePiecesUsed;
     var blackPiecesLeft = 20 - blackPiecesUsed;
